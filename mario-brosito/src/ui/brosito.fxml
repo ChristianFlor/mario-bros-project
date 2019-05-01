@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.canvas.Canvas?>
+
+<Group fx:id="group" styleClass="root" stylesheets="@../uiImg/Style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.brositoController">
+   <children>
+      <Canvas fx:id="canvas" height="504.0" layoutX="10.0" layoutY="10.0" styleClass="root" width="7689.0" />
+   </children>
+</Group>

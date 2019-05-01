@@ -1,0 +1,6 @@
+.root{
+	-fx-background-image: url("Mountain.png");
+	-fx-background-size: cover;
+	-fx-background-repeat: stretch; 
+    -fx-background-position: center center;
+}
