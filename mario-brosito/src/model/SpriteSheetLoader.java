@@ -11,7 +11,7 @@ public class SpriteSheetLoader {
    int height;
    int rows;
    int columns;
-   //ojo 
+   
    BufferedImage[] sprites;
    
    public SpriteSheetLoader(int width, int height, int rows, int columns) throws IOException {
