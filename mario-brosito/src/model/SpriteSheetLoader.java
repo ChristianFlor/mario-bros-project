@@ -6,13 +6,12 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class SpriteSheetLoader {
-	
    BufferedImage spriteSheet = ImageIO.read(new File("src/uiImg/player.png"));   
-   
    int width;
    int height;
    int rows;
    int columns;
+   int p;
    BufferedImage[] sprites;
    
    public SpriteSheetLoader(int width, int height, int rows, int columns) throws IOException {
