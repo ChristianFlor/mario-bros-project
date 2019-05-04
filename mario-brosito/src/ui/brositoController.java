@@ -5,11 +5,12 @@ import java.io.IOException;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import model.SpriteSheetLoader;
+import model.ImagesLoader;
 
 public class brositoController {
 
@@ -31,16 +32,18 @@ public class brositoController {
 		minX = 0; minY = 408; width = height = 32;
     	GraphicsContext gc = canvas.getGraphicsContext2D();
     	gc.drawImage(new Image("/uiImg/Mountain2.png"), 0, 0, 1536, 512);
-    	SpriteSheetLoader sl = null;
+    	ImagesLoader sl = null;
     	try {
-			sl = new SpriteSheetLoader(32, 32, 7, 4);
+			sl = new ImagesLoader(32, 32, 7, 4);
 			BufferedImage[] sprites = sl.getSprites();
 	    	gc = canvas.getGraphicsContext2D();
 	    	double posx = 16;
 	    	double posy = 16;
 	    	for (int i = 0; i < sprites.length; i++) {
 	    		Image card = SwingFXUtils.toFXImage(sprites[i], null);
+	    		Rectangle2D r = new Rectangle2D(posx, posy, 32, 32);
 	    		if(i==0) {
+	    			
 	    			gc.drawImage(card, 0, 408);
 	    			main = card;
 	    		}
