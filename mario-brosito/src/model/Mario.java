@@ -1,7 +1,10 @@
 package model;
 
 public class Mario extends Figure {
+	
 
+	public final static String IMAGE = "/src/uiImg/player.png";
+	
 	public Mario(double posX, double posY, double width, double height) {
 		super(posX, posY, width, height);
 		powerState = null;
@@ -34,9 +37,9 @@ public class Mario extends Figure {
 	public PowerUp nextPowerUp() {
 		PowerUp nextPower;
 		if(powerState == null) {
-			nextPower = new Mushroom(this.getPosX(), this.getPosY(), this.getWidth(),  this.getWidth(), "/src/uiImg/Mushroom.png");
+			nextPower = new Mushroom(this.getPosX(), this.getPosY(), this.getWidth(),  this.getWidth());
 		}else{
-			nextPower = new Flower(this.getPosX(), this.getPosY(), this.getWidth(),  this.getWidth(), "/src/uiImg/Flower.png");
+			nextPower = new Flower(this.getPosX(), this.getPosY(), this.getWidth(),  this.getWidth());
 		}
 		
 		return nextPower;
