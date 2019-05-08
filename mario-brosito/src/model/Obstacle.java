@@ -6,4 +6,6 @@ public class Obstacle extends Figure {
 		super(posX, posY, width, height);
 	}
 
+	
+
 }

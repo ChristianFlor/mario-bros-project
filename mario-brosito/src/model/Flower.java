@@ -6,4 +6,5 @@ public class Flower extends PowerUp {
 		super(posX, posY, width, height);
 	}
 
+
 }

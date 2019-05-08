@@ -1,7 +1,7 @@
 
 package model;
 
-public class Figure {
+public abstract class Figure {
 	
 	/**
 	 * Represents the position in the X axis of the figure in the level
@@ -25,6 +25,11 @@ public class Figure {
 	 */
 	
 	private double height;
+	
+	/**
+	 * string that represents the image of the figure
+	 */
+	private String image;
 
 	
 	/**
@@ -42,6 +47,7 @@ public class Figure {
 		this.posY = posY;
 		this.width = width;
 		this.height = height;
+
 	}
 	
 	/**
@@ -121,6 +127,15 @@ public class Figure {
 
 	public void setHeight(double height) {
 		this.height = height;
+	}
+	
+	/**
+	 * <b>Description:</b>
+	 * This function allows to obtain the image of the figure
+	 * @param image the image of the figure 
+	 */
+	public String getImage() {
+		return image;
 	}
 	
 	

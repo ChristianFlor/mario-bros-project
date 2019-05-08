@@ -1,13 +1,14 @@
 package model;
 
-public class Enemy extends Figure {
+public abstract class Enemy extends Figure {
+
+	public Enemy(double posX, double posY, double width, double height) {
+		super(posX, posY, width, height);
+	}
 
 	private Enemy nextEnemy;
 	
-	public Enemy(double posX, double posY, double width, double height) {
-		super(posX, posY, width, height);
-		
-	}
+	
 
 	/**
 	 * @return the nextEnemy

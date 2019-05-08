@@ -6,4 +6,5 @@ public class PiranhaPlant extends Enemy{
 		super(posX, posY, width, height);
 	}
 
+	
 }

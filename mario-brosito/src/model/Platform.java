@@ -6,4 +6,6 @@ public class Platform extends Figure{
 		super(posX, posY, width, height);
 	}
 
+	
+	
 }

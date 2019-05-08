@@ -6,4 +6,5 @@ public class Star extends PowerUp{
 		super(posX, posY, width, height);
 	}
 
+	
 }

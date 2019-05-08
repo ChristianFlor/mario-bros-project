@@ -6,4 +6,5 @@ public class ShellKoopa extends Enemy {
 		super(posX, posY, width, height);
 	}
 
+
 }
