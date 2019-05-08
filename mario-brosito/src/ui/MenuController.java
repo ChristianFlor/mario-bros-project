@@ -46,7 +46,7 @@ public class MenuController {
     	timeline.getKeyFrames().add(kf);
     	timeline.setOnFinished(event1-> {
     		stackPane.getChildren().remove(marioPane);
-    	});
+    	});                               
     	timeline.play();
     }
 

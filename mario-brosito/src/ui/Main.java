@@ -20,13 +20,13 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("brosito.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("menu.fxml"));
 		Parent root = loader.load();
-		brositoController bC = loader.getController();
+		MenuController mc = loader.getController();
 		Scene scene = new Scene(root);
 		javafx.scene.paint.Color c = javafx.scene.paint.Color.rgb(93, 148, 251);
 		scene.setFill(c);
-		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+	/*	scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
 			@Override
 			public void handle(KeyEvent e) {
@@ -38,7 +38,7 @@ public class Main extends Application{
 				}
 			}
 	    	
-	    });
+	    });*/
 		stage.setScene(scene);
 		stage.setTitle("Mariosito");
 		stage.show();

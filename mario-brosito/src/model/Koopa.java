@@ -6,4 +6,6 @@ public class Koopa extends Enemy{
 		super(posX, posY, width, height);
 	}
 
+
+
 }
