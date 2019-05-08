@@ -9,19 +9,7 @@ public class ImagesLoader {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-   /*BufferedImage spriteSheet = ImageIO.read(new File("src/uiImg/player.png"));   
+   BufferedImage spriteSheet = ImageIO.read(new File("src/uiImg/player.png"));   
    int width;
    int height;
    int rows;
@@ -44,5 +32,5 @@ public class ImagesLoader {
    
    public BufferedImage[] getSprites() {
 	   return sprites;
-   }*/
+   }
 }
