@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MenuController">
+   <children>
+      <Pane fx:id="marioPane" prefHeight="585.0" prefWidth="685.0">
+         <children>
+            <ImageView fitHeight="196.0" fitWidth="387.0" layoutX="156.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../menuimg/572720.jpg" />
+               </image>
+            </ImageView>
+            <Label fx:id="brandLabel" layoutX="397.0" layoutY="319.0" text="\@2019 ICESI" textFill="#f29b87">
+               <font>
+                  <Font name="Consolas" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="playerLabel" layoutX="260.0" layoutY="377.0" onMouseClicked="#beginGame" text="1 PLAYER GAME">
+               <font>
+                  <Font name="Consolas" size="23.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </children>
+</StackPane>
