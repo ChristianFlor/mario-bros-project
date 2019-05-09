@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Group?>
-<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.layout.Pane?>
 
-<Group fx:id="group" styleClass="root" stylesheets="@../uiImg/Style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.brositoController">
-   <children>
-      <Canvas fx:id="canvas" height="504.0" layoutX="10.0" layoutY="10.0" styleClass="root" width="7689.0" />
-   </children>
-</Group>
+
+<Pane fx:id="mainBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="1538.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.brositoController" />

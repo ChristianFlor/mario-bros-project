@@ -10,6 +10,14 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import model.ImagesLoader;
 
 public class brositoController {
@@ -18,37 +26,55 @@ public class brositoController {
 	private double minY;
 	private double width;
 	private double height;
-	
-	 @FXML
-	 private Group group;
+
+	/*@FXML
+    private Canvas canvas;*/
 
 	@FXML
-    private Canvas canvas;
-
+    private Pane mainBackground;
+	
 	private Image main;
+	
+	private Rectangle mainMario;
+	
+	private int maxRight;
 	
     @FXML
     public void initialize() {
+    	maxRight = 1538/2;
+    	Image im = new Image("uiImg/background/back1.jpg",7168,448,true,true);
+    	BackgroundImage myBI= new BackgroundImage(im,
+    	        BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+    	          BackgroundSize.DEFAULT);
+    	mainBackground.setBackground(new Background(myBI));
+    	//mainBackground.setTranslateX(-3000);
 		minX = 0; minY = 408; width = height = 32;
-    	GraphicsContext gc = canvas.getGraphicsContext2D();
-    	gc.drawImage(new Image("/uiImg/Mountain2.png"), 0, 0, 1536, 512);
+    	//GraphicsContext gc = canvas.getGraphicsContext2D();
+    	//gc.drawImage(new Image("/uiImg/Mountain2.png"), 0, 0, 1536, 512);
     	ImagesLoader sl = null;
     	try {
 			sl = new ImagesLoader(32, 32, 7, 4);
 			BufferedImage[] sprites = sl.getSprites();
-	    	gc = canvas.getGraphicsContext2D();
+	    	//gc = canvas.getGraphicsContext2D();
 	    	double posx = 16;
 	    	double posy = 16;
 	    	for (int i = 0; i < sprites.length; i++) {
 	    		Image card = SwingFXUtils.toFXImage(sprites[i], null);
 	    		Rectangle2D r = new Rectangle2D(posx, posy, 32, 32);
+	    		
 	    		if(i==0) {
-	    			
-	    			gc.drawImage(card, 0, 408);
-	    			main = card;
+	    			Rectangle rec = new Rectangle(0, 408, 32, 32);
+	    			rec.setFill(new ImagePattern(card));
+	    			mainBackground.getChildren().add(rec);
+	    			//gc.drawImage(card, 0, 408);
+	    			mainMario = rec;
 	    		}
-	    		else
-	    			gc.drawImage(card, posx, posy);
+	    		else {
+	    			Rectangle rec = new Rectangle(posx, posy, 32, 32);
+	    			rec.setFill(new ImagePattern(card));
+	    			mainBackground.getChildren().add(rec);
+	    		}
+	    			//gc.drawImage(card, posx, posy);
 				posx += 40; 
 			}
 		} catch (IOException e) {
@@ -57,29 +83,43 @@ public class brositoController {
     	
     	Image card = new Image("/uiImg/stone.png");
     	double posx = 0; double posy = 440;
-    	for (int i = 0; posx < 1536; i++) {
-			gc.drawImage(card, posx, posy);
+    	for (int i = 0; posx < 7168; i++) {
+    		Rectangle rec = new Rectangle(posx, posy, 32, 32);
+			rec.setFill(new ImagePattern(card));
+			mainBackground.getChildren().add(rec);
+			//gc.drawImage(card, posx, posy);
 			posx+=32;
 		}
     	posy = 472; posx = 0;
-    	for (int i = 0; posx < 1536; i++) {
-			gc.drawImage(card, posx, posy);
+    	for (int i = 0; posx < 7168; i++) {
+    		Rectangle rec = new Rectangle(posx, posy, 32, 32);
+			rec.setFill(new ImagePattern(card));
+			mainBackground.getChildren().add(rec);
+			//gc.drawImage(card, posx, posy);
 			posx+=32;
 		}
+    	Rectangle rec = new Rectangle(7000, 32, 32, 32);
+		rec.setFill(new ImagePattern(card));
+		mainBackground.getChildren().add(rec);
     }
 
     public void drawImage() {
-        canvas.getGraphicsContext2D().drawImage(main, minX, minY, width, height);
+       // canvas.getGraphicsContext2D().drawImage(main, minX, minY, width, height);
     }
 
     public void moveImage(int a) {
-    	
-        canvas.getGraphicsContext2D().clearRect(minX, minY, width, height);
-        if(a==1)
-        	minX += 10;
+    	if(mainMario.getLayoutX() >= maxRight && a==1) {
+    		mainMario.setLayoutX(mainMario.getLayoutX()+10);
+    		maxRight +=10;
+    		mainBackground.relocate(mainBackground.getLayoutX()-10, mainBackground.getLayoutY());
+    		//mainBackground.setTranslateX(mainBackground.getTranslateX()-10);
+    	}
+        //canvas.getGraphicsContext2D().clearRect(minX, minY, width, height);
+    	else if(a==1)
+        	mainMario.setLayoutX(mainMario.getLayoutX()+10);
         else
-        	minX -= 10;
-        drawImage();
+        	mainMario.setLayoutX(mainMario.getLayoutX()-10);
+        //drawImage();
     }
     
     
