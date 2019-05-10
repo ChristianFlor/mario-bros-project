@@ -3,7 +3,6 @@ package ui;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
-
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -55,11 +54,13 @@ public class brositoController {
 			e1.printStackTrace();
 		}
     	maxRight = 1538/2;
+    
     	
-    	
+    }
+    
+    public void configureScene() {
     	javafx.scene.paint.Color c = javafx.scene.paint.Color.rgb(93, 148, 251);
 		mainScene.setFill(c);
-	//	scene.setFill(new ImagePattern(new Image("uiImg/Mountain.png",1538,448,false,false))); name = new (); 
 		mainScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
 			@Override
@@ -76,67 +77,6 @@ public class brositoController {
 	    	
 	    });
 		
-    	/*Image im = new Image("uiImg/background/back1.jpg",7168,448,true,true);
-    	BackgroundImage myBI= new BackgroundImage(im,
-    	        BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-    	          BackgroundSize.DEFAULT);
-    	mainBackground.setBackground(new Background(myBI));
-    	
-    	/*
-    	//mainBackground.setTranslateX(-3000);
-		minX = 0; minY = 408; width = height = 32;
-    	//GraphicsContext gc = canvas.getGraphicsContext2D();
-    	//gc.drawImage(new Image("/uiImg/Mountain2.png"), 0, 0, 1536, 512);
-    	ImagesLoader sl = null;
-    	try {
-			sl = new ImagesLoader(32, 32, 7, 4);
-			BufferedImage[] sprites = sl.getSprites();
-	    	//gc = canvas.getGraphicsContext2D();
-	    	double posx = 16;
-	    	double posy = 16;
-	    	for (int i = 0; i < sprites.length; i++) {
-	    		Image card = SwingFXUtils.toFXImage(sprites[i], null);
-	    		//Rectangle2D r = new Rectangle2D(posx, posy, 32, 32);
-	    		
-	    		if(i==0) {
-	    			Rectangle rec = new Rectangle(0, 384, 32, 32);
-	    			rec.setFill(new ImagePattern(card));
-	    			mainBackground.getChildren().add(rec);
-	    			//gc.drawImage(card, 0, 408);
-	    			mainMario = rec;
-	    		}
-	    		else {
-	    			Rectangle rec = new Rectangle(posx, posy, 32, 32);
-	    			rec.setFill(new ImagePattern(card));
-	    			mainBackground.getChildren().add(rec);
-	    		}
-	    			//gc.drawImage(card, posx, posy);
-				posx += 40; 
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    	
-    	Image card = new Image("/uiImg/stone.png");
-    	double posx = 0; double posy = 416;
-    	for (int i = 0; posx < 7168; i++) {
-    		Rectangle rec = new Rectangle(posx, posy, 32, 32);
-			rec.setFill(new ImagePattern(card));
-			mainBackground.getChildren().add(rec);
-			//gc.drawImage(card, posx, posy);
-			posx+=32;
-		}
-    	posy = 448; posx = 0;
-    	for (int i = 0; posx < 7168; i++) {
-    		Rectangle rec = new Rectangle(posx, posy, 32, 32);
-			rec.setFill(new ImagePattern(card));
-			mainBackground.getChildren().add(rec);
-			//gc.drawImage(card, posx, posy);
-			posx+=32;
-		}
-    	Rectangle rec = new Rectangle(7000, 32, 32, 32);
-		rec.setFill(new ImagePattern(card));
-		mainBackground.getChildren().add(rec);*/
     }
 
     public void drawImage() {

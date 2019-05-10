@@ -26,6 +26,7 @@ public class Main extends Application{
 		brositoController bC = loader.getController();
 		Scene scene = new Scene(root);
 		bC.setMainScene(scene);
+		bC.configureScene();
 		stage.setScene(scene);
 		stage.setTitle("Mariosito");
 		stage.show();
