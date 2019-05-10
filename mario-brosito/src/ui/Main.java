@@ -25,22 +25,7 @@ public class Main extends Application{
 		//MenuController mc = loader.getController();
 		brositoController bC = loader.getController();
 		Scene scene = new Scene(root);
-		javafx.scene.paint.Color c = javafx.scene.paint.Color.rgb(93, 148, 251);
-		scene.setFill(c);
-	//	scene.setFill(new ImagePattern(new Image("uiImg/Mountain.png",1538,448,false,false))); name = new (); 
-		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-			@Override
-			public void handle(KeyEvent e) {
-				if(e.getCode().equals(KeyCode.D)) {
-					bC.moveImage(1);
-				}
-				else if(e.getCode().equals(KeyCode.A)) {
-					bC.moveImage(-1);
-				}
-			}
-	    	
-	    });
+		bC.setMainScene(scene);
 		stage.setScene(scene);
 		stage.setTitle("Mariosito");
 		stage.show();

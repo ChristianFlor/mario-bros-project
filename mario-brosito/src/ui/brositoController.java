@@ -5,8 +5,12 @@ import java.io.IOException;
 import java.util.List;
 
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -38,8 +42,12 @@ public class brositoController {
 	
 	private Game mainGame;
 	
+	private Scene mainScene;
+	
     @FXML
     public void initialize() {
+    
+    	
     	try {
 			mainGame = new Game();
 			loadWorld();
@@ -48,6 +56,26 @@ public class brositoController {
 		}
     	maxRight = 1538/2;
     	
+    	
+    	javafx.scene.paint.Color c = javafx.scene.paint.Color.rgb(93, 148, 251);
+		mainScene.setFill(c);
+	//	scene.setFill(new ImagePattern(new Image("uiImg/Mountain.png",1538,448,false,false))); name = new (); 
+		mainScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent e) {
+				if(e.getCode().equals(KeyCode.D)) {
+					moveImage(1);
+				}
+				else if(e.getCode().equals(KeyCode.A)) {
+					moveImage(-1);
+				}else if(e.getCode().equals(KeyCode.W)){
+					moveImage(2);
+				}
+			}
+	    	
+	    });
+		
     	/*Image im = new Image("uiImg/background/back1.jpg",7168,448,true,true);
     	BackgroundImage myBI= new BackgroundImage(im,
     	        BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
@@ -125,14 +153,17 @@ public class brositoController {
         //canvas.getGraphicsContext2D().clearRect(minX, minY, width, height);
     	else if(a==1)
         	mainMario.setLayoutX(mainMario.getLayoutX()+10);
-        else
+        else if(a==-1){
         	mainMario.setLayoutX(mainMario.getLayoutX()-10);
-        //drawImage();
+        }else if(a==2){
+        	mainMario.setLayoutY(mainMario.getLayoutY()-128);
+        }//drawImage();
     }
     
     public void loadWorld() throws IOException {
     	List<Figure> sprites = mainGame.getLevelOne().getFigures();
     	ImagesLoader sl = null;
+    	
     	for (int i = 0; i < sprites.size(); i++) {
 			Figure f = sprites.get(i);
 			Rectangle rec = new Rectangle(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
@@ -161,5 +192,13 @@ public class brositoController {
 			}
 		}
     }
+
+	public Scene getMainScene() {
+		return mainScene;
+	}
+
+	public void setMainScene(Scene mainScene) {
+		this.mainScene = mainScene;
+	}
     
 }
