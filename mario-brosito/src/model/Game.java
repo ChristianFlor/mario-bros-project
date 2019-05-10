@@ -1,5 +1,7 @@
 package model;
 
+import java.io.IOException;
+
 public class Game {
 	
 	
@@ -10,7 +12,10 @@ public class Game {
 	private ImagesLoader images;
 	private SoundsLoader sounds;
 	
-	
+	public Game() throws IOException {
+		levelOne = new Level();
+		levelOne.loadLevel(Level.LEVEL_ONE_PATH);
+	}
 	
 	/**
 	 * @return the levelOne

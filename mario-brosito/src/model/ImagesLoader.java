@@ -7,21 +7,20 @@ import javax.imageio.ImageIO;
 
 public class ImagesLoader {
 	
-	
-	
-   BufferedImage spriteSheet = ImageIO.read(new File("src/uiImg/player.png"));   
-   int width;
-   int height;
-   int rows;
-   int columns;
+   private BufferedImage spriteSheet;   
+   private int width;
+   private int height;
+   private int rows;
+   private int columns;
    
-   BufferedImage[] sprites;
+   private BufferedImage[] sprites;
    
-   public ImagesLoader(int width, int height, int rows, int columns) throws IOException {
+   public ImagesLoader(int width, int height, int rows, int columns, String image) throws IOException {
       this.width = width;//32
       this.height = height;//32
       this.rows = rows;//7
       this.columns = columns;//4
+      spriteSheet = ImageIO.read(new File(image));
       sprites = new BufferedImage[rows * columns];
       for(int i = 0; i < rows; i++) {
          for(int j = 0; j < columns; j++) {

@@ -2,6 +2,8 @@ package model;
 
 public class MisteryBlock extends Obstacle implements DestructibleBrick {
 	
+	public static final String MISTERYBLOCK = "src/uiImg/QuestionMark.png";
+	
 	private Coin coin;
 	private PowerUp power;
 

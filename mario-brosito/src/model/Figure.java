@@ -138,7 +138,9 @@ public abstract class Figure {
 		return image;
 	}
 	
-	
+	public void setImage(String image) {
+		this.image = image;
+	}
 	
 	
 

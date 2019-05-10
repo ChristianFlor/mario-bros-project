@@ -3,7 +3,7 @@ package model;
 public class Mario extends Figure {
 	
 
-	public final static String IMAGE = "/src/uiImg/player.png";
+	public final static String IMAGE = "src/uiImg/player.png";
 	
 	public Mario(double posX, double posY, double width, double height) {
 		super(posX, posY, width, height);
