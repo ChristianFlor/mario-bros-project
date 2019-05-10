@@ -26,6 +26,7 @@ import model.MisteryBlock;
 import model.SimpleBlock;
 import model.Slide;
 import model.StaticFigure;
+import thread.MarioMovement;
 
 public class brositoController {
 
@@ -61,8 +62,9 @@ public class brositoController {
     public void configureScene() {
     	javafx.scene.paint.Color c = javafx.scene.paint.Color.rgb(93, 148, 251);
 		mainScene.setFill(c);
+		
 		mainScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-
+		
 			@Override
 			public void handle(KeyEvent e) {
 				if(e.getCode().equals(KeyCode.D)) {
@@ -71,12 +73,19 @@ public class brositoController {
 				else if(e.getCode().equals(KeyCode.A)) {
 					moveImage(-1);
 				}else if(e.getCode().equals(KeyCode.W)){
-					moveImage(2);
+					marioThread();
 				}
 			}
 	    	
 	    });
 		
+    }
+    
+    public void marioThread(){
+    	MarioMovement mv = new MarioMovement(this);
+    	mv.start();
+    	
+    	
     }
 
     public void drawImage() {
@@ -97,7 +106,10 @@ public class brositoController {
         	mainMario.setLayoutX(mainMario.getLayoutX()-10);
         }else if(a==2){
         	mainMario.setLayoutY(mainMario.getLayoutY()-128);
-        }//drawImage();
+        }else if(a==3){
+        	mainMario.setLayoutY(mainMario.getLayoutY()+128);
+        }
+    	//drawImage();
     }
     
     public void loadWorld() throws IOException {
