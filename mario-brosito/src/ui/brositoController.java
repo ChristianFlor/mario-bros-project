@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
@@ -27,6 +28,7 @@ import model.SimpleBlock;
 import model.Slide;
 import model.StaticFigure;
 import thread.MarioMovement;
+import thread.MisteryBlockAnimation;
 
 public class brositoController {
 
@@ -43,6 +45,8 @@ public class brositoController {
 	private Game mainGame;
 	
 	private Scene mainScene;
+	private List<Rectangle> rectan;
+	private ImagesLoader imlo;
 	
     @FXML
     public void initialize() {
@@ -50,7 +54,11 @@ public class brositoController {
     	
     	try {
 			mainGame = new Game();
+			imlo= new ImagesLoader(32, 32, 1, 3,"src/uiImg/QuestionMark.png");
+			rectan= new ArrayList<Rectangle>();
 			loadWorld();
+			misteryBlockThread();
+			
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -86,6 +94,31 @@ public class brositoController {
     	mv.start();
     	
     	
+    }
+    public void misteryBlockThread() {
+    	MisteryBlockAnimation mba = new MisteryBlockAnimation(this);
+		mba.start();
+    }
+    public void setFill0() {
+    	BufferedImage[] blocks = imlo.getSprites();
+		Image card = SwingFXUtils.toFXImage(blocks[0], null);
+		for (int i = 0; i < rectan.size(); i++) {
+			rectan.get(i).setFill(new ImagePattern(card));
+		}	
+    }
+    public void setFill1() {
+    	BufferedImage[] blocks = imlo.getSprites();
+		Image card = SwingFXUtils.toFXImage(blocks[1], null);
+		for (int i = 0; i < rectan.size(); i++) {
+			rectan.get(i).setFill(new ImagePattern(card));
+		}	
+    }
+    public void setFill2() {
+    	BufferedImage[] blocks = imlo.getSprites();
+		Image card = SwingFXUtils.toFXImage(blocks[2], null);
+		for (int i = 0; i < rectan.size(); i++) {
+			rectan.get(i).setFill(new ImagePattern(card));
+		}
     }
 
     public void drawImage() {
@@ -134,6 +167,7 @@ public class brositoController {
 				BufferedImage[] blocks = sl.getSprites();
 				Image card = SwingFXUtils.toFXImage(blocks[0], null);
 				rec.setFill(new ImagePattern(card));
+				rectan.add(rec);
 				mainBackground.getChildren().add(rec);
 			}else if(f instanceof SimpleBlock) {
 				rec.setFill(new ImagePattern(new Image(f.getImage())));
