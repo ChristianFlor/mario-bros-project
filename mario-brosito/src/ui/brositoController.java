@@ -45,6 +45,8 @@ public class brositoController {
 	
 	private int maxRight;
 	
+	private int minLeft;
+	
 	private Game mainGame;
 	
 	private Scene mainScene;
@@ -68,7 +70,7 @@ public class brositoController {
 			e1.printStackTrace();
 		}
     	maxRight = 1538/2;
-    
+    	minLeft = 0;
     	
     }
     
@@ -119,7 +121,18 @@ public class brositoController {
 		});
 }
 		
-    
+    public boolean isTouching() {
+    	boolean intersects = false;
+    	List<Figure> sprites = mainGame.getLevelOne().getFigures();
+    	for (int i = 0; i < sprites.size() && !intersects; i++) {
+			if(sprites.get(i) instanceof Mario)
+				continue;
+			Figure f = sprites.get(i);
+			Figure mario = mainGame.getLevelOne().getMario();
+			intersects = mario.isColliding(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
+		}
+    	return intersects;
+    }
     
     public void marioThread(int keys){
     	MarioMovement mv = new MarioMovement(this, keys);
@@ -158,23 +171,43 @@ public class brositoController {
     }
 
     public void moveImage(int a) {
-    	if(mainMario.getLayoutX() >= maxRight && a==1) {
-    		mainMario.setLayoutX(mainMario.getLayoutX()+10);
-    		maxRight +=10;
-    		mainBackground.relocate(mainBackground.getLayoutX()-10, mainBackground.getLayoutY());
-    		//mainBackground.setTranslateX(mainBackground.getTranslateX()-10);
-    	}
-        //canvas.getGraphicsContext2D().clearRect(minX, minY, width, height);
-    	else if(a==1)
-        	mainMario.setLayoutX(mainMario.getLayoutX()+10);
-        else if(a==-1){
-        	mainMario.setLayoutX(mainMario.getLayoutX()-10);
+		Mario m = (Mario) mainGame.getLevelOne().getMario();
+		if(a==1) {
+    		m.setState(Mario.ISMOVINGRIGHT);
+    	}else if(a==-1){
+        	m.setState(Mario.ISMOVINGLEFT);
         }else if(a==2){
-        	mainMario.setLayoutY(mainMario.getLayoutY()-10);
+        	m.setState(Mario.ISMOVINGUP);
         }else if(a==3){
-        	mainMario.setLayoutY(mainMario.getLayoutY()+10);
+        	m.setState(Mario.ISMOVINGDOWN);
         }
-    	//drawImage();
+    	if(!isTouching()) {
+	    	if(mainMario.getX() >= maxRight && a==1) {
+	    		mainMario.setX(mainMario.getX()+10);
+	    		maxRight +=10;
+	    		minLeft += 10;
+	    		mainBackground.setTranslateX(mainBackground.getTranslateX()-10);
+	    		m.setPosX(mainMario.getX());
+	    	}
+	    	else if(mainMario.getX() <= minLeft && a==-1) {
+	    	}
+	    	else if(a==1) {
+	    		mainMario.setX(mainMario.getX()+10);
+	    		m.setPosX(mainMario.getX());
+	    	}else if(a==-1){
+	        	mainMario.setX(mainMario.getX()-10);
+	        	m.setPosX(mainMario.getX());
+	        }else if(a==2){
+	        	mainMario.setY(mainMario.getY()-10);
+	        	m.setPosY(mainMario.getY());
+	        }else if(a==3){
+	        	mainMario.setY(mainMario.getY()+10);
+	        	m.setPosY(mainMario.getY());
+	        }
+    	}else {
+    		mainMario.setX(m.getPosX());
+    		mainMario.setY(m.getPosY());
+    	}
     }
     
     public void loadWorld() throws IOException {

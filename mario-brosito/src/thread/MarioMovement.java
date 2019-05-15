@@ -17,9 +17,11 @@ public class MarioMovement extends Thread {
 	}
 	@Override
 	public void run() {
-		double layoutY = controller.getMainMario().getLayoutY();
+		double layoutY = controller.getMainMario().getY();
+		int counter = 0;
 		
-			while(layoutY != -130) {
+			while(counter <= 130 && !controller.isTouching()) {
+				
 				Platform.runLater(new Runnable() {
 
 						@Override
@@ -41,10 +43,11 @@ public class MarioMovement extends Thread {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-
-				layoutY = controller.getMainMario().getLayoutY();
+				
+				layoutY = controller.getMainMario().getY();
+				counter +=10;
 			}
-			while(layoutY != 0){
+			while(!controller.isTouching()){
 				if(keys == 1) {
 					controller.moveImage(3);
 					controller.moveImage(1);
@@ -62,7 +65,8 @@ public class MarioMovement extends Thread {
 					e.printStackTrace();
 				}
 
-				layoutY = controller.getMainMario().getLayoutY();
+				layoutY = controller.getMainMario().getY();
+				counter -=10;
 			}
 
 			controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGDOWN);
