@@ -5,9 +5,15 @@ public class Mario extends Figure {
 
 	public final static String IMAGE = "src/uiImg/player.png";
 	
+	public final static String ISMOVINGRIGHT = "Right";
+	public final static String ISMOVINGLEFT = "Left";
+	public final static String ISMOVINGUP = "Up";
+	public final static String ISMOVINGDOWN = "Down";
+	
 	public Mario(double posX, double posY, double width, double height) {
 		super(posX, posY, width, height);
 		powerState = null;
+		state = ISMOVINGLEFT;
 	}
 
 

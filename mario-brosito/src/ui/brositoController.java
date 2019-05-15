@@ -3,7 +3,10 @@ package ui;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -48,10 +51,12 @@ public class brositoController {
 	private List<Rectangle> rectan;
 	private ImagesLoader imlo;
 	
+	private Set<Integer> pressed;
+	
     @FXML
     public void initialize() {
     
-    	
+    	pressed = new HashSet<Integer>();
     	try {
 			mainGame = new Game();
 			imlo= new ImagesLoader(32, 32, 1, 3,"src/uiImg/QuestionMark.png");
@@ -75,22 +80,49 @@ public class brositoController {
 		
 			@Override
 			public void handle(KeyEvent e) {
-				if(e.getCode().equals(KeyCode.D)) {
-					moveImage(1);
-				}
-				else if(e.getCode().equals(KeyCode.A)) {
-					moveImage(-1);
-				}else if(e.getCode().equals(KeyCode.W)){
-					marioThread();
+				pressed.add((int) e.getText().charAt(0));
+
+				if(pressed.size() == 1) { //press only 1 key
+					
+					if(pressed.contains(100)) { // d
+						moveImage(1);
+
+					}
+					else if(pressed.contains(97)) { // a
+						moveImage(-1);
+					}else if(pressed.contains(119) && !mainGame.getLevelOne().getMario().getState().equals(Mario.ISMOVINGUP) ){
+						marioThread(0);   // w 
+						mainGame.getLevelOne().getMario().setState(Mario.ISMOVINGUP);
+					}
+				}else {   // press more than 1 key
+					
+					 if(pressed.contains(100) && pressed.contains(119) && !mainGame.getLevelOne().getMario().getState().equals(Mario.ISMOVINGUP)) {
+						 marioThread(1); 
+						 mainGame.getLevelOne().getMario().setState(Mario.ISMOVINGUP);
+					 }else if(pressed.contains(97) && pressed.contains(119) && !mainGame.getLevelOne().getMario().getState().equals(Mario.ISMOVINGUP)) {
+						 marioThread(-1); 
+						 mainGame.getLevelOne().getMario().setState(Mario.ISMOVINGUP);
+					 }
 				}
 			}
-	    	
-	    });
+			});
 		
-    }
+		
+		mainScene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent ev) {
+				 pressed.remove(((int) ev.getText().charAt(0)));
+
+			}
+
+		});
+}
+		
     
-    public void marioThread(){
-    	MarioMovement mv = new MarioMovement(this);
+    
+    public void marioThread(int keys){
+    	MarioMovement mv = new MarioMovement(this, keys);
     	mv.start();
     	
     	
@@ -138,9 +170,9 @@ public class brositoController {
         else if(a==-1){
         	mainMario.setLayoutX(mainMario.getLayoutX()-10);
         }else if(a==2){
-        	mainMario.setLayoutY(mainMario.getLayoutY()-128);
+        	mainMario.setLayoutY(mainMario.getLayoutY()-10);
         }else if(a==3){
-        	mainMario.setLayoutY(mainMario.getLayoutY()+128);
+        	mainMario.setLayoutY(mainMario.getLayoutY()+10);
         }
     	//drawImage();
     }
@@ -186,5 +218,21 @@ public class brositoController {
 	public void setMainScene(Scene mainScene) {
 		this.mainScene = mainScene;
 	}
+
+	/**
+	 * @return the mainMario
+	 */
+	public Rectangle getMainMario() {
+		return mainMario;
+	}
+
+	/**
+	 * @return the mainGame
+	 */
+	public Game getMainGame() {
+		return mainGame;
+	}
+	
+	
     
 }

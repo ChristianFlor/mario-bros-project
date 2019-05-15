@@ -12,6 +12,7 @@ public class Level {
 	
 	private List<Figure> figures;
 	
+	private int positionOfMario;
 	
 	public static final String LEVEL_ONE_PATH = "data/Level1.txt";
 	public static final String LEVEL_TWO_PATH = "data/Level2.txt";
@@ -43,7 +44,7 @@ public class Level {
 					Figure marioFigure = new Mario(counterPosX, counterPosY, 32, 32);
 					marioFigure.setImage(Mario.IMAGE);
 					figures.add(marioFigure);
-						
+					positionOfMario = figures.size()-1;
 				}else if(element == 'H') {
 					
 					// hidden block
@@ -155,7 +156,11 @@ public class Level {
 		}
 		bf.close();
 	}
-	
+	public Mario getMario() {
+
+		return (Mario)figures.get(positionOfMario);
+	}
+
 	public List<Figure> getFigures(){
 		return figures;
 	}
