@@ -7,21 +7,22 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MenuController">
+<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MenuController">
+
    <children>
-      <Pane fx:id="marioPane" prefHeight="585.0" prefWidth="685.0">
+      <Pane fx:id="marioPane" prefHeight="480.0" prefWidth="685.0">
          <children>
-            <ImageView fitHeight="196.0" fitWidth="387.0" layoutX="156.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+             <ImageView fitHeight="181.0" fitWidth="367.0" layoutX="160.0" layoutY="86.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../menuimg/572720.jpg" />
                </image>
             </ImageView>
-            <Label fx:id="brandLabel" layoutX="397.0" layoutY="319.0" text="\@2019 ICESI" textFill="#f29b87">
+           <Label fx:id="brandLabel" layoutX="378.0" layoutY="267.0" text="\@2019 ICESI" textFill="#f29b87">
                <font>
                   <Font name="Consolas" size="24.0" />
                </font>
             </Label>
-            <Label fx:id="playerLabel" layoutX="260.0" layoutY="377.0" onMouseClicked="#beginGame" text="1 PLAYER GAME">
+            <Label fx:id="playerLabel" layoutX="260.0" layoutY="308.0" onMouseClicked="#beginGame" text="1 PLAYER GAME">
                <font>
                   <Font name="Consolas" size="23.0" />
                </font>

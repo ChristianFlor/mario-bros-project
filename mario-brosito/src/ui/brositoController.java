@@ -69,7 +69,7 @@ public class brositoController {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-    	maxRight = 1538/2;
+    	maxRight = 685/3;
     	minLeft = 0;
     	
     }

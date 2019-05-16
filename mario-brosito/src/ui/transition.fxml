@@ -7,54 +7,55 @@
 <?import javafx.scene.text.Font?>
 
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="685.0" style="-fx-background-color: BLACK;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.TransitionController">
+<Pane fx:id="transitionPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="685.0" style="-fx-background-color: BLACK;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.TransitionController">
+
    <children>
-      <Label layoutX="87.0" layoutY="31.0" prefHeight="27.0" prefWidth="74.0" text="MARIO" textFill="WHITE">
+      <Label layoutX="61.0" layoutY="31.0" prefHeight="27.0" prefWidth="74.0" text="MARIO" textFill="WHITE">
          <font>
             <Font name="Consolas Bold" size="23.0" />
          </font>
       </Label>
-      <Label layoutX="87.0" layoutY="58.0" text="000000" textFill="WHITE">
+     <Label layoutX="61.0" layoutY="58.0" text="000000" textFill="WHITE">
          <font>
             <Font name="Consolas" size="23.0" />
          </font>
       </Label>
-      <ImageView fitHeight="33.0" fitWidth="57.0" layoutX="236.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true">
+       <ImageView fitHeight="33.0" fitWidth="57.0" layoutX="227.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../menuimg/coin.png" />
          </image>
       </ImageView>
-      <Label layoutX="274.0" layoutY="58.0" text="X 00" textFill="WHITE">
+       <Label layoutX="265.0" layoutY="58.0" text="X 00" textFill="WHITE">
          <font>
             <Font name="Consolas" size="23.0" />
          </font>
       </Label>
-      <Label layoutX="390.0" layoutY="31.0" text="WORLD" textFill="WHITE">
+       <Label layoutX="400.0" layoutY="31.0" text="WORLD" textFill="WHITE">
          <font>
             <Font name="Consolas" size="23.0" />
          </font>
       </Label>
-      <Label layoutX="403.0" layoutY="58.0" text="1-1" textFill="WHITE">
+      <Label layoutX="413.0" layoutY="58.0" text="1-1" textFill="WHITE">
          <font>
             <Font name="Consolas Bold" size="23.0" />
          </font>
       </Label>
-      <Label layoutX="528.0" layoutY="31.0" text="TIME" textFill="WHITE">
+       <Label layoutX="555.0" layoutY="31.0" text="TIME" textFill="WHITE">
          <font>
             <Font name="Consolas Bold" size="23.0" />
          </font>
       </Label>
-      <Label layoutX="281.0" layoutY="216.0" text="WORLD 1-1" textFill="WHITE">
+      <Label layoutX="281.0" layoutY="193.0" text="WORLD 1-1" textFill="WHITE">
          <font>
             <Font name="Consolas Bold" size="25.0" />
          </font>
       </Label>
-      <ImageView fitHeight="45.0" fitWidth="51.0" layoutX="277.0" layoutY="258.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="startImg" fitHeight="40.0" fitWidth="41.0" layoutX="296.0" layoutY="227.0" onMouseClicked="#start" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../menuimg/mario.png" />
          </image>
       </ImageView>
-      <Label layoutX="336.0" layoutY="265.0" text="X 3" textFill="WHITE">
+     <Label layoutX="351.0" layoutY="232.0" text="X 3" textFill="WHITE">	
          <font>
             <Font name="Consolas Bold" size="25.0" />
          </font>
