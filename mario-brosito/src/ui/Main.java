@@ -20,13 +20,11 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("brosito.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("menu.fxml"));
 		Parent root = loader.load();
-		//MenuController mc = loader.getController();
-		brositoController bC = loader.getController();
+	
 		Scene scene = new Scene(root);
-		bC.setMainScene(scene);
-		bC.configureScene();
+
 		stage.setScene(scene);
 		stage.setTitle("Mariosito");
 		stage.show();
