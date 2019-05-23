@@ -2,22 +2,21 @@ package thread;
 
 import javafx.application.Platform;
 import model.Mario;
-import ui.brositoController;
+import ui.GameController;
 
 public class MarioMovement extends Thread {
 	
-	private brositoController controller;
+	private GameController controller;
 	private int keys;
 	private boolean active;
 	
-	public MarioMovement(brositoController controller, int keys ){
+	public MarioMovement(GameController controller, int keys ){
 		this.controller = controller;
 		this.keys = keys;
 		active = true;
 	}
 	@Override
 	public void run() {
-		double layoutY = controller.getMainMario().getY();
 		int counter = 0;
 		
 			while(counter <= 130 && !controller.isTouching()) {
@@ -44,10 +43,10 @@ public class MarioMovement extends Thread {
 					e.printStackTrace();
 				}
 				
-				layoutY = controller.getMainMario().getY();
+			
 				counter +=10;
 			}
-			while(!controller.isTouching()){
+			while(!controller.isTouching() && counter!=0){
 				if(keys == 1) {
 					controller.moveImage(3);
 					controller.moveImage(1);
@@ -65,7 +64,6 @@ public class MarioMovement extends Thread {
 					e.printStackTrace();
 				}
 
-				layoutY = controller.getMainMario().getY();
 				counter -=10;
 			}
 

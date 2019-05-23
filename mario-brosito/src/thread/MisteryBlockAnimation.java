@@ -1,12 +1,12 @@
 package thread;
 
-import ui.brositoController;
+import ui.GameController;
 
 public class MisteryBlockAnimation extends Thread{
 
-	private brositoController brosito;
+	private GameController brosito;
 
-	public MisteryBlockAnimation(brositoController gui) {
+	public MisteryBlockAnimation(GameController gui) {
 		brosito = gui;
 	}
 	@Override

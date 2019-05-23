@@ -28,7 +28,7 @@ public class TransitionController {
 	    @FXML
 	    private ImageView startImg;
 
-	  //  private brositoController bC;
+	  //  private GameController bC;
 
 	    @FXML
 	    public void start(MouseEvent event) throws IOException {
@@ -40,7 +40,7 @@ public class TransitionController {
 	    	transitionPane.getChildren().add(root);
 
 
-			brositoController bC = loader.getController();
+			GameController bC = loader.getController();
 
 	    	bC.setMainScene(scene);
 	    	bC.configureScene();
