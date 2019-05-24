@@ -4,28 +4,28 @@ import ui.GameController;
 
 public class MisteryBlockAnimation extends Thread{
 
-	private GameController brosito;
+	private GameController gameC;
 
 	public MisteryBlockAnimation(GameController gui) {
-		brosito = gui;
+		gameC = gui;
 	}
 	@Override
 	public void run() {
 		int cont=0;
 		while(cont<10000) {
-			brosito.setFill1();
+			gameC.setFill1();
 		try {
 			Thread.sleep(400);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		brosito.setFill2();
+		gameC.setFill2();
 		try {
 			Thread.sleep(400);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		brosito.setFill0();
+		gameC.setFill0();
 		try {
 			Thread.sleep(400);
 		} catch (InterruptedException e) {
@@ -33,7 +33,7 @@ public class MisteryBlockAnimation extends Thread{
 		}
 		
 		}
-		brosito.setFill2();
+		gameC.setFill2();
 		try {
 			Thread.sleep(400);
 		} catch (InterruptedException e) {

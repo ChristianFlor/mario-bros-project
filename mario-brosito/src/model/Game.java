@@ -12,9 +12,38 @@ public class Game {
 	private ImagesLoader images;
 	private SoundsLoader sounds;
 	
+	private Score root;
+	
 	public Game() throws IOException {
 		levelOne = new Level();
 		levelOne.loadLevel(Level.LEVEL_ONE_PATH);
+	}
+	
+
+	public void addScore(String name, int score) {
+		Score s = new Score(name, score);
+		
+		if(root == null) {
+			root = s;
+		} else {
+			addScore(root, s);
+		}
+	}
+				
+	private void addScore(Score current, Score newOne) {
+				if(current.getScore()<newOne.getScore()) {
+					if(current.getRight()==null) {
+					current.setRight(newOne);
+					} else {
+						addScore(current.getRight(), newOne);
+					} 
+				} else if(current.getScore()>newOne.getScore()){
+					if(current.getLeft()==null) {
+						current.setLeft(newOne);
+					} else {
+						addScore(current.getLeft(), newOne);
+					}
+				}
 	}
 	
 	/**
