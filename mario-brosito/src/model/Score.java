@@ -1,6 +1,6 @@
 package model;
 
-public class Score {
+public class Score implements Comparable<Score> {
 	
 	private String name;
 	private int score;
@@ -53,7 +53,16 @@ public class Score {
 	public void setLeft(Score left) {
 		this.left = left;
 	}
-	
+
+	@Override
+	public int compareTo(Score esp) {
+		return this.name.compareTo(esp.name);
+	}
+	public void replaceData(Score esp) {
+		setName(esp.getName());
+		setScore(esp.getScore());
+
+	}
 	
 
 }
