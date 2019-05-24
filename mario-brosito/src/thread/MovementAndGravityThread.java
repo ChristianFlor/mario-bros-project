@@ -27,9 +27,28 @@ public class MovementAndGravityThread extends Thread {
 					
 					try {
 						
-						if(controller.getPressed().isEmpty()) {
+					/*	if(controller.getPressed().isEmpty()) {
 							controller.getMainGame().getLevelOne().getMario().setState(Mario.ISSTANDINGSTILL);
+						}*/
+						
+						while( !controller.isFalling() &&!(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGUP))) {
+								controller.moveImage(3);
+								if(controller.getPressed().contains("D")) {
+									controller.moveImage(1);
+								}else if(controller.getPressed().contains("A")) {
+									controller.moveImage(-1);
+								}
+							try {
+	
+								sleep(40);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+	
+								
+								controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGDOWN);
 						}
+						controller.getMainGame().getLevelOne().getMario().setState(Mario.ISSTANDINGSTILL);
 						if(controller.getPressed().contains("D")) {
 						 	if(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGLEFT)) {
 						 		controller.changeMarioImage(8);
@@ -41,7 +60,9 @@ public class MovementAndGravityThread extends Thread {
 							controller.changeMarioImage(1);
 							sleep(100);
 							controller.changeMarioImage(2);
-							controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGRIGHT);
+							if(!(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGUP) || controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGDOWN))) {
+								controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGRIGHT);
+							};
 							
 						}else if(controller.getPressed().contains("W")) {
 							controller.changeMarioImage(4);
@@ -58,7 +79,10 @@ public class MovementAndGravityThread extends Thread {
 							controller.changeMarioImage(6);
 							sleep(100);
 							controller.changeMarioImage(7);
-							controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGLEFT);
+							if(!(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGUP) || controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGDOWN))) {
+								controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGLEFT);
+							}
+							
 						}
 						
 					} catch (InterruptedException e) {
@@ -69,9 +93,6 @@ public class MovementAndGravityThread extends Thread {
 				
 			}
 		
-	
-
-
 	public void desactive() {
 		active = false;
 	}

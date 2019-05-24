@@ -50,9 +50,7 @@ public abstract class Figure {
 
 	}
 	
-	public boolean isColliding(double x2, double y2, double w2, double h2) {
-		return true;
-	}
+	
 	
 	/**
 	 * <b>Description:</b>

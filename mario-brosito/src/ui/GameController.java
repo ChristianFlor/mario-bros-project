@@ -90,12 +90,10 @@ public class GameController {
 			@Override
 			public void handle(KeyEvent e) {
 				pressed.add(e.getCode().toString());
-			
-					
-					if(e.getCode().equals(KeyCode.D) || pressed.contains("D")) {
+					if(e.getCode().equals(KeyCode.D)) {
 						moveImage(1);
 					}
-					if(e.getCode().equals(KeyCode.A) || pressed.contains("A")) {
+					if(e.getCode().equals(KeyCode.A)) {
 						moveImage(-1);
 					}if(e.getCode().equals(KeyCode.W) && !mainGame.getLevelOne().getMario().getState().equals(Mario.ISMOVINGUP) && !mainGame.getLevelOne().getMario().getState().equals(Mario.ISMOVINGDOWN)){
 						runThread(); 
@@ -118,7 +116,21 @@ public class GameController {
 		});
     }
 		
-    public boolean isTouching() {
+    public String isTouching() {
+    	String intersects = "";
+    	List<Figure> sprites = mainGame.getLevelOne().getFigures();
+    	for (int i = 0; i < sprites.size() && intersects.isEmpty(); i++) {
+			if(sprites.get(i) instanceof Mario)
+				continue;
+			Figure f = sprites.get(i);
+			Figure mario = mainGame.getLevelOne().getMario();
+			intersects = ((Mario) mario).isColliding(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
+			
+		}
+    	return intersects;
+    }
+    
+    public boolean isFalling() {
     	boolean intersects = false;
     	List<Figure> sprites = mainGame.getLevelOne().getFigures();
     	for (int i = 0; i < sprites.size() && !intersects; i++) {
@@ -126,7 +138,8 @@ public class GameController {
 				continue;
 			Figure f = sprites.get(i);
 			Figure mario = mainGame.getLevelOne().getMario();
-			intersects = mario.isColliding(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
+			intersects = ((Mario) mario).isGrounded(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
+			
 		}
     	return intersects;
     }
@@ -134,6 +147,7 @@ public class GameController {
     public void runThread(){
     	JumpingThread mv = new JumpingThread(this);
     	mv.start();
+    	
     }
     
     
@@ -170,17 +184,8 @@ public class GameController {
     public void moveImage(int a) {
 
 		Mario m = (Mario) mainGame.getLevelOne().getMario();
-		if(a==1 && !mainGame.getLevelOne().getMario().getState().equals(Mario.ISMOVINGUP) && !mainGame.getLevelOne().getMario().getState().equals(Mario.ISMOVINGDOWN)) {
-    		//m.setState(Mario.ISMOVINGRIGHT);
-    	}else if(a==-1){
-        	//m.setState(Mario.ISMOVINGLEFT);
-        }else if(a==2){
-        	m.setState(Mario.ISMOVINGUP);
-        }else if(a==3){
-        	m.setState(Mario.ISMOVINGDOWN);
-        }
-    	if(!isTouching()) {
-	    	if(mainMario.getX() >= maxRight && a==1) {
+		String touch = isTouching();
+	    	if(mainMario.getX() >= maxRight && a==1 && !touch.equals(Mario.ISMOVINGRIGHT)) {
 	    		mainMario.setX(mainMario.getX()+10);
 	    		maxRight +=10;
 	    		minLeft += 10;
@@ -189,24 +194,23 @@ public class GameController {
 	    	}
 	    	else if(mainMario.getX() <= minLeft && a==-1) {
 	    	}
-	    	else if(a==1) {
+	    	else if(a==1  && !touch.equals(Mario.ISMOVINGRIGHT)) {
 	    		mainMario.setX(mainMario.getX()+10);
 	    		m.setPosX(mainMario.getX());
-	    	}else if(a==-1){
+	    		//m.setState(Mario.ISMOVINGRIGHT);
+	    	}else if(a==-1 && !touch.equals(Mario.ISMOVINGLEFT)){
 	        	mainMario.setX(mainMario.getX()-10);
 	        	m.setPosX(mainMario.getX());
-	        }else if(a==2){
+	        	//m.setState(Mario.ISMOVINGLEFT);
+	        }else if(a==2 && !touch.equals(Mario.ISMOVINGUP)){
 	        	mainMario.setY(mainMario.getY()-10);
 	        	m.setPosY(mainMario.getY());
-	        }else if(a==3){
+	        }else if(a==3 && !touch.equals(Mario.ISMOVINGDOWN)){
 	        	mainMario.setY(mainMario.getY()+10);
 	        	m.setPosY(mainMario.getY());
 	        }
-    	}else {
-    		mainMario.setX(m.getPosX());
-    		mainMario.setY(m.getPosY());
     	}
-    }
+    
     
     public void changeMarioImage(int key) {
     	Image changed = null;
