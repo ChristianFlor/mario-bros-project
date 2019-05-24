@@ -14,11 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
@@ -30,13 +25,13 @@ import model.MisteryBlock;
 import model.SimpleBlock;
 import model.Slide;
 import model.StaticFigure;
-import thread.MarioMovement;
+import thread.JumpingThread;
 import thread.MisteryBlockAnimation;
+import thread.MovementAndGravityThread;
 
 public class GameController {
 
-	/*@FXML
-    private Canvas canvas;*/
+	
 
 	@FXML
     private Pane mainBackground;
@@ -53,12 +48,14 @@ public class GameController {
 	private List<Rectangle> rectan;
 	private ImagesLoader imlo;
 	
-	private Set<Integer> pressed;
+	private Set<String> pressed;
+	
+	private BufferedImage[] marioPictures;
 	
     @FXML
     public void initialize() {
     
-    	pressed = new HashSet<Integer>();
+    	pressed = new HashSet<String>();
     	try {
 			mainGame = new Game();
 			imlo= new ImagesLoader(32, 32, 1, 3,"src/uiImg/QuestionMark.png");
@@ -72,54 +69,53 @@ public class GameController {
     	maxRight = 685/3;
     	minLeft = 0;
     	
+    	try {
+			ImagesLoader sl = new ImagesLoader(32, 32, 7, 4, mainGame.getLevelOne().getMario().getImage());
+			marioPictures = sl.getSprites();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+    	
+    	MovementAndGravityThread mv = new MovementAndGravityThread(this);
+    	mv.start();
+    	
     }
     
     public void configureScene() {
     	javafx.scene.paint.Color c = javafx.scene.paint.Color.rgb(93, 148, 251);
 		mainScene.setFill(c);
-		
 		mainScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-		
 			@Override
 			public void handle(KeyEvent e) {
-				pressed.add((int) e.getText().charAt(0));
-
-				if(pressed.size() == 1) { //press only 1 key
+				pressed.add(e.getCode().toString());
+			
 					
-					if(pressed.contains(100)) { // d
+					if(e.getCode().equals(KeyCode.D) || pressed.contains("D")) {
 						moveImage(1);
-
 					}
-					else if(pressed.contains(97)) { // a
+					if(e.getCode().equals(KeyCode.A) || pressed.contains("A")) {
 						moveImage(-1);
-					}else if(pressed.contains(119) && !mainGame.getLevelOne().getMario().getState().equals(Mario.ISMOVINGUP) ){
-						marioThread(0);   // w 
-						mainGame.getLevelOne().getMario().setState(Mario.ISMOVINGUP);
+					}if(e.getCode().equals(KeyCode.W) && !mainGame.getLevelOne().getMario().getState().equals(Mario.ISMOVINGUP) && !mainGame.getLevelOne().getMario().getState().equals(Mario.ISMOVINGDOWN)){
+						runThread(); 
 					}
-				}else {   // press more than 1 key
-					
-					 if(pressed.contains(100) && pressed.contains(119) && !mainGame.getLevelOne().getMario().getState().equals(Mario.ISMOVINGUP)) {
-						 marioThread(1);  //d and w
-						 mainGame.getLevelOne().getMario().setState(Mario.ISMOVINGUP);
-					 }else if(pressed.contains(97) && pressed.contains(119) && !mainGame.getLevelOne().getMario().getState().equals(Mario.ISMOVINGUP)) {
-						 marioThread(-1);  //a y w
-						 mainGame.getLevelOne().getMario().setState(Mario.ISMOVINGUP);
-					 }
-				}
+				
 			}
 			});
 		
 		
 		mainScene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-
+			
+			
+			
 			@Override
 			public void handle(KeyEvent ev) {
-				 pressed.remove(((int) ev.getText().charAt(0)));
-
+				 pressed.remove(ev.getCode().toString());
+				
 			}
 
 		});
-}
+    }
 		
     public boolean isTouching() {
     	boolean intersects = false;
@@ -134,12 +130,12 @@ public class GameController {
     	return intersects;
     }
     
-    public void marioThread(int keys){
-    	MarioMovement mv = new MarioMovement(this, keys);
+    public void runThread(){
+    	JumpingThread mv = new JumpingThread(this);
     	mv.start();
-    	
-    	
     }
+    
+    
     public void misteryBlockThread() {
     	MisteryBlockAnimation mba = new MisteryBlockAnimation(this);
 		mba.start();
@@ -171,6 +167,7 @@ public class GameController {
     }
 
     public void moveImage(int a) {
+
 		Mario m = (Mario) mainGame.getLevelOne().getMario();
 		if(a==1) {
     		m.setState(Mario.ISMOVINGRIGHT);
@@ -208,6 +205,40 @@ public class GameController {
     		mainMario.setX(m.getPosX());
     		mainMario.setY(m.getPosY());
     	}
+    }
+    
+    public void changeMarioImage(int key) {
+    	Image changed = null;
+    	if(key ==0 ) {    // normal position
+    		changed = SwingFXUtils.toFXImage(marioPictures[0], null);
+    		mainMario.setFill(new ImagePattern(changed));
+    	}
+    	else if(key==1) {  // right movement
+    		changed = SwingFXUtils.toFXImage(marioPictures[4], null);
+    			mainMario.setFill(new ImagePattern(changed));
+    	}
+    	else if(key==2) {   // right movement2
+    		changed = SwingFXUtils.toFXImage(marioPictures[5], null);
+    		mainMario.setFill(new ImagePattern(changed));
+    	}else if(key==3) {   // rigth movement3
+    		changed = SwingFXUtils.toFXImage(marioPictures[6], null);
+    		mainMario.setFill(new ImagePattern(changed));
+    	}else if(key ==4) {   // rigth movement3
+    		changed = SwingFXUtils.toFXImage(marioPictures[2], null);
+    		mainMario.setFill(new ImagePattern(changed));
+    	}else if(key ==5) {   // left movement1
+    		changed = SwingFXUtils.toFXImage(marioPictures[8], null);
+    		mainMario.setFill(new ImagePattern(changed));
+    	}
+    	else if(key ==6) {   // left movement2
+    		changed = SwingFXUtils.toFXImage(marioPictures[9], null);
+    		mainMario.setFill(new ImagePattern(changed));
+    	}
+    	else if(key ==7) {   // left movement3
+    		changed = SwingFXUtils.toFXImage(marioPictures[10], null);
+    		mainMario.setFill(new ImagePattern(changed));
+    	}
+    	
     }
     
     public void loadWorld() throws IOException {
@@ -265,7 +296,17 @@ public class GameController {
 	public Game getMainGame() {
 		return mainGame;
 	}
+
+	/**
+	 * @return the pressed
+	 */
+	public Set<String> getPressed() {
+		return pressed;
+	}
 	
+	public GameController getController() {
+		return this;
+	}
 	
     
 }
