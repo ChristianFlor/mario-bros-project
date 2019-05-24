@@ -45,9 +45,11 @@ public class Mario extends Figure {
 	}
 	
 	public boolean isColliding(double x2, double y2, double w2, double h2) {
+		
 		boolean collide = false;
 		if((!(this.getPosX() > x2+w2) && !(this.getPosX()+this.getWidth() < x2)) && (!(this.getPosY() > y2+h2) && !(this.getPosY() + this.getHeight() < y2))) {
 			collide = true;
+			System.out.println(state);
 			Point2D p1 = new Point2D(x2, y2);
 			Point2D p2 = new Point2D(x2+w2, y2);
 			Point2D p3 = new Point2D(x2, y2+h2);

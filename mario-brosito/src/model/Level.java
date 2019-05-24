@@ -149,6 +149,13 @@ public class Level {
 					castleFlag.setImage(StaticFigure.CASTLEFLAG);
 					figures.add(castleFlag);
 					
+				}else if(element == 'G') {
+					//castle
+					
+					Figure goomba = new Goomba(counterPosX, counterPosY, 32, 32);
+					goomba.setImage(Goomba.IMAGE);
+					figures.add(goomba);
+					
 				}
 			}
 			counterPosY+= 32;

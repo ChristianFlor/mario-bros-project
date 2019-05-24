@@ -19,6 +19,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import model.Figure;
 import model.Game;
+import model.Goomba;
 import model.ImagesLoader;
 import model.Mario;
 import model.MisteryBlock;
@@ -270,6 +271,12 @@ public class GameController {
 				mainBackground.getChildren().add(rec);
 			}else if(f instanceof Slide) {
 				rec.setFill(new ImagePattern(new Image(f.getImage())));
+				mainBackground.getChildren().add(rec);
+			}else if(f instanceof Goomba){
+				sl = new ImagesLoader(32, 32, 4, 2, f.getImage());
+				BufferedImage[] goombas = sl.getSprites();
+				Image card = SwingFXUtils.toFXImage(goombas[0], null);
+				rec.setFill(new ImagePattern(card));
 				mainBackground.getChildren().add(rec);
 			}
 		}
