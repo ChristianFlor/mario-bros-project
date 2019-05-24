@@ -8,6 +8,8 @@ public class Mario extends Figure {
 
 	public final static String IMAGE = "src/uiImg/player.png";
 	
+	
+	
 	public final static String ISMOVINGRIGHT = "Right";
 	public final static String ISMOVINGLEFT = "Left";
 	public final static String ISMOVINGUP = "Up";
@@ -46,13 +48,12 @@ public class Mario extends Figure {
 		boolean collide = false;
 		if((!(this.getPosX() > x2+w2) && !(this.getPosX()+this.getWidth() < x2)) && (!(this.getPosY() > y2+h2) && !(this.getPosY() + this.getHeight() < y2))) {
 			collide = true;
-			System.out.println(7);
 			Point2D p1 = new Point2D(x2, y2);
 			Point2D p2 = new Point2D(x2+w2, y2);
 			Point2D p3 = new Point2D(x2, y2+h2);
 			Point2D p4 = new Point2D(x2+w2, y2+h2);
 			Rectangle2D marioRec = new Rectangle2D(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
-			System.out.println(state); System.out.println(marioRec.contains(p3)); System.out.println(marioRec.contains(p4));
+		
 			if(state.equals(ISMOVINGRIGHT) && marioRec.contains(p1) && marioRec.contains(p3)) {
 				this.setPosX(this.getPosX());
 			}
