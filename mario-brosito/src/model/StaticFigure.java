@@ -2,8 +2,10 @@ package model;
 
 public class StaticFigure extends Figure {
 
-	public static final String BASE = "uiImg/stone.png";
-	public static final String STAIR = "uiImg/chocolate.png";
+	public static final String BASE1 = "uiImg/stone.png";
+	public static final String BASE2 = "uiImg/stone_UnderGround.png";
+	public static final String STAIR1 = "uiImg/chocolate.png";
+	public static final String STAIR2 = "uiImg/chocolate_UnderGround.png";
 	public static final String FLAGPOLE = "uiImg/Flag.png";
 	public static final String FLAGTOP = "uiImg/FlagTop.png";
 	public static final String FLAGSPHERE = "uiImg/FlagSphere.png";

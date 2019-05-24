@@ -8,8 +8,6 @@ public class Mario extends Figure {
 
 	public final static String IMAGE = "src/uiImg/player.png";
 	
-	
-	
 	public final static String ISMOVINGRIGHT = "Right";
 	public final static String ISMOVINGLEFT = "Left";
 	public final static String ISMOVINGUP = "Up";
@@ -25,8 +23,6 @@ public class Mario extends Figure {
 	private PowerUp powerState;
 	
 	private String state;
-	
-	
 
 	public PowerUp getPowerState() {
 		return powerState;
@@ -49,31 +45,27 @@ public class Mario extends Figure {
 		boolean collide = false;
 		if((!(this.getPosX() > x2+w2) && !(this.getPosX()+this.getWidth() < x2)) && (!(this.getPosY() > y2+h2) && !(this.getPosY() + this.getHeight() < y2))) {
 			collide = true;
-			System.out.println(state);
+			
 			Point2D p1 = new Point2D(x2, y2);
 			Point2D p2 = new Point2D(x2+w2, y2);
 			Point2D p3 = new Point2D(x2, y2+h2);
 			Point2D p4 = new Point2D(x2+w2, y2+h2);
 			Rectangle2D marioRec = new Rectangle2D(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
 		
-			if(state.equals(ISMOVINGRIGHT) && marioRec.contains(p1) && marioRec.contains(p3)) {
+			if(state.equals(ISMOVINGRIGHT) && marioRec.contains(p1) && marioRec.contains(p3)) 
 				this.setPosX(this.getPosX());
-			}
-			else if(state.equals(ISMOVINGLEFT) && marioRec.contains(p2) && marioRec.contains(p4)) 
+			else if(state.equals(ISMOVINGLEFT) && marioRec.contains(p2) && marioRec.contains(p4))
 				this.setPosX(this.getPosX());
 			else if(state.equals(ISMOVINGDOWN) && (marioRec.contains(p1) || marioRec.contains(p2)))
 				this.setPosY(this.getPosY());
-			else if(state.equals(ISMOVINGUP) && (marioRec.contains(p3) || marioRec.contains(p4))) {
+			else if(state.equals(ISMOVINGUP) && (marioRec.contains(p3) || marioRec.contains(p4)))
 				this.setPosY(this.getPosY());
-			
-			}
 			else
 				collide = false;
 		}
 		return collide;
 	}
 
-	
 	public PowerUp nextPowerUp() {
 		PowerUp nextPower;
 		if(powerState == null) {
@@ -84,19 +76,4 @@ public class Mario extends Figure {
 		
 		return nextPower;
 	}
-	
-	
-	/*public boolean isGrounded(double x2, double y2, double w2, double h2){
-		boolean grounded = false;
-		if((!(this.getPosX() > x2+w2) && !(this.getPosX()+this.getWidth() < x2)) && (!(this.getPosY() > y2+h2) && !(this.getPosY() + this.getHeight() < y2))) {
-			Point2D p1 = new Point2D(x2, y2);
-			Point2D p2 = new Point2D(x2+w2, y2);
-			Rectangle2D marioRec = new Rectangle2D(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
-			if((marioRec.contains(p1) || marioRec.contains(p2)) ) {//&& !state.equals(ISMOVINGUP)
-				grounded = true;
-			}
-		
-		}
-		return grounded;
-	}*/
 }
