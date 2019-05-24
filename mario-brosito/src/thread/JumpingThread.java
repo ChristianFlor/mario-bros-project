@@ -53,8 +53,8 @@ public class JumpingThread extends Thread {
 			controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGDOWN);
 		}
 
-	controller.getMainGame().getLevelOne().getMario().setState(Mario.ISSTANDINGSTILL);
-			
+		controller.getMainGame().getLevelOne().getMario().setState(Mario.ISSTANDINGSTILL);
+	
 	}
 	
 	
