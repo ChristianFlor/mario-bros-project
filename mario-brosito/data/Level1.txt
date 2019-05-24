@@ -41,3 +41,6 @@ F : flag
 g : green circle
 C : castle
 M : Mario
+G : Goomba
+K : Koopa
+c : castle flag

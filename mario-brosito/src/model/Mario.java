@@ -8,8 +8,6 @@ public class Mario extends Figure {
 
 	public final static String IMAGE = "src/uiImg/player.png";
 	
-	
-	
 	public final static String ISMOVINGRIGHT = "Right";
 	public final static String ISMOVINGLEFT = "Left";
 	public final static String ISMOVINGUP = "Up";
@@ -28,8 +26,6 @@ public class Mario extends Figure {
 	private PowerUp powerState;
 	
 	private String state;
-	
-	
 
 	public PowerUp getPowerState() {
 		return powerState;
@@ -51,6 +47,7 @@ public class Mario extends Figure {
 		
 		String collide = "";
 		if((!(this.getPosX() > x2+w2) && !(this.getPosX()+this.getWidth() < x2)) && (!(this.getPosY() > y2+h2) && !(this.getPosY() + this.getHeight() < y2))) {
+
 			
 			Point2D p1 = new Point2D(x2, y2);
 			Point2D p2 = new Point2D(x2+w2, y2);
@@ -73,7 +70,7 @@ public class Mario extends Figure {
 			Rectangle2D marioRec = new Rectangle2D(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
 			
 			
-		
+	
 			if(state.equals(ISMOVINGRIGHT) && (marioRec.contains(p3) || marioRec.contains(p4) || marioRec.contains(p5))) {
 				
 				collide = ISMOVINGRIGHT;
@@ -122,6 +119,7 @@ public class Mario extends Figure {
 					collide = ISMOVINGUP;
 				}
 			}*/
+
 		}
 		return collide;
 	}
@@ -146,7 +144,6 @@ public class Mario extends Figure {
 	
 
 
-	
 	public PowerUp nextPowerUp() {
 		PowerUp nextPower;
 		if(powerState == null) {
@@ -157,7 +154,5 @@ public class Mario extends Figure {
 		
 		return nextPower;
 	}
-	
-	
-	
+
 }

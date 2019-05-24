@@ -17,6 +17,8 @@ public class Game {
 	public Game() throws IOException {
 		levelOne = new Level();
 		levelOne.loadLevel(Level.LEVEL_ONE_PATH);
+		levelTwo = new Level();
+		levelTwo.loadLevel(Level.LEVEL_TWO_PATH);
 	}
 	
 

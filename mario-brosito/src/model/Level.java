@@ -79,12 +79,16 @@ public class Level {
 					// Brick block
 					
 					Obstacle brickBlock = new SimpleBlock(counterPosX, counterPosY, 32,32);
-					brickBlock.setImage(SimpleBlock.BRICK);
+					brickBlock.setImage(SimpleBlock.BRICK1);
+					if(path.equals(LEVEL_TWO_PATH))
+						brickBlock.setImage(SimpleBlock.BRICK2);
 					figures.add(brickBlock);
 				}else if(element == 'B') {
 				
 					Figure base = new StaticFigure(counterPosX, counterPosY, 32,32);
-					base.setImage(StaticFigure.BASE);
+					base.setImage(StaticFigure.BASE1);
+					if(path.equals(LEVEL_TWO_PATH))
+						base.setImage(StaticFigure.BASE2);
 					figures.add(base);
 					
 				}else if(element == 'E') {
@@ -110,7 +114,9 @@ public class Level {
 					// stair block
 					
 					Figure stairBlock = new StaticFigure(counterPosX, counterPosY, 32,32);
-					stairBlock.setImage(StaticFigure.STAIR);
+					stairBlock.setImage(StaticFigure.STAIR1);
+					if(path.equals(LEVEL_TWO_PATH))
+						stairBlock.setImage(StaticFigure.STAIR2);
 					figures.add(stairBlock);
 					
 				}else if(element == 'f') {
@@ -150,12 +156,23 @@ public class Level {
 					figures.add(castleFlag);
 					
 				}else if(element == 'G') {
-					//castle
+					//goomba
 					
 					Figure goomba = new Goomba(counterPosX, counterPosY, 32, 32);
 					goomba.setImage(Goomba.IMAGE);
 					figures.add(goomba);
+				}else if(element == 'K') {
+					//castle
 					
+					Figure koopa = new Koopa(counterPosX, counterPosY, 32, 32);
+					koopa.setImage(Koopa.IMAGE);
+					figures.add(koopa);
+				}else if(element == 'm') {
+					//castle
+					
+					Figure coin = new Coin(counterPosX, counterPosY, 32, 32);
+					coin.setImage(Coin.COIN);
+					figures.add(coin);
 				}
 			}
 			counterPosY+= 32;

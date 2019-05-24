@@ -15,12 +15,15 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import model.Coin;
 import model.Figure;
 import model.Game;
 import model.Goomba;
 import model.ImagesLoader;
+import model.Koopa;
 import model.Mario;
 import model.MisteryBlock;
 import model.SimpleBlock;
@@ -61,7 +64,7 @@ public class GameController {
 			mainGame = new Game();
 			imlo= new ImagesLoader(32, 32, 1, 3,"src/uiImg/QuestionMark.png");
 			rectan= new ArrayList<Rectangle>();
-			loadWorld();
+			loadWorld2();
 			misteryBlockThread();
 			
 		} catch (IOException e1) {
@@ -84,8 +87,7 @@ public class GameController {
     }
     
     public void configureScene() {
-    	javafx.scene.paint.Color c = javafx.scene.paint.Color.rgb(93, 148, 251);
-		mainScene.setFill(c);
+
 		mainScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent e) {
@@ -184,8 +186,9 @@ public class GameController {
     public void moveImage(int a) {
 
 		Mario m = (Mario) mainGame.getLevelOne().getMario();
+
 		String touch = isTouching();
-	    	if(mainMario.getX() >= maxRight && a==1 && !touch.equals(Mario.ISMOVINGRIGHT)) {
+			if(mainMario.getX() >= maxRight && a==1 && !touch.equals(Mario.ISMOVINGRIGHT)) {
 	    		mainMario.setX(mainMario.getX()+10);
 	    		maxRight +=10;
 	    		minLeft += 10;
@@ -242,24 +245,19 @@ public class GameController {
     	else if(key ==7) {   // left movement3
     		changed = SwingFXUtils.toFXImage(marioPictures[10], null);
     		mainMario.setFill(new ImagePattern(changed));
-    	}else if(key == 8) {// change to right
-    		changed = SwingFXUtils.toFXImage(marioPictures[7], null);
-    		mainMario.setFill(new ImagePattern(changed));
-    	}else if(key == 9) {// change to right
-    		changed = SwingFXUtils.toFXImage(marioPictures[11], null);
-    		mainMario.setFill(new ImagePattern(changed));
     	}
     	
     }
     
-    public void loadWorld() throws IOException {
+    public void loadWorld1() throws IOException {
     	List<Figure> sprites = mainGame.getLevelOne().getFigures();
     	ImagesLoader sl = null;
+    	javafx.scene.paint.Color c = javafx.scene.paint.Color.rgb(93, 148, 251);
+		mainScene.setFill(c);
     	
     	for (int i = 0; i < sprites.size(); i++) {
 			Figure f = sprites.get(i);
-			Rectangle rec = new Rectangle(f.getWidth(), f.getHeight());
-			rec.setX(f.getPosX()); rec.setY(f.getPosY());
+			Rectangle rec = new Rectangle(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
 			if(f instanceof Mario) {
 				sl = new ImagesLoader(32, 32, 7, 4, f.getImage());
 				BufferedImage[] marios = sl.getSprites();
@@ -281,13 +279,70 @@ public class GameController {
 				rec.setFill(new ImagePattern(new Image(f.getImage())));
 				mainBackground.getChildren().add(rec);
 			}else if(f instanceof Slide) {
-				System.out.println(f.getWidth()); System.out.println(f.getHeight());
 				rec.setFill(new ImagePattern(new Image(f.getImage())));
 				mainBackground.getChildren().add(rec);
 			}else if(f instanceof Goomba){
 				sl = new ImagesLoader(32, 32, 4, 2, f.getImage());
 				BufferedImage[] goombas = sl.getSprites();
 				Image card = SwingFXUtils.toFXImage(goombas[0], null);
+				rec.setFill(new ImagePattern(card));
+				mainBackground.getChildren().add(rec);
+			}else if(f instanceof Koopa){
+				sl = new ImagesLoader(32, 32, 9, 15, f.getImage());
+				BufferedImage[] koopas = sl.getSprites();
+				Image card = SwingFXUtils.toFXImage(koopas[5], null);
+				rec.setFill(new ImagePattern(card));
+				mainBackground.getChildren().add(rec);
+			}
+		}
+    }
+    
+    public void loadWorld2() throws IOException {
+    	List<Figure> sprites = mainGame.getLevelTwo().getFigures();
+    	ImagesLoader sl = null;
+    	
+    	for (int i = 0; i < sprites.size(); i++) {
+			Figure f = sprites.get(i);
+			Rectangle rec = new Rectangle(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
+			if(f instanceof Mario) {
+				sl = new ImagesLoader(32, 32, 7, 4, f.getImage());
+				BufferedImage[] marios = sl.getSprites();
+				Image card = SwingFXUtils.toFXImage(marios[0], null);
+				rec.setFill(new ImagePattern(card));
+				mainBackground.getChildren().add(rec);
+				mainMario = rec;
+			}else if(f instanceof StaticFigure){
+				rec.setFill(new ImagePattern(new Image(f.getImage())));
+				mainBackground.getChildren().add(rec);
+			}else if(f instanceof MisteryBlock) {
+				sl = new ImagesLoader(32, 32, 1, 3, f.getImage());
+				BufferedImage[] blocks = sl.getSprites();
+				Image card = SwingFXUtils.toFXImage(blocks[0], null);
+				rec.setFill(new ImagePattern(card));
+				rectan.add(rec);
+				mainBackground.getChildren().add(rec);
+			}else if(f instanceof SimpleBlock) {
+				rec.setFill(new ImagePattern(new Image(f.getImage())));
+				mainBackground.getChildren().add(rec);
+			}else if(f instanceof Slide) {
+				rec.setFill(new ImagePattern(new Image(f.getImage())));
+				mainBackground.getChildren().add(rec);
+			}else if(f instanceof Goomba){
+				sl = new ImagesLoader(32, 32, 4, 2, f.getImage());
+				BufferedImage[] goombas = sl.getSprites();
+				Image card = SwingFXUtils.toFXImage(goombas[0], null);
+				rec.setFill(new ImagePattern(card));
+				mainBackground.getChildren().add(rec);
+			}else if(f instanceof Koopa){
+				sl = new ImagesLoader(32, 32, 9, 15, f.getImage());
+				BufferedImage[] koopas = sl.getSprites();
+				Image card = SwingFXUtils.toFXImage(koopas[5], null);
+				rec.setFill(new ImagePattern(card));
+				mainBackground.getChildren().add(rec);
+			}else if(f instanceof Coin){
+				sl = new ImagesLoader(32, 32, 1, 3, f.getImage());
+				BufferedImage[] coins = sl.getSprites();
+				Image card = SwingFXUtils.toFXImage(coins[0], null);
 				rec.setFill(new ImagePattern(card));
 				mainBackground.getChildren().add(rec);
 			}
