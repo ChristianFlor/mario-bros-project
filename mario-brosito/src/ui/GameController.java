@@ -169,10 +169,10 @@ public class GameController {
     public void moveImage(int a) {
 
 		Mario m = (Mario) mainGame.getLevelOne().getMario();
-		if(a==1) {
-    		m.setState(Mario.ISMOVINGRIGHT);
+		if(a==1 && !mainGame.getLevelOne().getMario().getState().equals(Mario.ISMOVINGUP) && !mainGame.getLevelOne().getMario().getState().equals(Mario.ISMOVINGDOWN)) {
+    		//m.setState(Mario.ISMOVINGRIGHT);
     	}else if(a==-1){
-        	m.setState(Mario.ISMOVINGLEFT);
+        	//m.setState(Mario.ISMOVINGLEFT);
         }else if(a==2){
         	m.setState(Mario.ISMOVINGUP);
         }else if(a==3){
@@ -237,6 +237,12 @@ public class GameController {
     	else if(key ==7) {   // left movement3
     		changed = SwingFXUtils.toFXImage(marioPictures[10], null);
     		mainMario.setFill(new ImagePattern(changed));
+    	}else if(key == 8) {// change to right
+    		changed = SwingFXUtils.toFXImage(marioPictures[7], null);
+    		mainMario.setFill(new ImagePattern(changed));
+    	}else if(key == 9) {// change to right
+    		changed = SwingFXUtils.toFXImage(marioPictures[11], null);
+    		mainMario.setFill(new ImagePattern(changed));
     	}
     	
     }
@@ -247,7 +253,8 @@ public class GameController {
     	
     	for (int i = 0; i < sprites.size(); i++) {
 			Figure f = sprites.get(i);
-			Rectangle rec = new Rectangle(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
+			Rectangle rec = new Rectangle(f.getWidth(), f.getHeight());
+			rec.setX(f.getPosX()); rec.setY(f.getPosY());
 			if(f instanceof Mario) {
 				sl = new ImagesLoader(32, 32, 7, 4, f.getImage());
 				BufferedImage[] marios = sl.getSprites();
@@ -269,6 +276,7 @@ public class GameController {
 				rec.setFill(new ImagePattern(new Image(f.getImage())));
 				mainBackground.getChildren().add(rec);
 			}else if(f instanceof Slide) {
+				System.out.println(f.getWidth()); System.out.println(f.getHeight());
 				rec.setFill(new ImagePattern(new Image(f.getImage())));
 				mainBackground.getChildren().add(rec);
 			}

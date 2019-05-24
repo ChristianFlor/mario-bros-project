@@ -57,7 +57,7 @@ public class Mario extends Figure {
 			if(state.equals(ISMOVINGRIGHT) && marioRec.contains(p1) && marioRec.contains(p3)) {
 				this.setPosX(this.getPosX());
 			}
-			else if(state.equals(ISMOVINGLEFT) && marioRec.contains(p2) && marioRec.contains(p4))
+			else if(state.equals(ISMOVINGLEFT) && marioRec.contains(p2) && marioRec.contains(p4)) 
 				this.setPosX(this.getPosX());
 			else if(state.equals(ISMOVINGDOWN) && (marioRec.contains(p1) || marioRec.contains(p2)))
 				this.setPosY(this.getPosY());
@@ -82,4 +82,19 @@ public class Mario extends Figure {
 		
 		return nextPower;
 	}
+	
+	
+	/*public boolean isGrounded(double x2, double y2, double w2, double h2){
+		boolean grounded = false;
+		if((!(this.getPosX() > x2+w2) && !(this.getPosX()+this.getWidth() < x2)) && (!(this.getPosY() > y2+h2) && !(this.getPosY() + this.getHeight() < y2))) {
+			Point2D p1 = new Point2D(x2, y2);
+			Point2D p2 = new Point2D(x2+w2, y2);
+			Rectangle2D marioRec = new Rectangle2D(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
+			if((marioRec.contains(p1) || marioRec.contains(p2)) ) {//&& !state.equals(ISMOVINGUP)
+				grounded = true;
+			}
+		
+		}
+		return grounded;
+	}*/
 }

@@ -15,19 +15,19 @@ public class MisteryBlockAnimation extends Thread{
 		while(cont<10000) {
 			gameC.setFill1();
 		try {
-			Thread.sleep(400);
+			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		gameC.setFill2();
 		try {
-			Thread.sleep(400);
+			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		gameC.setFill0();
 		try {
-			Thread.sleep(400);
+			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -35,7 +35,7 @@ public class MisteryBlockAnimation extends Thread{
 		}
 		gameC.setFill2();
 		try {
-			Thread.sleep(400);
+			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
