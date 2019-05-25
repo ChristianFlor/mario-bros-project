@@ -107,7 +107,7 @@
                                                 <TextField fx:id="idName" prefHeight="37.0" prefWidth="178.0" promptText="Enter your name" style="-fx-text-fill: black;" />
                                                 <ImageView fitHeight="33.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
-                                                      <Image url="@../../../volleyball-championship/src/uiImg/icons/busqueda.png" />
+                                                      <Image url="@../uiImg/busqueda.png" />
                                                    </image>
                                                 </ImageView>
                                                 <Button mnemonicParsing="false" onAction="#searchName" prefHeight="39.0" prefWidth="92.0" text="Search" textFill="WHITE" />
@@ -122,7 +122,7 @@
                                                 <TextField fx:id="idNick" prefHeight="37.0" prefWidth="172.0" promptText="Enter yout nick name" style="-fx-text-fill: black;" />
                                                 <ImageView fitHeight="35.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
-                                                      <Image url="@../../../volleyball-championship/src/uiImg/icons/busqueda%20(1).png" />
+                                                      <Image url="@../uiImg/busqueda.png" />
                                                    </image>
                                                 </ImageView>
                                                 <Button mnemonicParsing="false" onAction="#searchNick" prefHeight="39.0" prefWidth="85.0" text="Search" textFill="WHITE" />
@@ -144,7 +144,7 @@
                                           </Label>
                                           <ImageView fx:id="foundScoreImg" fitHeight="140.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../../../volleyball-championship/src/uiImg/icons/Iconos-clientes-03.png" />
+                                                <Image url="@../uiImg/mario_dubs.png" />
                                              </image>
                                           </ImageView>
                                           <GridPane alignment="CENTER_RIGHT" prefHeight="84.0" prefWidth="357.0">
