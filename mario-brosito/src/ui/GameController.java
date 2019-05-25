@@ -29,6 +29,7 @@ import model.MisteryBlock;
 import model.SimpleBlock;
 import model.Slide;
 import model.StaticFigure;
+import thread.CoinAnimation;
 import thread.JumpingThread;
 import thread.LevelTimeThread;
 import thread.MisteryBlockAnimation;
@@ -49,8 +50,9 @@ public class GameController {
 	
 	private Scene mainScene;
 	private List<Rectangle> rectan;
-	private ImagesLoader imlo;
-	
+	private List<Rectangle> rectanCoin;
+	private ImagesLoader imloMark;
+	private ImagesLoader imloCoin;
 	private Set<String> pressed;
 	
 	private BufferedImage[] marioPictures;
@@ -85,12 +87,14 @@ public class GameController {
     	pressed = new HashSet<String>();
     	try {
 			mainGame = new Game();
-			imlo= new ImagesLoader(32, 32, 1, 3,"src/uiImg/QuestionMark.png");
+			imloMark= new ImagesLoader(32, 32, 1, 3,"src/uiImg/QuestionMark.png");
+			imloCoin =new ImagesLoader(32, 32, 1, 3,"src/uiImg/Coin.png");
 			rectan= new ArrayList<Rectangle>();
+			rectanCoin= new ArrayList<Rectangle>();
 			loadWorld2();
 			misteryBlockThread();
 			timeThread();
-			
+			coinThread();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -186,25 +190,67 @@ public class GameController {
     	MisteryBlockAnimation mba = new MisteryBlockAnimation(this);
 		mba.start();
     }
+    public void coinThread() {
+    	CoinAnimation ca = new CoinAnimation(this);
+    	ca.start();
+    }
     public void setFill0() {
-    	BufferedImage[] blocks = imlo.getSprites();
+    	BufferedImage[] blocks = imloMark.getSprites();
+    	
 		Image card = SwingFXUtils.toFXImage(blocks[0], null);
+		
 		for (int i = 0; i < rectan.size(); i++) {
 			rectan.get(i).setFill(new ImagePattern(card));
+			
+		}	
+    }
+    public void setFillCoin0() {
+    	
+    	BufferedImage[] blocks1 = imloCoin.getSprites();
+		
+		Image card1 = SwingFXUtils.toFXImage(blocks1[0], null);
+		for (int i = 0; i < rectanCoin.size(); i++) {
+			
+			rectanCoin.get(i).setFill(new ImagePattern(card1));
 		}	
     }
     public void setFill1() {
-    	BufferedImage[] blocks = imlo.getSprites();
+    	BufferedImage[] blocks = imloMark.getSprites();
+    	
 		Image card = SwingFXUtils.toFXImage(blocks[1], null);
+		
 		for (int i = 0; i < rectan.size(); i++) {
 			rectan.get(i).setFill(new ImagePattern(card));
 		}	
     }
+    public void setFillCoin1() {
+    	
+    	BufferedImage[] blocks1 = imloCoin.getSprites();
+		
+		Image card1 = SwingFXUtils.toFXImage(blocks1[1], null);
+		for (int i = 0; i < rectanCoin.size(); i++) {
+			
+			rectanCoin.get(i).setFill(new ImagePattern(card1));
+		}	
+    }
     public void setFill2() {
-    	BufferedImage[] blocks = imlo.getSprites();
+    	BufferedImage[] blocks = imloMark.getSprites();
+    	
 		Image card = SwingFXUtils.toFXImage(blocks[2], null);
+		
 		for (int i = 0; i < rectan.size(); i++) {
 			rectan.get(i).setFill(new ImagePattern(card));
+		
+		}
+    }
+    public void setFillCoin2() {
+
+    	BufferedImage[] blocks1 = imloCoin.getSprites();
+		
+		Image card1 = SwingFXUtils.toFXImage(blocks1[2], null);
+		for (int i = 0; i < rectanCoin.size(); i++) {
+		
+			rectanCoin.get(i).setFill(new ImagePattern(card1));
 		}
     }
 
@@ -386,7 +432,9 @@ public class GameController {
 				BufferedImage[] coins = sl.getSprites();
 				Image card = SwingFXUtils.toFXImage(coins[0], null);
 				rec.setFill(new ImagePattern(card));
+				rectanCoin.add(rec);
 				mainBackground.getChildren().add(rec);
+				
 			}
 		}
     }
