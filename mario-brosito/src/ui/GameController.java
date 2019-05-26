@@ -56,15 +56,18 @@ public class GameController {
 	
 	private BufferedImage[] marioPictures;
 	
+	private JumpingThread jumping;
     @FXML
     public void initialize() {
-    
+    	
+    	jumping = new JumpingThread(this);
     	pressed = new HashSet<String>();
     	try {
 			mainGame = new Game();
 			imlo= new ImagesLoader(32, 32, 1, 3,"src/uiImg/QuestionMark.png");
 			rectan= new ArrayList<Rectangle>();
-			loadWorld2();
+		//	loadWorld2();
+			loadWorld1();
 			misteryBlockThread();
 			
 		} catch (IOException e1) {
@@ -94,11 +97,14 @@ public class GameController {
 				pressed.add(e.getCode().toString());
 					if(e.getCode().equals(KeyCode.D)) {
 						moveImage(1);
+						
 					}
 					if(e.getCode().equals(KeyCode.A)) {
 						moveImage(-1);
-					}if(e.getCode().equals(KeyCode.W) && !mainGame.getLevelOne().getMario().getState().equals(Mario.ISMOVINGUP) && !mainGame.getLevelOne().getMario().getState().equals(Mario.ISMOVINGDOWN)){
+					
+					}if(e.getCode().equals(KeyCode.W) && !jumping.isAlive() ){
 						runThread(); 
+					
 					}
 				
 			}
@@ -147,13 +153,14 @@ public class GameController {
     }
     
     public void runThread(){
-    	JumpingThread mv = new JumpingThread(this);
-    	mv.start();
+    	jumping = new JumpingThread(this);
+    	jumping.start();
     	
     }
     
     
-    public void misteryBlockThread() {
+   
+	public void misteryBlockThread() {
     	MisteryBlockAnimation mba = new MisteryBlockAnimation(this);
 		mba.start();
     }
@@ -188,7 +195,8 @@ public class GameController {
 		Mario m = (Mario) mainGame.getLevelOne().getMario();
 
 		String touch = isTouching();
-			if(mainMario.getX() >= maxRight && a==1 && !touch.equals(Mario.ISMOVINGRIGHT)) {
+	
+			if(mainMario.getX() >= maxRight && a==1 && !touch.equals(Mario.ISMOVINGRIGHT) ) {
 	    		mainMario.setX(mainMario.getX()+10);
 	    		maxRight +=10;
 	    		minLeft += 10;
@@ -214,6 +222,11 @@ public class GameController {
 	        }
     	}
     
+    
+    /*public void jumpCollisionHandling(char direction) {
+    	String touch = isTouching();
+    	if(touch.)
+    }*/
     
     public void changeMarioImage(int key) {
     	Image changed = null;
@@ -252,8 +265,6 @@ public class GameController {
     public void loadWorld1() throws IOException {
     	List<Figure> sprites = mainGame.getLevelOne().getFigures();
     	ImagesLoader sl = null;
-    	javafx.scene.paint.Color c = javafx.scene.paint.Color.rgb(93, 148, 251);
-		mainScene.setFill(c);
     	
     	for (int i = 0; i < sprites.size(); i++) {
 			Figure f = sprites.get(i);
@@ -287,13 +298,13 @@ public class GameController {
 				Image card = SwingFXUtils.toFXImage(goombas[0], null);
 				rec.setFill(new ImagePattern(card));
 				mainBackground.getChildren().add(rec);
-			}else if(f instanceof Koopa){
+			}/*else if(f instanceof Koopa){
 				sl = new ImagesLoader(32, 32, 9, 15, f.getImage());
 				BufferedImage[] koopas = sl.getSprites();
 				Image card = SwingFXUtils.toFXImage(koopas[5], null);
 				rec.setFill(new ImagePattern(card));
 				mainBackground.getChildren().add(rec);
-			}
+			}*/
 		}
     }
     
@@ -382,5 +393,11 @@ public class GameController {
 		return this;
 	}
 	
-    
+	 /**
+		 * @return the jumping
+		 */
+		public JumpingThread getJumping() {
+			return jumping;
+		}
+
 }

@@ -16,31 +16,44 @@ public class JumpingThread extends Thread {
 	public void run() {
 		
 		int counter = 0;
+		
 		while(counter <= 130 && !controller.isTouching().equals(Mario.ISMOVINGUP)) {
 			controller.moveImage(2);
 			
 			if(controller.getPressed().contains("D")) {
 				controller.moveImage(1);
+				controller.getMainGame().getLevelOne().getMario().setState(Mario.ISDIAGONALRIGHT);
+				
 			}else if(controller.getPressed().contains("A")) {
 				controller.moveImage(-1);
+				controller.getMainGame().getLevelOne().getMario().setState(Mario.ISDIAGONALLEFT);
+			}else {
+				controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGUP);
 			}
 			try {
-
-				sleep(40);
+				
+				if(counter != 130)
+					sleep(40);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 				counter +=10;
-				controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGUP);
+				
 		}
-		controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGDOWN);
 		
 		while(!controller.isTouching().equals(Mario.ISMOVINGDOWN) && counter!=0){
 			controller.moveImage(3);
 			if(controller.getPressed().contains("D")) {
 				controller.moveImage(1);
+				controller.getMainGame().getLevelOne().getMario().setState(Mario.ISDIAGONALRIGHT);
+				
 			}else if(controller.getPressed().contains("A")) {
 				controller.moveImage(-1);
+				controller.getMainGame().getLevelOne().getMario().setState(Mario.ISDIAGONALLEFT);
+				
+			}else {
+				controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGDOWN);
+				
 			}
 		try {
 
@@ -50,7 +63,7 @@ public class JumpingThread extends Thread {
 		}
 
 			counter -=10;
-			controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGDOWN);
+			//controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGDOWN);
 		}
 
 		controller.getMainGame().getLevelOne().getMario().setState(Mario.ISSTANDINGSTILL);
