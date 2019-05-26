@@ -29,6 +29,7 @@ import model.MisteryBlock;
 import model.SimpleBlock;
 import model.Slide;
 import model.StaticFigure;
+import thread.CoinAnimation;
 import thread.JumpingThread;
 import thread.LevelTimeThread;
 import thread.MisteryBlockAnimation;
@@ -49,8 +50,9 @@ public class GameController {
 	
 	private Scene mainScene;
 	private List<Rectangle> rectan;
-	private ImagesLoader imlo;
-	
+	private List<Rectangle> rectanCoin;
+	private ImagesLoader imloMark;
+	private ImagesLoader imloCoin;
 	private Set<String> pressed;
 	
 	private BufferedImage[] marioPictures;
@@ -79,18 +81,26 @@ public class GameController {
     @FXML
     private Label timeOfLevel;
 	
+	private JumpingThread jumping;
     @FXML
     public void initialize() {
-    
+    	
+    	jumping = new JumpingThread(this);
     	pressed = new HashSet<String>();
     	try {
 			mainGame = new Game();
-			imlo= new ImagesLoader(32, 32, 1, 3,"src/uiImg/QuestionMark.png");
+			imloMark= new ImagesLoader(32, 32, 1, 3,"src/uiImg/QuestionMark.png");
+			imloCoin =new ImagesLoader(32, 32, 1, 3,"src/uiImg/Coin.png");
 			rectan= new ArrayList<Rectangle>();
+
+			loadWorld1();
+
+			rectanCoin= new ArrayList<Rectangle>();
 			loadWorld2();
+
 			misteryBlockThread();
 			timeThread();
-			
+			coinThread();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -118,11 +128,14 @@ public class GameController {
 				pressed.add(e.getCode().toString());
 					if(e.getCode().equals(KeyCode.D)) {
 						moveImage(1);
+						
 					}
 					if(e.getCode().equals(KeyCode.A)) {
 						moveImage(-1);
-					}if(e.getCode().equals(KeyCode.W) && !mainGame.getLevelOne().getMario().getState().equals(Mario.ISMOVINGUP) && !mainGame.getLevelOne().getMario().getState().equals(Mario.ISMOVINGDOWN)){
+					
+					}if(e.getCode().equals(KeyCode.W) && !jumping.isAlive() ){
 						runThread(); 
+					
 					}
 				
 			}
@@ -176,35 +189,78 @@ public class GameController {
     }
     
     public void runThread(){
-    	JumpingThread mv = new JumpingThread(this);
-    	mv.start();
+    	jumping = new JumpingThread(this);
+    	jumping.start();
     	
     }
     
     
-    public void misteryBlockThread() {
+   
+	public void misteryBlockThread() {
     	MisteryBlockAnimation mba = new MisteryBlockAnimation(this);
 		mba.start();
     }
+    public void coinThread() {
+    	CoinAnimation ca = new CoinAnimation(this);
+    	ca.start();
+    }
     public void setFill0() {
-    	BufferedImage[] blocks = imlo.getSprites();
+    	BufferedImage[] blocks = imloMark.getSprites();
+    	
 		Image card = SwingFXUtils.toFXImage(blocks[0], null);
+		
 		for (int i = 0; i < rectan.size(); i++) {
 			rectan.get(i).setFill(new ImagePattern(card));
+			
+		}	
+    }
+    public void setFillCoin0() {
+    	
+    	BufferedImage[] blocks1 = imloCoin.getSprites();
+		
+		Image card1 = SwingFXUtils.toFXImage(blocks1[0], null);
+		for (int i = 0; i < rectanCoin.size(); i++) {
+			
+			rectanCoin.get(i).setFill(new ImagePattern(card1));
 		}	
     }
     public void setFill1() {
-    	BufferedImage[] blocks = imlo.getSprites();
+    	BufferedImage[] blocks = imloMark.getSprites();
+    	
 		Image card = SwingFXUtils.toFXImage(blocks[1], null);
+		
 		for (int i = 0; i < rectan.size(); i++) {
 			rectan.get(i).setFill(new ImagePattern(card));
 		}	
     }
+    public void setFillCoin1() {
+    	
+    	BufferedImage[] blocks1 = imloCoin.getSprites();
+		
+		Image card1 = SwingFXUtils.toFXImage(blocks1[1], null);
+		for (int i = 0; i < rectanCoin.size(); i++) {
+			
+			rectanCoin.get(i).setFill(new ImagePattern(card1));
+		}	
+    }
     public void setFill2() {
-    	BufferedImage[] blocks = imlo.getSprites();
+    	BufferedImage[] blocks = imloMark.getSprites();
+    	
 		Image card = SwingFXUtils.toFXImage(blocks[2], null);
+		
 		for (int i = 0; i < rectan.size(); i++) {
 			rectan.get(i).setFill(new ImagePattern(card));
+		
+		}
+    }
+    public void setFillCoin2() {
+
+    	BufferedImage[] blocks1 = imloCoin.getSprites();
+		
+		Image card1 = SwingFXUtils.toFXImage(blocks1[2], null);
+		for (int i = 0; i < rectanCoin.size(); i++) {
+		
+			rectanCoin.get(i).setFill(new ImagePattern(card1));
 		}
     }
 
@@ -221,7 +277,8 @@ public class GameController {
 		Mario m = (Mario) mainGame.getLevelOne().getMario();
 
 		String touch = isTouching();
-			if(mainMario.getX() >= maxRight && a==1 && !touch.equals(Mario.ISMOVINGRIGHT)) {
+	
+			if(mainMario.getX() >= maxRight && a==1 && !touch.equals(Mario.ISMOVINGRIGHT) ) {
 	    		mainMario.setX(mainMario.getX()+10);
 	    		maxRight +=10;
 	    		minLeft += 10;
@@ -256,6 +313,11 @@ public class GameController {
 	        }
     	}
     
+    
+    /*public void jumpCollisionHandling(char direction) {
+    	String touch = isTouching();
+    	if(touch.)
+    }*/
     
     public void changeMarioImage(int key) {
     	Image changed = null;
@@ -294,8 +356,6 @@ public class GameController {
     public void loadWorld1() throws IOException {
     	List<Figure> sprites = mainGame.getLevelOne().getFigures();
     	ImagesLoader sl = null;
-    	javafx.scene.paint.Color c = javafx.scene.paint.Color.rgb(93, 148, 251);
-		mainScene.setFill(c);
     	
     	for (int i = 0; i < sprites.size(); i++) {
 			Figure f = sprites.get(i);
@@ -329,13 +389,13 @@ public class GameController {
 				Image card = SwingFXUtils.toFXImage(goombas[0], null);
 				rec.setFill(new ImagePattern(card));
 				mainBackground.getChildren().add(rec);
-			}else if(f instanceof Koopa){
+			}/*else if(f instanceof Koopa){
 				sl = new ImagesLoader(32, 32, 9, 15, f.getImage());
 				BufferedImage[] koopas = sl.getSprites();
 				Image card = SwingFXUtils.toFXImage(koopas[5], null);
 				rec.setFill(new ImagePattern(card));
 				mainBackground.getChildren().add(rec);
-			}
+			}*/
 		}
     }
     
@@ -386,7 +446,9 @@ public class GameController {
 				BufferedImage[] coins = sl.getSprites();
 				Image card = SwingFXUtils.toFXImage(coins[0], null);
 				rec.setFill(new ImagePattern(card));
+				rectanCoin.add(rec);
 				mainBackground.getChildren().add(rec);
+				
 			}
 		}
     }
@@ -424,5 +486,11 @@ public class GameController {
 		return this;
 	}
 	
-    
+	 /**
+		 * @return the jumping
+		 */
+		public JumpingThread getJumping() {
+			return jumping;
+		}
+
 }

@@ -31,7 +31,8 @@ public class MovementAndGravityThread extends Thread {
 							controller.getMainGame().getLevelOne().getMario().setState(Mario.ISSTANDINGSTILL);
 						}*/
 						
-						while( !controller.isFalling() &&!(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGUP))) {
+						boolean enter = false;
+						while( !controller.isFalling() &&!(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGUP)) && !controller.getJumping().isAlive()) {
 								controller.moveImage(3);
 								if(controller.getPressed().contains("D")) {
 									controller.moveImage(1);
@@ -47,41 +48,45 @@ public class MovementAndGravityThread extends Thread {
 	
 								
 								controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGDOWN);
+								enter = true;
 						}
-						controller.getMainGame().getLevelOne().getMario().setState(Mario.ISSTANDINGSTILL);
-						if(controller.getPressed().contains("D")) {
+						if(enter)
+							controller.getMainGame().getLevelOne().getMario().setState(Mario.ISSTANDINGSTILL);
+						
+						if(controller.getPressed().contains("D") && !controller.getJumping().isAlive()) {
+							
 						 	if(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGLEFT)) {
 						 		controller.changeMarioImage(8);
 						 		sleep(350);
-						 		controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGRIGHT);
+						 		
 						 	}
 							controller.changeMarioImage(3);
 							sleep(100);
 							controller.changeMarioImage(1);
 							sleep(100);
 							controller.changeMarioImage(2);
-							if(!(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGUP) || controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGDOWN))) {
-								controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGRIGHT);
-							};
+							controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGRIGHT);
+							
 							
 						}else if(controller.getPressed().contains("W")) {
 							controller.changeMarioImage(4);
 							sleep(1100);
 							controller.changeMarioImage(0);
-						}else if(controller.getPressed().contains("A")) {
+						}else if(controller.getPressed().contains("A") && !controller.getJumping().isAlive() ) {
+							
 							if(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGRIGHT)) {
 						 		controller.changeMarioImage(9);
 						 		sleep(350);
-						 		controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGLEFT);
+						 		//controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGLEFT);
 						 	}
 							controller.changeMarioImage(5);
 							sleep(100);
 							controller.changeMarioImage(6);
 							sleep(100);
 							controller.changeMarioImage(7);
-							if(!(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGUP) || controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGDOWN))) {
+						
 								controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGLEFT);
-							}
+							
 							
 						}
 						
