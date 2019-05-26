@@ -32,12 +32,18 @@ public class MovementAndGravityThread extends Thread {
 						}*/
 						
 						boolean enter = false;
-						while( !controller.isFalling() &&!(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGUP)) && !controller.getJumping().isAlive()) {
+						while( controller.isFalling().isEmpty() && !controller.getJumping().isAlive()) {
 								controller.moveImage(3);
 								if(controller.getPressed().contains("D")) {
 									controller.moveImage(1);
+
+									controller.getMainGame().getLevelOne().getMario().setState(Mario.ISDIAGONALRIGHT);
 								}else if(controller.getPressed().contains("A")) {
 									controller.moveImage(-1);
+
+									controller.getMainGame().getLevelOne().getMario().setState(Mario.ISDIAGONALLEFT);
+								}else {
+									controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGDOWN);
 								}
 							try {
 	
@@ -47,7 +53,7 @@ public class MovementAndGravityThread extends Thread {
 							}
 	
 								
-								controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGDOWN);
+								
 								enter = true;
 						}
 						if(enter)

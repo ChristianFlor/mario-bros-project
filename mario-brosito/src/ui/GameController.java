@@ -96,7 +96,7 @@ public class GameController {
 			loadWorld1();
 
 			rectanCoin= new ArrayList<Rectangle>();
-			loadWorld2();
+			//loadWorld2();
 
 			misteryBlockThread();
 			timeThread();
@@ -161,6 +161,7 @@ public class GameController {
     }
     
     public String isTouching() {
+
     	String intersects = "";
     	List<Figure> sprites = mainGame.getLevelOne().getFigures();
     	for (int i = 0; i < sprites.size() && intersects.isEmpty(); i++) {
@@ -174,17 +175,23 @@ public class GameController {
     	return intersects;
     }
     
-    public boolean isFalling() {
-    	boolean intersects = false;
+    public String isFalling() {
+    	String intersects = "";
+    	Figure f = null;
     	List<Figure> sprites = mainGame.getLevelOne().getFigures();
-    	for (int i = 0; i < sprites.size() && !intersects; i++) {
-			if(sprites.get(i) instanceof Mario)
+    	for (int i = 0; i < sprites.size() && intersects.isEmpty(); i++) {
+    		
+			if(sprites.get(i) instanceof Mario )
 				continue;
-			Figure f = sprites.get(i);
-			Figure mario = mainGame.getLevelOne().getMario();
-			intersects = ((Mario) mario).isGrounded(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
+			f = sprites.get(i);
+			
+				Figure mario = mainGame.getLevelOne().getMario();
+				intersects = ((Mario) mario).isGrounded(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
+			
+			
 			
 		}
+    	
     	return intersects;
     }
     
@@ -277,7 +284,7 @@ public class GameController {
 		Mario m = (Mario) mainGame.getLevelOne().getMario();
 
 		String touch = isTouching();
-	
+		System.out.println(touch);
 			if(mainMario.getX() >= maxRight && a==1 && !touch.equals(Mario.ISMOVINGRIGHT) ) {
 	    		mainMario.setX(mainMario.getX()+10);
 	    		maxRight +=10;
@@ -294,21 +301,21 @@ public class GameController {
 	    		timeOfLevel.setTranslateX(timeOfLevel.getTranslateX()+10);
 	    		m.setPosX(mainMario.getX());
 	    	}
-	    	else if(mainMario.getX() <= minLeft && a==-1) {
-	    	}
-	    	else if(a==1  && !touch.equals(Mario.ISMOVINGRIGHT)) {
-	    		mainMario.setX(mainMario.getX()+10);
+	    	/*else if(mainMario.getX() <= minLeft && a==-1) {
+	    	}*/
+	    	else if(a==1  && (!touch.equals(Mario.ISMOVINGRIGHT))) {
+	    		mainMario.setX(mainMario.getX()+8);
 	    		m.setPosX(mainMario.getX());
 	    		//m.setState(Mario.ISMOVINGRIGHT);
-	    	}else if(a==-1 && !touch.equals(Mario.ISMOVINGLEFT)){
-	        	mainMario.setX(mainMario.getX()-10);
+	    	}else if(a==-1 && (!touch.equals(Mario.ISMOVINGLEFT))){
+	        	mainMario.setX(mainMario.getX()-8);
 	        	m.setPosX(mainMario.getX());
 	        	//m.setState(Mario.ISMOVINGLEFT);
 	        }else if(a==2 && !touch.equals(Mario.ISMOVINGUP)){
-	        	mainMario.setY(mainMario.getY()-10);
+	        	mainMario.setY(mainMario.getY()-8);
 	        	m.setPosY(mainMario.getY());
 	        }else if(a==3 && !touch.equals(Mario.ISMOVINGDOWN)){
-	        	mainMario.setY(mainMario.getY()+10);
+	        	mainMario.setY(mainMario.getY()+8);
 	        	m.setPosY(mainMario.getY());
 	        }
     	}

@@ -49,7 +49,46 @@ public class Mario extends Figure {
 	public String isColliding(double x2, double y2, double w2, double h2) {
 		
 		String collide = "";
-		if((!(this.getPosX() > x2+w2) && !(this.getPosX()+this.getWidth() < x2)) && (!(this.getPosY() > y2+h2) && !(this.getPosY() + this.getHeight() < y2))) {
+		
+		Rectangle2D marioRec = new Rectangle2D(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
+		
+		
+		boolean intersect = marioRec.intersects(new Rectangle2D(x2, y2, w2, h2));
+		
+		if(intersect) {
+			//System.out.println(this.getPosX() + " " + x2);
+			//System.out.println((this.getPosX()+32) + " " + x2+ " " +w2);
+			//System.out.println(7); //this.getPosY()+this.getHeight() <=y2+5 &&((this.getPosX()>=x2 && this.getPosX()<=x2+w2) || (this.getPosX()<x2 && this.getPosX()+this.getWidth()>x2) ||  (this.getPosX()+this.getWidth()>x2+w2 && this.getPosX()<x2+w2)
+			String ground = isGrounded(x2,y2,w2,y2);
+			//double x = ((this.getPosX()+this.getWidth()/2) - (x2+w2/w2))*((this.getPosX()+this.getWidth()/2) - (x2+w2/w2));
+			//double y = ((this.getPosY()+this.getHeight()) - (y2+h2))*((this.getPosY()+this.getHeight()) - (y2+h2)) ;
+		//	double distance = Math.sqrt(x+y);
+			//System.out.println(y2+h2);
+			System.out.println(this.getPosY()+this.getHeight() + " " + (y2+h2) );
+			 if(ground.equals("intersect"))
+		 	{
+				collide = ISMOVINGDOWN;
+			}
+			 
+			 else if( this.getPosX()<=x2 && this.getPosY()+this.getHeight() > y2 && this.getPosY()+this.getHeight()<=y2+h2 && (!state.equals(ISMOVINGDOWN))) {
+			
+				collide = ISMOVINGRIGHT;
+				System.out.println(9);
+				
+			}
+			else if(this.getPosX() >= x2 && this.getPosY()+this.getHeight() >= y2 && this.getPosY()+this.getHeight()<=y2+h2  && (!state.equals(ISMOVINGDOWN))) {
+				collide = ISMOVINGLEFT;
+				System.out.println(65);
+			}else if(this.getPosY() >y2 && this.getPosX()+32 > x2 && this.getPosX() < x2+w2) {//&& this.getPosX()+16 >= x2 && this.getPosX()+16 <= x2+w2
+				collide = ISMOVINGUP;
+				System.out.println(1);
+			}
+			
+			
+			
+			
+		}
+		/*if((!(this.getPosX() > x2+w2) && !(this.getPosX()+this.getWidth() < x2)) && (!(this.getPosY() > y2+h2) && !(this.getPosY() + this.getHeight() < y2))) {
 		
 			double pointsX = w2/3;
 			
@@ -59,21 +98,21 @@ public class Mario extends Figure {
 		
 			double pointsY = h2/3;
 			Point2D p3 = new Point2D(x2, y2+pointsY);
-			Point2D p4 = new Point2D(x2, y2+(pointsY)*2);
-			Point2D p5 = new Point2D(x2, y2+(pointsY)*3);
+			Point2D p4 = new Point2D(x2, y2+(pointsY*2));
+			Point2D p5 = new Point2D(x2, y2+(pointsY*3));
 		
 			Point2D p6 = new Point2D(x2+w2, y2+(pointsY));
-			Point2D p7 = new Point2D(x2+w2, y2+(pointsY)*2);
-			Point2D p8 = new Point2D(x2+w2, y2+(pointsY)*3);
+			Point2D p7 = new Point2D(x2+w2, y2+(pointsY*2));
+			Point2D p8 = new Point2D(x2+w2, y2+(pointsY*3));
 			
 			
 			Point2D p9 = new Point2D(x2+pointsX,y2+h2 );
-			Point2D p10 = new Point2D(x2+pointsX*2, y2+h2);
-			Point2D p11 = new Point2D(x2+pointsX*3, y2+h2);
+			Point2D p10 = new Point2D(x2+(pointsX*2), y2+h2);
+			Point2D p11 = new Point2D(x2+(pointsX*3), y2+h2);
 			 
 			
 			
-			Rectangle2D marioRec = new Rectangle2D(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
+			//Rectangle2D marioRec = new Rectangle2D(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
 			
 			
 			//System.out.println(state);
@@ -94,9 +133,8 @@ public class Mario extends Figure {
 
 				collide = ISMOVINGDOWN;
 		
-			System.out.println(collide);
 			
-			
+			*/
 			/*double halfOtherX = x2 + (w2/2);
 			double halfMarioX = this.getPosX() +(this.getWidth()/2);
 			double halfOtherY = y2 +(h2/2);
@@ -131,12 +169,14 @@ public class Mario extends Figure {
 				}
 			}*/
 
-		}
+	//	}
 		return collide;
 	}
 	
-	public boolean isGrounded(double x2, double y2, double w2, double h2) {
-		boolean grounded = false;
+	public String isGrounded(double x2, double y2, double w2, double h2) {
+		String grounded = "";
+		
+		
 		if((!(this.getPosX() > x2+w2) && !(this.getPosX()+this.getWidth() < x2)) && (!(this.getPosY() > y2+h2) && !(this.getPosY() + this.getHeight() < y2))){
 			Point2D p1 = new Point2D(x2, y2);
 			Point2D p2 = new Point2D(x2+w2, y2);
@@ -144,12 +184,14 @@ public class Mario extends Figure {
 			
 			Rectangle2D marioRec = new Rectangle2D(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
 			
-			if(marioRec.contains(p1) || marioRec.contains(p2) || marioRec.contains(p12)){
-				grounded = true;
+			
+			if((marioRec.contains(p1) || marioRec.contains(p2) || marioRec.contains(p12)) && ((y2 == 416 || y2 == 448) || y2<=this.getPosY())){
+				grounded = "floor";
+			}else if((marioRec.contains(p1) || marioRec.contains(p2) || marioRec.contains(p12)) && this.getPosX()+this.getWidth() > x2 && this.getPosX()<x2+w2){
+				grounded = "intersect";
 			}
 			
 		}
-		
 		return grounded;
 	}
 	
