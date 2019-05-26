@@ -169,7 +169,7 @@ public class Level {
 				}else if(element == 'K') {
 					//castle
 					
-					Enemy koopa = new Koopa(counterPosX, counterPosY, 32, 48);
+					Enemy koopa = new Koopa(counterPosX, counterPosY-16, 32, 48);
 					koopa.setImage(Koopa.IMAGE);
 					figures.add(koopa);
 					addEnemy(koopa);
@@ -178,7 +178,6 @@ public class Level {
 					Figure coin = new Coin(counterPosX, counterPosY, 32, 32);
 					coin.setImage(Coin.COIN);
 					figures.add(coin);
-					
 				}else if(element == 'n') {
 					//castle
 					
@@ -194,10 +193,18 @@ public class Level {
 				}else if(element == 'X') {
 					//castle
 					
-					Enemy bowser = new Bowser(counterPosX, counterPosY, 64, 64);
+					Enemy bowser = new Bowser(counterPosX, counterPosY-32, 64, 64);
 					bowser.setImage(Bowser.BOWSER); 
 					figures.add(bowser);
 					addEnemy(bowser);
+				}else if(element == 'l') {
+					//castle
+					Figure platform = new MovingPlatform(counterPosX, counterPosY, 16, 16);
+					Figure platform2 = new MovingPlatform(counterPosX+16, counterPosY, 16, 16);
+					platform.setImage(MovingPlatform.PLATFORM); 
+					platform2.setImage(MovingPlatform.PLATFORM); 
+					figures.add(platform);
+					figures.add(platform2);
 				}
 			}
 			counterPosY+= 32;

@@ -5,14 +5,15 @@ import ui.GameController;
 public class CoinAnimation extends Thread{
 
 	private GameController gameC;
-
+	private boolean active;
+	
 	public CoinAnimation(GameController gui) {
 		gameC = gui;
+		active = true;
 	}
 	@Override
 	public void run() {
-		int cont=0;
-		while(cont<10000) {
+		while(active) {
 			gameC.setFillCoin1();
 		try {
 			Thread.sleep(400);
@@ -39,6 +40,9 @@ public class CoinAnimation extends Thread{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		cont++;
+	}
+	
+	public void deactivate() {
+		active = false;
 	}
 } 

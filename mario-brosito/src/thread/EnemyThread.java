@@ -1,5 +1,7 @@
 package thread;
 
+import java.io.IOException;
+
 import javafx.application.Platform;
 import javafx.scene.shape.Rectangle;
 import model.Enemy;
@@ -11,12 +13,14 @@ public class EnemyThread extends Thread{
     private Rectangle enemyRec;
     private Enemy enemy;
     private boolean active;
+    private int changer;
     
     public EnemyThread(GameController controller, Rectangle enemyRec, Enemy enemy) {
         this.controller = controller;
         this.enemyRec = enemyRec;
         this.active = true;
         this.enemy = enemy;
+        changer = 0;
     }
 
     public void run() {
@@ -24,12 +28,20 @@ public class EnemyThread extends Thread{
         	Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					controller.moveEnemy(enemyRec, enemy);
+					try {
+						controller.moveEnemy(enemyRec, enemy, changer);
+						if(changer == 0)
+							changer = 1;
+						else
+							changer = 0;
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
         		
         	});
         	try {
-        		sleep(500);
+        		sleep(150);
         	} catch(InterruptedException e) {
         		e.printStackTrace();
         	}
@@ -39,5 +51,9 @@ public class EnemyThread extends Thread{
 
 	public Enemy getEnemy() {
 		return enemy;
+	}
+
+	public void deactivate() {
+		active = false;
 	}
 }

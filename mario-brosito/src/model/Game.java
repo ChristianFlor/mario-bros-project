@@ -23,6 +23,8 @@ public class Game {
 		levelOne.loadLevel(Level.LEVEL_ONE_PATH);
 		levelTwo = new Level();
 		levelTwo.loadLevel(Level.LEVEL_TWO_PATH);
+		levelThree = new Level();
+		levelThree.loadLevel(Level.LEVEL_THREE_PATH);
 	}
 	
 	public void initPlayers() {
