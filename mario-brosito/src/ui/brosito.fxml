@@ -1,8 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-
-<Pane fx:id="mainBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GameController" />
+<Pane fx:id="mainBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GameController">
+   <children>
+      <Label fx:id="timeLabel" layoutX="565.0" layoutY="8.0" text="TIME">
+         <font>
+            <Font name="Consolas Bold" size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="worldLabel" layoutX="409.0" layoutY="8.0" style="-fx-font-weight: BOLD;" text="WORLD">
+         <font>
+            <Font name="Consolas Bold" size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="marioLabel" layoutX="70.0" layoutY="8.0" prefHeight="27.0" prefWidth="74.0" style="-fx-font-weight: EXTRA_BOLD;" text="MARIO">
+         <font>
+            <Font name="Consolas Bold" size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="numberOfWorld" alignment="CENTER" layoutX="399.0" layoutY="35.0" prefHeight="27.0" prefWidth="82.0">
+         <font>
+            <Font name="Consolas Bold" size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="scoreOfMario" layoutX="49.0" layoutY="35.0" prefHeight="27.0" prefWidth="111.0">
+         <font>
+            <Font name="Consolas" size="23.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="coinImage" fitHeight="33.0" fitWidth="57.0" layoutX="236.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../menuimg/coin.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="acumulatedCoins" layoutX="274.0" layoutY="35.0" text="X 00">
+         <font>
+            <Font name="Consolas Bold" size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="timeOfLevel" contentDisplay="CENTER" layoutX="564.0" layoutY="35.0" prefHeight="27.0" prefWidth="74.0" text="0">
+         <font>
+            <Font name="Consolas" size="23.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

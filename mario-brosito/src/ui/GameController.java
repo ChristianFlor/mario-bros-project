@@ -6,16 +6,16 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import model.Coin;
@@ -29,13 +29,13 @@ import model.MisteryBlock;
 import model.SimpleBlock;
 import model.Slide;
 import model.StaticFigure;
+import thread.CoinAnimation;
 import thread.JumpingThread;
+import thread.LevelTimeThread;
 import thread.MisteryBlockAnimation;
 import thread.MovementAndGravityThread;
 
 public class GameController {
-
-	
 
 	@FXML
     private Pane mainBackground;
@@ -50,11 +50,36 @@ public class GameController {
 	
 	private Scene mainScene;
 	private List<Rectangle> rectan;
-	private ImagesLoader imlo;
-	
+	private List<Rectangle> rectanCoin;
+	private ImagesLoader imloMark;
+	private ImagesLoader imloCoin;
 	private Set<String> pressed;
 	
 	private BufferedImage[] marioPictures;
+
+	@FXML
+	private Label timeLabel;
+
+    @FXML
+    private Label worldLabel;
+
+    @FXML
+    private Label marioLabel;
+
+    @FXML
+    private Label numberOfWorld;
+
+    @FXML
+    private Label scoreOfMario;
+
+    @FXML
+    private Label acumulatedCoins;
+    
+    @FXML
+    private ImageView coinImage;
+
+    @FXML
+    private Label timeOfLevel;
 	
 	private JumpingThread jumping;
     @FXML
@@ -64,12 +89,18 @@ public class GameController {
     	pressed = new HashSet<String>();
     	try {
 			mainGame = new Game();
-			imlo= new ImagesLoader(32, 32, 1, 3,"src/uiImg/QuestionMark.png");
+			imloMark= new ImagesLoader(32, 32, 1, 3,"src/uiImg/QuestionMark.png");
+			imloCoin =new ImagesLoader(32, 32, 1, 3,"src/uiImg/Coin.png");
 			rectan= new ArrayList<Rectangle>();
-		//	loadWorld2();
+
 			loadWorld1();
+
+			rectanCoin= new ArrayList<Rectangle>();
+			loadWorld2();
+
 			misteryBlockThread();
-			
+			timeThread();
+			coinThread();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -86,7 +117,7 @@ public class GameController {
     	
     	MovementAndGravityThread mv = new MovementAndGravityThread(this);
     	mv.start();
-    	
+    
     }
     
     public void configureScene() {
@@ -124,6 +155,11 @@ public class GameController {
 		});
     }
 		
+    public void timeThread() {
+    	LevelTimeThread lv = new LevelTimeThread(this);
+    	lv.start();
+    }
+    
     public String isTouching() {
     	String intersects = "";
     	List<Figure> sprites = mainGame.getLevelOne().getFigures();
@@ -164,32 +200,78 @@ public class GameController {
     	MisteryBlockAnimation mba = new MisteryBlockAnimation(this);
 		mba.start();
     }
+    public void coinThread() {
+    	CoinAnimation ca = new CoinAnimation(this);
+    	ca.start();
+    }
     public void setFill0() {
-    	BufferedImage[] blocks = imlo.getSprites();
+    	BufferedImage[] blocks = imloMark.getSprites();
+    	
 		Image card = SwingFXUtils.toFXImage(blocks[0], null);
+		
 		for (int i = 0; i < rectan.size(); i++) {
 			rectan.get(i).setFill(new ImagePattern(card));
+			
+		}	
+    }
+    public void setFillCoin0() {
+    	
+    	BufferedImage[] blocks1 = imloCoin.getSprites();
+		
+		Image card1 = SwingFXUtils.toFXImage(blocks1[0], null);
+		for (int i = 0; i < rectanCoin.size(); i++) {
+			
+			rectanCoin.get(i).setFill(new ImagePattern(card1));
 		}	
     }
     public void setFill1() {
-    	BufferedImage[] blocks = imlo.getSprites();
+    	BufferedImage[] blocks = imloMark.getSprites();
+    	
 		Image card = SwingFXUtils.toFXImage(blocks[1], null);
+		
 		for (int i = 0; i < rectan.size(); i++) {
 			rectan.get(i).setFill(new ImagePattern(card));
 		}	
     }
+    public void setFillCoin1() {
+    	
+    	BufferedImage[] blocks1 = imloCoin.getSprites();
+		
+		Image card1 = SwingFXUtils.toFXImage(blocks1[1], null);
+		for (int i = 0; i < rectanCoin.size(); i++) {
+			
+			rectanCoin.get(i).setFill(new ImagePattern(card1));
+		}	
+    }
     public void setFill2() {
-    	BufferedImage[] blocks = imlo.getSprites();
+    	BufferedImage[] blocks = imloMark.getSprites();
+    	
 		Image card = SwingFXUtils.toFXImage(blocks[2], null);
+		
 		for (int i = 0; i < rectan.size(); i++) {
 			rectan.get(i).setFill(new ImagePattern(card));
+		
+		}
+    }
+    public void setFillCoin2() {
+
+    	BufferedImage[] blocks1 = imloCoin.getSprites();
+		
+		Image card1 = SwingFXUtils.toFXImage(blocks1[2], null);
+		for (int i = 0; i < rectanCoin.size(); i++) {
+		
+			rectanCoin.get(i).setFill(new ImagePattern(card1));
 		}
     }
 
     public void drawImage() {
        // canvas.getGraphicsContext2D().drawImage(main, minX, minY, width, height);
     }
-
+    
+    public void setTime(int time) {
+    	timeOfLevel.setText(time+"");
+    }
+    
     public void moveImage(int a) {
 
 		Mario m = (Mario) mainGame.getLevelOne().getMario();
@@ -201,6 +283,15 @@ public class GameController {
 	    		maxRight +=10;
 	    		minLeft += 10;
 	    		mainBackground.setTranslateX(mainBackground.getTranslateX()-10);
+		    	
+	    		timeLabel.setTranslateX(timeLabel.getTranslateX()+10);
+	    		worldLabel.setTranslateX(worldLabel.getTranslateX()+10);
+	    		marioLabel.setTranslateX(marioLabel.getTranslateX()+10);
+	    		numberOfWorld.setTranslateX(numberOfWorld.getTranslateX()+10);
+	    		scoreOfMario.setTranslateX(scoreOfMario.getTranslateX()+10);
+	    		acumulatedCoins.setTranslateX(acumulatedCoins.getTranslateX()+10);
+	    		coinImage.setTranslateX(coinImage .getTranslateX()+10);
+	    		timeOfLevel.setTranslateX(timeOfLevel.getTranslateX()+10);
 	    		m.setPosX(mainMario.getX());
 	    	}
 	    	else if(mainMario.getX() <= minLeft && a==-1) {
@@ -355,7 +446,9 @@ public class GameController {
 				BufferedImage[] coins = sl.getSprites();
 				Image card = SwingFXUtils.toFXImage(coins[0], null);
 				rec.setFill(new ImagePattern(card));
+				rectanCoin.add(rec);
 				mainBackground.getChildren().add(rec);
+				
 			}
 		}
     }

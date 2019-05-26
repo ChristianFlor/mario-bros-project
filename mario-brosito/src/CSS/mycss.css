@@ -1,0 +1,60 @@
+.root{
+	-fx-background-color: #ffd800;
+}
+.table-row-cell:empty {
+    -fx-background-color: #006eff;
+}
+.table-row-cell:odd:filled {
+    -fx-background-color: #10026d;
+}
+.table-row-cell:even:filled {
+    -fx-background-color: #006eff;
+}
+.table-row-cell:selected .table-cell {
+   -fx-background-color: #008700; 
+}
+.table{
+	-fx-border-radius: 15;
+}
+.table-cell {     
+	-fx-border-radius: 15;
+    -fx-text-fill: white;
+    -fx-border-width: 0 0 0 0;
+    -fx-border-insets: 0;
+    -fx-border-style: none;
+    -fx-alignment: CENTER;    
+}
+.table-view .column-header .label{
+    -fx-text-fill: #ffd000;
+    -fx-alignment: CENTER;
+}
+.table-view .column-header-background .label{
+    -fx-background-color: transparent;
+    
+}
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: #10026d;    
+    -fx-size: 30;
+    -fx-border-style: none;
+}
+
+.button {
+    -fx-background-color: 
+        rgba(0,0,0,0.08),
+        linear-gradient(#9a9a9a, #909090),
+        linear-gradient(white 0%, #f3f3f3 50%, #ececec 51%, #f2f2f2 100%);
+   
+    -fx-background-radius: 8,7,6;
+    -fx-background-insets: 0,1,2;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+
+}
+
+.button:pressed {
+   
+    -fx-background-color: 
+        linear-gradient(#f2f2f2, #d6d6d6),
+        linear-gradient(#fcfcfc 0%, #d9d9d9 20%, #d6d6d6 100%),
+        linear-gradient(#dddddd 0%, #f6f6f6 50%);
+}

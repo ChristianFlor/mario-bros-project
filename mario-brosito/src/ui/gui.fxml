@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane prefHeight="570.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.PlayerController">
+   <children>
+      <BorderPane>
+         <top>
+            <HBox alignment="CENTER" prefHeight="65.0" prefWidth="779.0" style="-fx-background-color: #2A2E37;" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="78.0" fitWidth="409.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../uiImg/logo.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+         </top>
+         <center>
+            <TabPane prefHeight="500.0" prefWidth="845.0" style="-fx-background-color: #2A2E37;" stylesheets="@../CSS/dark-theme2.css" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+              <tabs>
+                  <Tab text="REGISTER">
+                     <content>
+                        <BorderPane prefHeight="452.0" prefWidth="805.0">
+                           <center>
+                              <HBox alignment="CENTER" fillHeight="false" focusTraversable="true" prefHeight="360.0" prefWidth="649.0" style="-fx-border-color: #4285F4; -fx-border-width: 3; -fx-border-radius: 15;" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <ImageView fitHeight="266.0" fitWidth="243.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../uiImg/Mario_Star.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Separator orientation="VERTICAL" prefHeight="345.0" prefWidth="9.0" visible="false" />
+                                    <VBox alignment="CENTER" fillWidth="false" focusTraversable="true" prefHeight="345.0" prefWidth="362.0">
+                                       <children>
+                                          <TextField fx:id="tfName" prefHeight="37.0" prefWidth="275.0" promptText="Enter your first name...">
+                                             <font>
+                                                <Font name="Consolas" size="21.0" />
+                                             </font>
+                                          </TextField>
+                                          <Separator prefHeight="45.0" prefWidth="390.0" visible="false" />
+                                          <TextField fx:id="tfNick" prefHeight="37.0" prefWidth="273.0" promptText="Enter your nickname...">
+                                             <font>
+                                                <Font name="Consolas Bold" size="22.0" />
+                                             </font>
+                                          </TextField>
+                                          <Separator prefHeight="33.0" prefWidth="390.0" visible="false" />
+                                          <Button mnemonicParsing="false" onAction="#register" text="Register" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </center>
+                           <left>
+                              <Separator orientation="VERTICAL" prefHeight="436.0" prefWidth="71.0" visible="false" BorderPane.alignment="CENTER" />
+                           </left>
+                           <right>
+                              <Separator orientation="VERTICAL" prefHeight="436.0" prefWidth="98.0" visible="false" BorderPane.alignment="CENTER" />
+                           </right>
+                           <bottom>
+                              <Separator prefHeight="37.0" prefWidth="829.0" visible="false" BorderPane.alignment="CENTER" />
+                           </bottom>
+                           <top>
+                              <Label text="TIMES' UP" textFill="WHITE" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font name="Consolas Bold" size="41.0" />
+                                 </font>
+                              </Label>
+                           </top>
+                        </BorderPane>
+                     </content>
+                  </Tab>
+                  <Tab text="PLAYERS">
+                     <content>
+                        <BorderPane prefHeight="452.0" prefWidth="805.0">
+                           <right>
+                              <VBox fillWidth="false" focusTraversable="true" prefHeight="436.0" prefWidth="401.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Separator prefHeight="17.0" prefWidth="364.0" visible="false" />
+                                    <VBox alignment="CENTER" prefHeight="167.0" prefWidth="389.0" style="-fx-border-color: #4285F4; -fx-border-width: 2; -fx-border-radius: 15;">
+                                       <children>
+                                          <Label text="Search Player" textFill="WHITE">
+                                             <font>
+                                                <Font name="Verdana Bold" size="24.0" />
+                                             </font>
+                                          </Label>
+                                          <HBox alignment="CENTER" prefHeight="47.0" prefWidth="364.0" spacing="8.0">
+                                             <children>
+                                                <TextField fx:id="idName" prefHeight="37.0" prefWidth="178.0" promptText="Enter your name" style="-fx-text-fill: black;" />
+                                                <ImageView fitHeight="33.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../uiImg/busqueda.png" />
+                                                   </image>
+                                                </ImageView>
+                                                <Button mnemonicParsing="false" onAction="#searchName" prefHeight="39.0" prefWidth="92.0" text="Search" textFill="WHITE" />
+                                                <Label fx:id="timeCheck111" prefHeight="17.0" prefWidth="84.0" text="Time: xx ms" textFill="WHITE" />
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                                             </padding>
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="47.0" prefWidth="358.0" spacing="8.0">
+                                             <children>
+                                                <TextField fx:id="idNick" prefHeight="37.0" prefWidth="172.0" promptText="Enter yout nick name" style="-fx-text-fill: black;" />
+                                                <ImageView fitHeight="35.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../uiImg/busqueda.png" />
+                                                   </image>
+                                                </ImageView>
+                                                <Button mnemonicParsing="false" onAction="#searchNick" prefHeight="39.0" prefWidth="85.0" text="Search" textFill="WHITE" />
+                                                <Label fx:id="timeCheck1111" prefHeight="17.0" prefWidth="76.0" text="Time: xx ms" textFill="WHITE" />
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                                             </padding>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <Separator prefHeight="17.0" prefWidth="364.0" visible="false" />
+                                    <VBox alignment="CENTER" fillWidth="false" prefHeight="255.0" prefWidth="392.0" spacing="10.0" style="-fx-border-color: #4285F4; -fx-border-width: 2; -fx-border-radius: 15;">
+                                       <children>
+                                          <Label text="See Data" textFill="WHITE">
+                                             <font>
+                                                <Font name="Consolas Bold" size="24.0" />
+                                             </font>
+                                          </Label>
+                                          <ImageView fx:id="foundScoreImg" fitHeight="140.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../uiImg/mario_dubs.png" />
+                                             </image>
+                                          </ImageView>
+                                          <GridPane alignment="CENTER_RIGHT" prefHeight="84.0" prefWidth="357.0">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="231.0" minWidth="10.0" prefWidth="189.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="234.0" minWidth="10.0" prefWidth="188.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Label fx:id="dName" text="Name: " textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Consolas Bold" size="14.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="dScore" text="Score:" textFill="WHITE" GridPane.rowIndex="1">
+                                                   <font>
+                                                      <Font name="Consolas Bold" size="14.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="dNick" text="Nick Name:" textFill="WHITE" GridPane.columnIndex="1">
+                                                   <font>
+                                                      <Font name="Consolas Bold" size="14.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </GridPane>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                           </right>
+                           <left>
+                              <VBox fillWidth="false" focusTraversable="true" prefHeight="460.0" prefWidth="434.0" spacing="5.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Separator prefHeight="39.0" prefWidth="392.0" visible="false" />
+                                    <HBox alignment="CENTER" prefHeight="62.0" prefWidth="415.0">
+                                       <children>
+                                          <Button mnemonicParsing="false" onAction="#preOrden" text="Pre-Orden" translateX="-10.0" />
+                                          <Button mnemonicParsing="false" onAction="#inOrden" text="In-Orden" />
+                                          <Button mnemonicParsing="false" onAction="#postOrden" text="Post-Orden" translateX="10.0" />
+                                       </children>
+                                    </HBox>
+                                    <Separator prefHeight="14.0" prefWidth="392.0" visible="false" />
+                                    <VBox fx:id="vBoxList" alignment="CENTER" prefHeight="435.0" prefWidth="424.0" style="-fx-border-color: #4285F4; -fx-border-width: 2;" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="8.0" />
+                                 </padding>
+                              </VBox>
+                           </left>
+                        </BorderPane>
+                     </content>
+                  </Tab>
+                  <Tab text="TOP">
+                     <content>
+                        <BorderPane>
+                           <bottom>
+                              <HBox alignment="CENTER" prefHeight="44.0" prefWidth="794.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#generate" text="Generate" />
+                                 </children>
+                              </HBox>
+                           </bottom>
+                           <center>
+                              <ScrollPane pannable="true" style="-fx-border-color: #4285F4; -fx-border-width: 2;" BorderPane.alignment="CENTER">
+                                 <content>
+                                    <Canvas fx:id="canvas" height="551.0" width="1138.0" />
+                                 </content>
+                              </ScrollPane>
+                           </center>
+                        </BorderPane>
+                     </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </center>
+      </BorderPane>
+   </children>
+</StackPane>
