@@ -7,34 +7,34 @@ public class LevelTimeThread extends Thread {
 	
 	private GameController controller;
 	private boolean active;
+	private int time;
 	
 	public LevelTimeThread(GameController c) {
 		controller = c;
 		active = true;
+		time = 400;
 	}
 	
 	@Override
 	public void run() {
-		
 		while(active) {
 			Platform.runLater(new Runnable() {
-				int counter = 401;
 				@Override
-				public void run() {
-						while(counter>0) {
-						counter--;
-						controller.setTime(counter);
-						}
-						
+				public void run() {	
+					controller.setTime(time);
 				}
-			});
+				});
+			time--;
 			try {
 				sleep(500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-				
 		}
-		
+	}
+	
+	public void deactivate() {
+		active = false;
 	}
 }
+

@@ -5,14 +5,15 @@ import ui.GameController;
 public class MisteryBlockAnimation extends Thread{
 
 	private GameController gameC;
-
+	private boolean active;
+	
 	public MisteryBlockAnimation(GameController gui) {
 		gameC = gui;
+		active = true;
 	}
 	@Override
 	public void run() {
-		int cont=0;
-		while(cont<10000) {
+		while(active) {
 			gameC.setFill1();
 		try {
 			Thread.sleep(400);
@@ -39,6 +40,9 @@ public class MisteryBlockAnimation extends Thread{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		cont++;
+	}
+	
+	public void deactivate() {
+		active = false;
 	}
 } 

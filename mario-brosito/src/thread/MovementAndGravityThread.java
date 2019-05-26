@@ -1,7 +1,5 @@
 package thread;
 
-import java.util.List;
-import model.Figure;
 import model.Mario;
 import ui.GameController;
 
@@ -104,7 +102,7 @@ public class MovementAndGravityThread extends Thread {
 				
 			}
 		
-	public void desactive() {
+	public void deactivate() {
 		active = false;
 	}
 	

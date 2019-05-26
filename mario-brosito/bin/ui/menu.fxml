@@ -19,12 +19,22 @@
             </ImageView>
            <Label fx:id="brandLabel" layoutX="378.0" layoutY="267.0" text="\@2019 ICESI" textFill="#f29b87">
                <font>
-                  <Font name="Consolas" size="24.0" />
+                  <Font name="Consolas Bold" size="24.0" />
                </font>
             </Label>
             <Label fx:id="playerLabel" layoutX="260.0" layoutY="308.0" onMouseClicked="#beginGame" text="1 PLAYER GAME">
                <font>
-                  <Font name="Consolas" size="23.0" />
+                  <Font name="Consolas Bold" size="23.0" />
+               </font>
+            </Label>
+            <Label fx:id="optionsButton" contentDisplay="CENTER" layoutX="298.0" layoutY="346.0" onMouseClicked="#beginOptions" text="OPTIONS">
+               <font>
+                  <Font name="Consolas Bold" size="23.0" />
+               </font>
+            </Label>
+            <Label fx:id="scoresLabel" layoutX="279.0" layoutY="385.0" onMouseClicked="#seeScoresMenu" text="SEE SCORES">
+               <font>
+                  <Font name="Consolas Bold" size="23.0" />
                </font>
             </Label>
          </children>

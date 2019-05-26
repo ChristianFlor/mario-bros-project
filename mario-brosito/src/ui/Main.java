@@ -11,6 +11,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Main extends Application{
 
@@ -24,7 +25,18 @@ public class Main extends Application{
 		Parent root = loader.load();
 	
 		Scene scene = new Scene(root);
+		loader = new FXMLLoader(getClass().getResource("brosito.fxml"));
+		loader.load();
+		GameController gc = loader.getController();
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
+			@Override
+			public void handle(WindowEvent event) {
+				gc.closeWindow();
+			}
+			
+		});
+		
 		stage.setScene(scene);
 		stage.setTitle("Mariosito");
 		stage.show();

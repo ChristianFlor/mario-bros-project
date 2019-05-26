@@ -142,7 +142,7 @@ public class PlayerController {
         			foundScoreImg.setImage(new Image(esp.getPhoto()));
         			
         			dName.setText("Name: "+esp.getName());
-        			dNick.setText("Last Name: "+esp.getNickName());
+        			dNick.setText("Nick Name: "+esp.getNickName());
         			dScore.setText("Email: "+esp.getScore());
         			
         		}else {
