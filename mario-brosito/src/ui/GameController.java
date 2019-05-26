@@ -345,6 +345,33 @@ public class GameController {
 			else
 				enemyRec.setFill(new ImagePattern(card));
       }
+     if(enemyIsTouching(enemy)) {
+    	 if(enemy.getState().equals(Mario.ISMOVINGLEFT)) {
+    		 enemy.setState(Mario.ISMOVINGRIGHT);
+    	 }else if(enemy.getState().equals(Mario.ISMOVINGRIGHT)) {
+    		 enemy.setState(Mario.ISMOVINGLEFT);
+    	 }
+     }
+ 	}
+ 	
+ 	public boolean enemyIsTouching(Enemy enemy) {
+ 		boolean intersects = false;
+ 		List<Figure> sprites = mainGame.getLevelOne().getFigures();
+ 		for (int i = 0; i < sprites.size() && !intersects; i++) {
+			if(enemy != sprites.get(i)) {
+				intersects = enemy.enemyIsColliding(sprites.get(i).getPosX(), sprites.get(i).getPosY(), sprites.get(i).getWidth(), sprites.get(i).getHeight());
+				if(intersects && sprites.get(i) instanceof Enemy) {
+					if(Math.abs(enemy.getPosX() - sprites.get(i).getPosX()) < 32) {
+						double diff = 32 - Math.abs(enemy.getPosX() - sprites.get(i).getPosX());
+						if(enemy.getState().equals(Mario.ISMOVINGLEFT))
+							enemy.setPosX(enemy.getPosX()+diff);
+						else if(enemy.getState().equals(Mario.ISMOVINGRIGHT))
+							enemy.setPosX(enemy.getPosX()-diff);
+					}
+				}
+			}
+		}
+ 		return intersects;
  	}
  
     public void moveImage(int a) {
@@ -527,7 +554,7 @@ public class GameController {
 				rectanCoin.add(rec);
 				mainBackground.getChildren().add(rec);
 			}
-		}
+    	}
     }
 
     public void loadWorld3() throws IOException {
