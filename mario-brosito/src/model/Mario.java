@@ -166,4 +166,15 @@ public class Mario extends Figure {
 		return nextPower;
 	}
 
+	 public boolean isEnemyNear(double posX) {
+	    	boolean near = false;
+	    	double distance = 350;
+	    	double actualDistance =	Math.abs(this.getPosX() - posX);
+	    		if(actualDistance <= distance) {
+	    			near = true;
+	    		}
+	    	return near;
+	    }
+
+
 }

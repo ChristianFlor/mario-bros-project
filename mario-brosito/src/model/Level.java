@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Level {
 	
-	//private Enemy firstEnemy;
+	private Enemy firstEnemy;
 	
 	private List<Figure> figures;
 	
@@ -79,16 +79,20 @@ public class Level {
 					// Brick block
 					
 					Obstacle brickBlock = new SimpleBlock(counterPosX, counterPosY, 32,32);
-					brickBlock.setImage(SimpleBlock.BRICK1);
-					if(path.equals(LEVEL_TWO_PATH))
+					if(path.equals(LEVEL_ONE_PATH))
+						brickBlock.setImage(SimpleBlock.BRICK1);
+					else if(path.equals(LEVEL_TWO_PATH))
 						brickBlock.setImage(SimpleBlock.BRICK2);
 					figures.add(brickBlock);
 				}else if(element == 'B') {
 				
 					Figure base = new StaticFigure(counterPosX, counterPosY, 32,32);
+					if(path.equals(LEVEL_ONE_PATH))
 					base.setImage(StaticFigure.BASE1);
-					if(path.equals(LEVEL_TWO_PATH))
+					else if(path.equals(LEVEL_TWO_PATH))
 						base.setImage(StaticFigure.BASE2);
+					else if(path.equals(LEVEL_THREE_PATH))
+						base.setImage(StaticFigure.BASE3);
 					figures.add(base);
 					
 				}else if(element == 'E') {
@@ -158,21 +162,42 @@ public class Level {
 				}else if(element == 'G') {
 					//goomba
 					
-					Figure goomba = new Goomba(counterPosX, counterPosY, 32, 32);
+					Enemy goomba = new Goomba(counterPosX, counterPosY, 32, 32);
 					goomba.setImage(Goomba.IMAGE);
 					figures.add(goomba);
+					addEnemy(goomba);
 				}else if(element == 'K') {
 					//castle
 					
-					Figure koopa = new Koopa(counterPosX, counterPosY, 32, 32);
+					Enemy koopa = new Koopa(counterPosX, counterPosY, 32, 48);
 					koopa.setImage(Koopa.IMAGE);
 					figures.add(koopa);
+					addEnemy(koopa);
 				}else if(element == 'm') {
 					//castle
-					
 					Figure coin = new Coin(counterPosX, counterPosY, 32, 32);
 					coin.setImage(Coin.COIN);
 					figures.add(coin);
+					
+				}else if(element == 'n') {
+					//castle
+					
+					Figure platform = new StaticFigure(counterPosX, counterPosY, 32, 32);
+					platform.setImage(StaticFigure.PLATFORM);
+					figures.add(platform);
+				}else if(element == 'A') {
+					//castle
+					
+					Figure lava = new StaticFigure(counterPosX, counterPosY, 32, 128);
+					lava.setImage(StaticFigure.LAVA);
+					figures.add(lava);
+				}else if(element == 'X') {
+					//castle
+					
+					Enemy bowser = new Bowser(counterPosX, counterPosY, 64, 64);
+					bowser.setImage(Bowser.BOWSER); 
+					figures.add(bowser);
+					addEnemy(bowser);
 				}
 			}
 			counterPosY+= 32;
@@ -180,12 +205,34 @@ public class Level {
 		}
 		bf.close();
 	}
-	public Mario getMario() {
 
-		return (Mario)figures.get(positionOfMario);
-	}
+	public void addEnemy(Enemy enemy) {
+        if(firstEnemy == null) {
+            firstEnemy = enemy;
+        }else {
+            Enemy current = firstEnemy;
+            while(current.getNextEnemy() != null) {
+                current = current.getNextEnemy();
+            }
+            current.setNextEnemy(enemy);
+        }
+    }
+    public Mario getMario() {
+        return (Mario)figures.get(positionOfMario);
+    }
 
-	public List<Figure> getFigures(){
-		return figures;
-	}
+    public List<Figure> getFigures(){
+        return figures;
+    }
+    
+    public List<Enemy> getEnemies(){
+        List<Enemy> enemies = new ArrayList<Enemy>();
+        Enemy current = firstEnemy;
+        while(current != null) {
+            enemies.add(current);
+            current = current.getNextEnemy();
+        }
+        return enemies;
+    }
 }
+

@@ -2,30 +2,42 @@ package model;
 
 public abstract class Enemy extends Figure {
 
-	public Enemy(double posX, double posY, double width, double height) {
-		super(posX, posY, width, height);
-	}
+    private String state;
+    
+    public Enemy(double posX, double posY, double width, double height) {
+        super(posX, posY, width, height);
+        state = Mario.ISSTANDINGSTILL;
+    }
 
-	private Enemy nextEnemy;
-	
-	
+    private Enemy nextEnemy;
+    
+    
+
+    /**
+     * @return the nextEnemy
+     */
+    public Enemy getNextEnemy() {
+        return nextEnemy;
+    }
+
+    /**
+     * @param nextEnemy the nextEnemy to set
+     */
+    public void setNextEnemy(Enemy nextEnemy) {
+        this.nextEnemy = nextEnemy;
+    }
+    
+    public String getState() {
+        return state;
+    }
 
 	/**
-	 * @return the nextEnemy
+	 * @param state the state to set
 	 */
-	public Enemy getNextEnemy() {
-		return nextEnemy;
+	public void setState(String state) {
+		this.state = state;
 	}
 
-	/**
-	 * @param nextEnemy the nextEnemy to set
-	 */
-	public void setNextEnemy(Enemy nextEnemy) {
-		this.nextEnemy = nextEnemy;
-	}
-	
-	
-
-	
-	
+    
+    
 }
