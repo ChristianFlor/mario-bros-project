@@ -2,6 +2,7 @@ package thread;
 
 import java.util.List;
 
+import javafx.application.Platform;
 import model.Enemy;
 import model.Mario;
 import ui.GameController;
@@ -23,7 +24,6 @@ public class MovementAndGravityThread extends Thread {
 	
 	@Override
 	public void run() {
-		
 				while(active) {
 					
 					try {

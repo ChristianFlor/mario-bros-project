@@ -241,5 +241,9 @@ public class Level {
         }
         return enemies;
     }
+    
+    public void setMarioPosition(int pos) {
+    	this.positionOfMario = pos;
+    }
 }
 
