@@ -100,6 +100,7 @@ public class GameController {
     @FXML
     public void initialize() {
     	
+    	
     	jumping = new JumpingThread(this);
     	pressed = new HashSet<String>();
     	try {
@@ -133,7 +134,6 @@ public class GameController {
     	Thread mv = new MovementAndGravityThread(this);
     	threads.add(mv);
     	mv.start();
-    	
     }
     
     public void configureScene() {
@@ -202,6 +202,7 @@ public class GameController {
     	String intersects = "";
     	Figure f = null;
     	List<Figure> sprites = mainGame.getLevelOne().getFigures();
+    	
     	for (int i = 0; i < sprites.size() && intersects.isEmpty(); i++) {
     		
 			if(sprites.get(i) instanceof Mario )
@@ -513,6 +514,7 @@ public class GameController {
 				mainBackground.getChildren().add(rec);
 				mainMario = rec;
 			}else if(f instanceof StaticFigure){
+				System.out.println(f.getPosY());
 				rec.setFill(new ImagePattern(new Image(f.getImage())));
 				mainBackground.getChildren().add(rec);
 			}else if(f instanceof MisteryBlock) {
@@ -526,6 +528,16 @@ public class GameController {
 				rec.setFill(new ImagePattern(new Image(f.getImage())));
 				mainBackground.getChildren().add(rec);
 			}else if(f instanceof Slide) {
+				if(f.getImage().equals(Slide.BIGTUBE)) {
+					rec.setWidth(64); 
+					rec.setHeight(160);
+				}else if(f.getImage().equals(Slide.MEDIUMTUBE)) {
+					rec.setWidth(64); 
+					rec.setHeight(128);
+				}else {
+					rec.setWidth(64); 
+					rec.setHeight(96);
+				}
 				rec.setFill(new ImagePattern(new Image(f.getImage())));
 				mainBackground.getChildren().add(rec);
 			}else if(f instanceof Goomba){
