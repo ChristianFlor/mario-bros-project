@@ -208,6 +208,7 @@ public class Game {
 		}
 		
 	}
+	
 	public void sortByCode() {
 		// TODO use of selection sort
 		Player current = first;
@@ -265,6 +266,7 @@ public class Game {
 			}
 		}
 	}
+	
 	// -----------------------------------------------------------------
     // Methods for search in List
     // -----------------------------------------------------------------
@@ -282,6 +284,7 @@ public class Game {
 		}
 		return null;
 	}	
+	
 	public Player searchByCode(String n) {
 		Player match = null;
 		Player current = first;
@@ -428,17 +431,17 @@ public class Game {
 	// -----------------------------------------------------------------
     // Methods Atributes
     // -----------------------------------------------------------------
-	public Player[] getFlightsToArray() {
-		Player[] flights;
-		flights = new Player[first.size()];
+	public Player[] getPlayersToArray() {
+		Player[] players;
+		players = new Player[first.size()];
 		int c = 0;
 		Player current = first;
 		 	while(current!=null) {
-		 		flights[c]= current;
+		 		players[c]= current;
 		 		current = current.getNext();
 		 		c++;
 		 	}
-		return flights;
+		return players;
 	}
 	public int getTreeHeight() {
 		return getTreeHeight(root);

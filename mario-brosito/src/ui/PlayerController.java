@@ -225,34 +225,34 @@ public class PlayerController {
     void sortId(ActionEvent event) {
     	data.clear();
     	g.sortByCode();
-    	data.addAll(g.getFlightsToArray());
+    	data.addAll(g.getPlayersToArray());
     }
 
     @FXML
     void sortName(ActionEvent event) {
     	data.clear();
     	g.sortByName();
-    	data.addAll(g.getFlightsToArray());
+    	data.addAll(g.getPlayersToArray());
     }
 
     @FXML
     void sortNick(ActionEvent event) {
     	data.clear();
     	g.sortByNick();
-    	data.addAll(g.getFlightsToArray());
+    	data.addAll(g.getPlayersToArray());
     }
 
     @FXML
     void sortScore(ActionEvent event) {
     	data.clear();
     	g.sortByScore();
-    	data.addAll(g.getFlightsToArray());
+    	data.addAll(g.getPlayersToArray());
     }
 
     private ObservableList<Player> createData(){
     	data = FXCollections.observableArrayList();
     	
-    	data.addAll(g.getFlightsToArray());
+    	data.addAll(g.getPlayersToArray());
     	return data;
     }
     @FXML
@@ -260,7 +260,7 @@ public class PlayerController {
        	data.clear();
     	g.addPlayer(tfName.getText(),tfNick.getText(),25.0);
     	g.addScore(g.searchByName(tfName.getText()));
-    	data.addAll(g.getFlightsToArray());
+    	data.addAll(g.getPlayersToArray());
     }
    
     @FXML

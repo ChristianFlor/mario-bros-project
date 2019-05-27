@@ -171,7 +171,6 @@ public class Mario extends Figure {
 			
 			Rectangle2D marioRec = new Rectangle2D(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
 			
-			
 			if((marioRec.contains(p1) || marioRec.contains(p2) || marioRec.contains(p12)) && ((y2 == 416 || y2 == 448) || y2<=this.getPosY())){
 				grounded = "floor";
 			}else if((marioRec.contains(p1) || marioRec.contains(p2) || marioRec.contains(p12)) && this.getPosX()+this.getWidth() > x2 && this.getPosX()<x2+w2){
