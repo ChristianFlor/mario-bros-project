@@ -56,14 +56,7 @@ public class Mario extends Figure {
 		boolean intersect = marioRec.intersects(new Rectangle2D(x2, y2, w2, h2));
 		
 		if(intersect) {
-			//System.out.println(this.getPosX() + " " + x2);
-			//System.out.println((this.getPosX()+32) + " " + x2+ " " +w2);
-			//System.out.println(7); //this.getPosY()+this.getHeight() <=y2+5 &&((this.getPosX()>=x2 && this.getPosX()<=x2+w2) || (this.getPosX()<x2 && this.getPosX()+this.getWidth()>x2) ||  (this.getPosX()+this.getWidth()>x2+w2 && this.getPosX()<x2+w2)
 			String ground = isGrounded(x2,y2,w2,y2);
-			//double x = ((this.getPosX()+this.getWidth()/2) - (x2+w2/w2))*((this.getPosX()+this.getWidth()/2) - (x2+w2/w2));
-			//double y = ((this.getPosY()+this.getHeight()) - (y2+h2))*((this.getPosY()+this.getHeight()) - (y2+h2)) ;
-		//	double distance = Math.sqrt(x+y);
-			//System.out.println(y2+h2);
 			System.out.println(this.getPosY()+this.getHeight() + " " + (y2+h2) );
 			 if(ground.equals("intersect"))
 		 	{

@@ -1,5 +1,8 @@
 package thread;
 
+import java.util.List;
+
+import model.Enemy;
 import model.Mario;
 import ui.GameController;
 
@@ -25,12 +28,8 @@ public class MovementAndGravityThread extends Thread {
 					
 					try {
 						
-					/*	if(controller.getPressed().isEmpty()) {
-							controller.getMainGame().getLevelOne().getMario().setState(Mario.ISSTANDINGSTILL);
-						}*/
-						
 						boolean enter = false;
-						while( controller.isFalling().isEmpty() && !controller.getJumping().isAlive()) {
+						while(controller.isFalling().isEmpty() && !controller.getJumping().isAlive()) {
 								controller.moveImage(3);
 								if(controller.getPressed().contains("D")) {
 									controller.moveImage(1);

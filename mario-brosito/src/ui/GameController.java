@@ -36,6 +36,7 @@ import model.Slide;
 import model.StaticFigure;
 import thread.CoinAnimation;
 import thread.EnemyThread;
+import thread.Gravity;
 import thread.JumpingThread;
 import thread.LevelTimeThread;
 import thread.MisteryBlockAnimation;
@@ -184,12 +185,27 @@ public class GameController {
 				continue;
 			f = sprites.get(i);
 			
-				Figure mario = mainGame.getLevelOne().getMario();
-				intersects = ((Mario) mario).isGrounded(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
-			
-			
-			
+			Figure mario = mainGame.getLevelOne().getMario();
+			intersects = ((Mario) mario).isGrounded(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
 		}
+    	
+    	return intersects;
+    }
+    
+    public boolean isEnemyFalling(Figure figure, Rectangle figureRec) {
+    	
+    	boolean intersects = false;
+    	Figure f = null;
+    	List<Figure> sprites = mainGame.getLevelOne().getFigures();
+    	for (int i = 0; i < sprites.size() && !intersects; i++) {
+    		
+			if(sprites.get(i) != figure) {
+				f = sprites.get(i);
+				intersects = ((Enemy) figure).enemyIsGrounded(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());				
+			}
+		}
+			
+	
     	
     	return intersects;
     }
@@ -261,7 +277,6 @@ public class GameController {
     public void setFillCoin2() {
 
     	BufferedImage[] blocks1 = imloCoin.getSprites();
-		
 		Image card1 = SwingFXUtils.toFXImage(blocks1[2], null);
 		for (int i = 0; i < rectanCoin.size(); i++) {
 		
@@ -273,7 +288,7 @@ public class GameController {
     	timeOfLevel.setText(time+"");
     }
     
- public void distanceToEnemies() {
+    public void distanceToEnemies() {
     	
     	Mario m = (Mario) mainGame.getLevelOne().getMario();
     	List<Enemy> enemies = mainGame.getLevelOne().getEnemies();
@@ -305,9 +320,14 @@ public class GameController {
  		}
  	}
  	
+ 	public void makeFigureFall(Rectangle figureRec, Figure figure) {
+ 		figure.setPosY(figure.getPosY()+6);
+ 		figureRec.setY(figure.getPosY());
+ 	}
+ 	
  	public void moveEnemy(Rectangle enemyRec, Enemy enemy, int changer) throws IOException {
- 		ImagesLoader sl;
-		ImagesLoader sLoader;
+ 	ImagesLoader sl;
+	ImagesLoader sLoader;
      if(enemy.getState().equals(Mario.ISMOVINGLEFT)) {
          enemy.setPosX(enemy.getPosX()-6);
          enemyRec.setX(enemy.getPosX());
@@ -335,7 +355,7 @@ public class GameController {
  				enemyRec.setFill(new ImagePattern(card));
           }
      }
-     if(enemy instanceof Goomba) {
+    if(enemy instanceof Goomba) {
      	sl = new ImagesLoader(32, 32, 4, 2, enemy.getImage());
      	BufferedImage[] goombas = sl.getSprites();
 			Image card = SwingFXUtils.toFXImage(goombas[0], null);
@@ -344,14 +364,16 @@ public class GameController {
 				enemyRec.setFill(new ImagePattern(card2));
 			else
 				enemyRec.setFill(new ImagePattern(card));
-      }
-     if(enemyIsTouching(enemy)) {
+    }
+    if(enemyIsTouching(enemy)) {
     	 if(enemy.getState().equals(Mario.ISMOVINGLEFT)) {
     		 enemy.setState(Mario.ISMOVINGRIGHT);
     	 }else if(enemy.getState().equals(Mario.ISMOVINGRIGHT)) {
     		 enemy.setState(Mario.ISMOVINGLEFT);
     	 }
-     }
+    }
+    Gravity thread = new Gravity(this, enemyRec, enemy);
+	thread.start();
  	}
  	
  	public boolean enemyIsTouching(Enemy enemy) {
@@ -374,7 +396,7 @@ public class GameController {
  		return intersects;
  	}
  
-    public void moveImage(int a) {
+    public void moveImage(int a){
 
 		Mario m = (Mario) mainGame.getLevelOne().getMario();
 
