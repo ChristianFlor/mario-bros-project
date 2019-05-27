@@ -53,27 +53,22 @@ public class Mario extends Figure {
 		Rectangle2D marioRec = new Rectangle2D(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
 		
 		
-		boolean intersect = marioRec.intersects(new Rectangle2D(x2, y2, w2, h2));
-		
-		if(intersect) {
+		if((!(this.getPosX() > x2+w2) && !(this.getPosX()+this.getWidth() < x2)) && (!(this.getPosY() > y2+h2) && !(this.getPosY() + this.getHeight() < y2))){
 			String ground = isGrounded(x2,y2,w2,y2);
-			System.out.println(this.getPosY()+this.getHeight() + " " + (y2+h2) );
-			if(ground.equals("intersect")){
+			
+			if(!ground.isEmpty() && (this.getPosX()+this.getWidth() >x2 || this.getPosX()<x2+w2)){
 				collide = ISMOVINGDOWN;
 			}
 			 
-			 else if( this.getPosX()<=x2 && this.getPosY()+this.getHeight() > y2 && this.getPosY()+this.getHeight()<=y2+h2 && (!state.equals(ISMOVINGDOWN))) {
+			else if( this.getPosX()<=x2 && this.getPosY()+this.getHeight() > y2 && this.getPosY()+this.getHeight()<=y2+h2) {
 			
 				collide = ISMOVINGRIGHT;
-				System.out.println(9);
 				
 			}
-			else if(this.getPosX() >= x2 && this.getPosY()+this.getHeight() >= y2 && this.getPosY()+this.getHeight()<=y2+h2  && (!state.equals(ISMOVINGDOWN))) {
+			else if(this.getPosX() >= x2 && this.getPosY()+this.getHeight() >= y2 && this.getPosY()+this.getHeight()<=y2+h2) {
 				collide = ISMOVINGLEFT;
-				System.out.println(65);
 			}else if(this.getPosY() >y2 && this.getPosX()+32 > x2 && this.getPosX() < x2+w2) {//&& this.getPosX()+16 >= x2 && this.getPosX()+16 <= x2+w2
 				collide = ISMOVINGUP;
-				System.out.println(1);
 			}
 			
 			
@@ -170,7 +165,7 @@ public class Mario extends Figure {
 		
 		
 		if((!(this.getPosX() > x2+w2) && !(this.getPosX()+this.getWidth() < x2)) && (!(this.getPosY() > y2+h2) && !(this.getPosY() + this.getHeight() < y2))){
-			Point2D p1 = new Point2D(x2, y2);
+			/*Point2D p1 = new Point2D(x2, y2);
 			Point2D p2 = new Point2D(x2+w2, y2);
 			Point2D p12 = new Point2D(x2+w2/2, y2);
 			
@@ -181,9 +176,17 @@ public class Mario extends Figure {
 				grounded = "floor";
 			}else if((marioRec.contains(p1) || marioRec.contains(p2) || marioRec.contains(p12)) && this.getPosX()+this.getWidth() > x2 && this.getPosX()<x2+w2){
 				grounded = "intersect";
-			}
+			}*/
 			
+			if(y2==416 || y2 == 448) {
+				grounded = "floor";
+			}else if(this.getPosY()+this.getHeight() <= y2) {
+				grounded = "intersect";
+			}
 		}
+		
+			
+		
 		return grounded;
 	}
 	
