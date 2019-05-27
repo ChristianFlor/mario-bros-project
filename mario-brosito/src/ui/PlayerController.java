@@ -75,13 +75,12 @@ public class PlayerController {
 			table =createTable();
 	    	vBoxList.getChildren().add(table);
 	    	optionsSearch.getItems().addAll("Id","Name","Nick","Score");
-	   
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	//g.initPlayers();
-    	 }
+    	
+    }
     private TableView<Player> createTable(){
     	table = new TableView<Player>();
     	data = createData();
@@ -140,7 +139,7 @@ public class PlayerController {
 	    		search.setPromptText("Enter your name");
 	        	String id = search.getText();
 	        	long start = System.currentTimeMillis();
-	        	Player espNick = g.searchByName(id);
+	        	Player espNick = g.searchPlayerByName(g.getPlayersToArray(),id);
 	        	if(id != "" && id != null) {
 	        		if(espNick != null) {
 	        			
@@ -225,42 +224,42 @@ public class PlayerController {
     void sortId(ActionEvent event) {
     	data.clear();
     	g.sortByCode();
-    	data.addAll(g.getFlightsToArray());
+    	data.addAll(g.getPlayersToArray());
     }
 
     @FXML
     void sortName(ActionEvent event) {
     	data.clear();
     	g.sortByName();
-    	data.addAll(g.getFlightsToArray());
+    	data.addAll(g.getPlayersToArray());
     }
 
     @FXML
     void sortNick(ActionEvent event) {
     	data.clear();
     	g.sortByNick();
-    	data.addAll(g.getFlightsToArray());
+    	data.addAll(g.getPlayersToArray());
     }
 
     @FXML
     void sortScore(ActionEvent event) {
     	data.clear();
     	g.sortByScore();
-    	data.addAll(g.getFlightsToArray());
+    	data.addAll(g.getPlayersToArray());
     }
 
     private ObservableList<Player> createData(){
     	data = FXCollections.observableArrayList();
     	
-    	data.addAll(g.getFlightsToArray());
+    	data.addAll(g.getPlayersToArray());
     	return data;
     }
     @FXML
     void register(ActionEvent event) {
        	data.clear();
     	g.addPlayer(tfName.getText(),tfNick.getText(),25.0);
-    	g.addScore(g.searchByName(tfName.getText()));
-    	data.addAll(g.getFlightsToArray());
+    	g.addScore(g.searchPlayer(tfName.getText()));
+    	data.addAll(g.getPlayersToArray());
     }
    
     @FXML
@@ -352,5 +351,4 @@ public class PlayerController {
     		drawLinesForList(node.getNext());
     	}
     }
-
 }
