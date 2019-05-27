@@ -8,6 +8,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,6 +24,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import model.Bowser;
 import model.Coin;
 import model.Enemy;
@@ -170,7 +175,25 @@ public class GameController {
 			Figure f = sprites.get(i);
 			Figure mario = mainGame.getLevelOne().getMario();
 			intersects = ((Mario) mario).isColliding(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
-			
+			if(intersects.equals(Mario.ISMOVINGDOWN) && sprites.get(i) instanceof Enemy) {
+				if(sprites.get(i) instanceof Goomba) {
+					Goomba g = (Goomba) sprites.get(i);
+					Rectangle gRec = enemyRectangles.get(g);
+			        ImagesLoader sl = null;
+					try {
+						sl = new ImagesLoader(32, 16, 2, 1, Goomba.DEADGOOMBA);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+			     	BufferedImage[] goombas = sl.getSprites();
+					Image card = SwingFXUtils.toFXImage(goombas[0], null);
+					gRec.setFill(new ImagePattern(card));
+					gRec.setY(gRec.getY()+16);
+					gRec.setHeight(16);
+				}else if(sprites.get(i) instanceof Koopa) {
+					Koopa k = (Koopa) sprites.get(i);
+				}
+			}
 		}
     	return intersects;
     }
@@ -434,6 +457,9 @@ public class GameController {
 	        }else if(a==3 && !touch.equals(Mario.ISMOVINGDOWN)){
 	        	mainMario.setY(mainMario.getY()+8);
 	        	m.setPosY(mainMario.getY());
+	        }else if(a==3 && touch.equals(Mario.ISMOVINGDOWN)){
+	        	mainMario.setY(mainMario.getY()+8);
+	        	m.setPosY(mainMario.getY());
 	        }
 			distanceToEnemies();
     	}
@@ -451,10 +477,10 @@ public class GameController {
     	else if(key==2) {   // right movement2
     		changed = SwingFXUtils.toFXImage(marioPictures[5], null);
     		mainMario.setFill(new ImagePattern(changed));
-    	}else if(key==3) {   // rigth movement3
+    	}else if(key==3) {   // Right movement3
     		changed = SwingFXUtils.toFXImage(marioPictures[6], null);
     		mainMario.setFill(new ImagePattern(changed));
-    	}else if(key ==4) {   // rigth movement3
+    	}else if(key ==4) {   // Right movement3
     		changed = SwingFXUtils.toFXImage(marioPictures[2], null);
     		mainMario.setFill(new ImagePattern(changed));
     	}else if(key ==5) {   // left movement1

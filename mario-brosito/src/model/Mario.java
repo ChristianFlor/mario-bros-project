@@ -58,8 +58,7 @@ public class Mario extends Figure {
 		if(intersect) {
 			String ground = isGrounded(x2,y2,w2,y2);
 			System.out.println(this.getPosY()+this.getHeight() + " " + (y2+h2) );
-			 if(ground.equals("intersect"))
-		 	{
+			if(ground.equals("intersect")){
 				collide = ISMOVINGDOWN;
 			}
 			 

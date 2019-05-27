@@ -124,12 +124,12 @@ public class PlayerController {
     	data.addAll(g.preorderListOfScore());
     }
     @FXML
-    void register(ActionEvent event) {
+    public void register(ActionEvent event) {
     	
     }
     
     @FXML
-    void searchName(ActionEvent event) {
+    public void searchName(ActionEvent event) {
 
     	if(g != null) {
     		String id = idName.getText();
@@ -165,7 +165,7 @@ public class PlayerController {
     }
 
     @FXML
-    void searchNick(ActionEvent event) {
+    public void searchNick(ActionEvent event) {
     	if(g != null) {
     		String id = idNick.getText();
         	long start = System.currentTimeMillis();
@@ -198,7 +198,7 @@ public class PlayerController {
     	}
     }
     @FXML
-    void generate(ActionEvent event) {
+    public void generate(ActionEvent event) {
     	if(g!= null) {
     		canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         	this.g.setWidth(canvas.getWidth());
