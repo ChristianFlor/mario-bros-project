@@ -5,8 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-	
-	
+	// -----------------------------------------------------------------
+    // Constant
+    // -----------------------------------------------------------------
+	public static final double INCREASEMENT = 90.0;
+	// -----------------------------------------------------------------
+    // Attributes
+    // -----------------------------------------------------------------
+
 	private Level levelOne;
 	private Level levelTwo;
 	private Level levelThree;
@@ -15,9 +21,10 @@ public class Game {
 	private SoundsLoader sounds;
 	
 	private Score root;
+	private Player first;
 	private double width;
 	private double height;
-	public static final double INCREASEMENT = 90.0;
+
 	public Game() throws IOException {
 		levelOne = new Level();
 		levelOne.loadLevel(Level.LEVEL_ONE_PATH);
@@ -25,110 +32,357 @@ public class Game {
 		levelTwo.loadLevel(Level.LEVEL_TWO_PATH);
 		levelThree = new Level();
 		levelThree.loadLevel(Level.LEVEL_THREE_PATH);
+		initPlayers();
 	}
 	
-	public void initPlayers() {
-
-		addScore("Carlos","Carlosches",90);
-		addScore("Cesar","Sleeptight",100);
-		addScore("Ana","Anamvgd",80);
-		addScore("Christian","Rolfman",30);
-		addScore("Alejandra","ale",58);
+	// -----------------------------------------------------------------
+    // Methods for add List
+    // -----------------------------------------------------------------
+	public void addPlayer(String n, String nick, double s) {
+		Player p= new Player(n,nick,s);
+		if(first == null){
+			first =p;
+		}else{
+			Player current = first;
+			while(current.getNext() != null){
+				current = current.getNext();
+			}
+			current.setNext(p);
+			current.getNext().setPrev(current);
+		}
 	}
+	// -----------------------------------------------------------------
+    // Methods for add tree
+    // -----------------------------------------------------------------
 	
-	public void addScore(String name,String nick, int score) {
-		Score s = new Score(name,nick, score);
-		
+	public void addScore(Player p) {
+		Score s= new Score(p.getName(), p.getScore());
 		if(root == null) {
-			root = s;
-		} else {
+			root= s;
+		}else {
 			addScore(root, s);
 		}
 	}
-				
 	private void addScore(Score current, Score newOne) {
-				if(current.getScore()<newOne.getScore()) {
-					if(current.getRight()==null) {
-					current.setRight(newOne);
+		if(current.getScore()<newOne.getScore()) {
+			if(current.getRight()==null) {
+			current.setRight(newOne);
+			} else {
+				addScore(current.getRight(), newOne);
+			} 
+		} else if(current.getScore()>newOne.getScore()){
+			if(current.getLeft()==null) {
+				current.setLeft(newOne);
+			} else {
+				addScore(current.getLeft(), newOne);
+			}
+		}
+	}
+	// -----------------------------------------------------------------
+    // Methods for show tree
+    // -----------------------------------------------------------------
+	public void printTree(Score current) {
+		if(current.getLeft() != null) {
+			printTree(current.getLeft());
+		}
+		System.out.println(current);
+		if(current.getRight() != null) {
+			printTree(current.getRight());
+		}
+	}
+
+	public void increaseBounds() {
+		double x = increaseBoundsX(root);
+		if(x >= width) {
+			this.width = x+20;
+		}
+	}
+	
+	private double increaseBoundsX(Score current) {
+		if(current != null) {
+			double l = increaseBoundsX(current.getLeft());
+			double r = increaseBoundsX(current.getRight());
+			if(l > current.getX()) {
+				if(l < r) {
+					return r;
+				}
+				return l;
+			} else if (r > current.getX()){
+				if(r < l) {
+					return l;
+				}
+				return r;
+			} else {
+				return current.getX();
+			}
+		}
+		return 0;
+	}
+	// -----------------------------------------------------------------
+    // Methods for sort List
+    // -----------------------------------------------------------------
+	public void sortByName() {
+		// TODO Use of bubble sort
+		if(first != null) {
+			Player temp = first;
+			int counter = 0;
+			int size = sizeOfPlayer();
+			while(temp != null) {
+				Player current = first;
+				int counter2 = 0;
+				while(current.getNext() != null && counter2 < size-counter) {
+					if(current.getName().compareTo(current.getNext().getName()) > 0) {
+						if(first == current) first = current.getNext();
+						Player next = current.getNext().getNext();
+						Player prev = current.getPrev();
+						if(next != null) next.setPrev(current);
+						if(prev != null) prev.setNext(current.getNext());
+						current.getNext().setNext(current);
+						current.getNext().setPrev(prev);
+						current.setPrev(current.getNext());
+						current.setNext(next);
 					} else {
-						addScore(current.getRight(), newOne);
-					} 
-				} else if(current.getScore()>newOne.getScore()){
-					if(current.getLeft()==null) {
-						current.setLeft(newOne);
+						current = current.getNext();
+					}
+					counter2++;
+				}
+				counter++;
+				temp = temp.getNext();
+			}
+		}
+	}
+	public void sortByNick() {
+		// TODO Use of bubble sort
+		if(first != null) {
+			Player temp = first;
+			int counter = 0;
+			int size = sizeOfPlayer();
+			while(temp != null) {
+				Player current = first;
+				int counter2 = 0;
+				while(current.getNext() != null && counter2 < size-counter) {
+					if(current.getNickName().compareTo(current.getNext().getNickName()) > 0) {
+						if(first == current) first = current.getNext();
+						Player next = current.getNext().getNext();
+						Player prev = current.getPrev();
+						if(next != null) next.setPrev(current);
+						if(prev != null) prev.setNext(current.getNext());
+						current.getNext().setNext(current);
+						current.getNext().setPrev(prev);
+						current.setPrev(current.getNext());
+						current.setNext(next);
 					} else {
-						addScore(current.getLeft(), newOne);
+						current = current.getNext();
+					}
+					counter2++;
+				}
+				counter++;
+				temp = temp.getNext();
+			}
+		}
+	}
+	public void sortByScore() {
+		// TODO Use of insertion sort
+		if(first.getNext() != null) {
+			Player current = first.getNext();
+			while(current != null) {
+				Player temp = current;
+				while(temp.getPrev() != null) {
+					
+					if(temp.getScore() < temp.getPrev().getScore()) {
+						if(temp.getPrev() == first) first = temp;
+						Player next = temp.getNext();
+						Player prev = temp.getPrev().getPrev();
+						if(next != null) next.setPrev(temp.getPrev());
+						if(prev != null) prev.setNext(temp);
+						temp.setNext(temp.getPrev());
+						temp.getPrev().setPrev(temp);
+						temp.getPrev().setNext(next);
+						temp.setPrev(prev);
+					} else {
+						temp = temp.getPrev();
 					}
 				}
-	}
-	
-	public Score searchName(String id) {
-		
-		Score current = root;
-		boolean exit = false;
-		
-		
-		while(!exit && current != null) {
-			
-			if(current.getName().equalsIgnoreCase(id)) {
-				exit = true;
-			}else {
-				if(current.getName().compareTo(id) >0) {
-					current = current.getLeft();
-				}
-				else {
-					current = current.getRight();
-				}
+				current = current.getNext();
 			}
-			
 		}
 		
-		return current;
-		
 	}
-	
-	public Score searchNick(String id) {
-		
-		Score current = root;
-		boolean exit = false;
-		
-		
-		while(!exit && current != null) {
-			
-			if(current.getNickName().equalsIgnoreCase(id)) {
-				exit = true;
-			}else {
-				if(current.getNickName().compareTo(id) >0) {
-					current = current.getLeft();
+	public void sortByCode() {
+		// TODO use of selection sort
+		Player current = first;
+		while(current != null) {
+			Player temp = current.getNext();
+			Player min = current;
+			while(temp != null) {
+				if(temp.getId().compareTo(min.getId()) <= 0 ) {
+					min = temp;
 				}
-				else {
-					current = current.getRight();
-				}
+				temp = temp.getNext();
 			}
-			
-		}
-		
-		return current;
-		
-	}
-	/*
-	public Score searchNick(String nick) {
-		return searchNick(nick, root);
-	}
-	
-	private Score searchNick(String nick, Score current) {
-		if(current != null) {
-			if(current.getName().compareTo(nick) > 0) {
-				return searchNick(nick, current.getLeft());
-			} else if(current.getName().compareTo(nick) < 0) {
-				return searchNick(nick, current.getRight());
+			boolean firstIt = false;
+			if(min != current) {
+				Player next1 = current.getNext();
+				Player previous1 = current.getPrev();
+				
+				Player next2 = min.getNext();
+				Player previous2 = min.getPrev();
+				
+				if(min == current.getNext()	) {
+					if(previous1 != null) previous1.setNext(min);
+					else {
+						first = min;
+						firstIt = true;
+					}
+					current.setNext(next2);
+					current.setPrev(min);
+					if(next2 != null) next2.setPrev(current);
+					min.setNext(current);
+					min.setPrev(previous1);
+				} else {
+					if(next1 != null) next1.setPrev(min);
+					if(previous1 != null) previous1.setNext(min);
+					else {
+						first = min;
+						firstIt = true;
+					}
+					
+					min.setNext(next1);
+					min.setPrev(previous1);
+					
+					if(next2 != null) next2.setPrev(current);
+					if(previous2 != null) previous2.setNext(current);
+					
+					current.setNext(next2);
+					current.setPrev(previous2);
+				}
+				current = min;
+			}	
+			if(firstIt) {
+				current = first.getNext();
 			} else {
+				current = current.getNext();
+			}
+		}
+	}
+	// -----------------------------------------------------------------
+    // Methods for search in List
+    // -----------------------------------------------------------------
+	public Player searchPlayer(String name) {
+		return searchPlayer(name, first);
+	}
+	
+	private Player searchPlayer(String name, Player current) {
+		if(current != null) {
+			if(current.getName().compareTo(name) == 0) {
 				return current;
+			} else {
+				return searchPlayer(name, current.getNext());
 			}
 		}
 		return null;
+	}	
+	public Player searchByCode(String n) {
+		Player match = null;
+		Player current = first;
+		while(current!=null && match==null) {
+			if(current.getId().equalsIgnoreCase(n)) {
+				match = current;
+			}
+			current = current.getNext();
+		}
+		return match;
 	}
-	*/
+
+	public Player searchByScore(String n) {
+		int gate= Integer.parseInt(n);
+		Player match = null;
+		Player current = first;
+		while(current!=null && match==null) {
+			double currentGate=  current.getScore();
+			if(currentGate==gate) {
+				match = current;
+			}
+			current = current.getNext();
+		}
+		return match;
+	}
+	public Player searchByName(String n) {
+		Player match = null;
+		Player current = first;
+		while(current!=null && match==null) {
+			if(current.getName().equalsIgnoreCase(n)) {
+				match = current;
+			}
+			current = current.getNext();
+		}
+		return match;
+	}
+	public Player searchByNick(String n) {
+		Player match = null;
+		Player current = first;
+		while(current!=null && match==null) {
+			if(current.getNickName().equalsIgnoreCase(n)) {
+				match = current;
+			}
+			current = current.getNext();
+		}
+		return match;
+	}
+	// -----------------------------------------------------------------
+    // Methods of model solution
+    // -----------------------------------------------------------------
+	
+	public void initPlayers() {
+		addPlayer("Carlos","Carlosches",90.0);
+		addScore(searchPlayer("Carlos"));
+		addPlayer("Cesar","Sleeptight",100);
+		addScore(searchPlayer("Cesar"));
+		addPlayer("Ana","Anamvgd",80);
+		addScore(searchPlayer("Ana"));
+		addPlayer("Christian","Rolfman",30);
+		addScore(searchPlayer("Christian"));
+		addPlayer("Alejandra","ale",58);
+		addScore(searchPlayer("Alejandra"));
+	}
+	public int sizeOfPlayer(){
+		int size=0;
+		Player current = first;
+		while(current != null){
+			size++;
+			current = current.getNext();
+		}
+		return size;
+	}
+	
+	public void assignePositions() {
+		assignePositions(root, 0, this.getWidth(), 0, this.getHeight() / this.getTreeHeight());
+	}
+	
+	private void assignePositions(Score current, double xMin, double xMax, double yMin, double yMax) {
+		current.setX((xMin + xMax) / 2);
+		current.setY(yMin + yMax / 2);
+		if(current.getLeft() != null) {
+			assignePositions(current.getLeft(), xMin, (xMin + xMax) / 2, yMin + yMax, yMax);
+		}
+		if(current.getRight() != null) {
+			assignePositions(current.getRight(), (xMin + xMax) / 2, xMax, yMin + yMax, yMax);
+		}
+	}
+	
+	public void assignePositionsList() {
+		double x = this.width/this.first.size();
+		double y = this.height/2;
+		assignePositionsList(first, x, y);
+	}
+	private void assignePositionsList(Player current, double x, double y) {
+		if(current != null) {
+			current.setX(x);
+			current.setY(y);
+			assignePositionsList(current.getNext(), x + 80, y);
+		}
+	}
+
 	public List<Score> inorderListOfScore() {
 		return inorderListOfScore(root);
 	}
@@ -169,55 +423,22 @@ public class Game {
 		}
 		return l;
 	}
-	public void printTree(Score current) {
-		if(current.getLeft() != null) {
-			printTree(current.getLeft());
-		}
-		System.out.println(current);
-		if(current.getRight() != null) {
-			printTree(current.getRight());
-		}
-	}
-	public void assignePositions() {
-		assignePositions(root, 0, this.getWidth(), 0, this.getHeight() / this.getTreeHeight());
-	}
 	
-	private void assignePositions(Score current, double xMin, double xMax, double yMin, double yMax) {
-		current.setX((xMin + xMax) / 2);
-		current.setY(yMin + yMax / 2);
-		if(current.getLeft() != null) {
-			assignePositions(current.getLeft(), xMin, (xMin + xMax) / 2, yMin + yMax, yMax);
-		}
-		if(current.getRight() != null) {
-			assignePositions(current.getRight(), (xMin + xMax) / 2, xMax, yMin + yMax, yMax);
-		}
-	}
-	public void increaseBounds() {
-		double x = increaseBoundsX(root);
-		if(x >= width) {
-			this.width = x+20;
-		}
-	}
-	
-	private double increaseBoundsX(Score current) {
-		if(current != null) {
-			double l = increaseBoundsX(current.getLeft());
-			double r = increaseBoundsX(current.getRight());
-			if(l > current.getX()) {
-				if(l < r) {
-					return r;
-				}
-				return l;
-			} else if (r > current.getX()){
-				if(r < l) {
-					return l;
-				}
-				return r;
-			} else {
-				return current.getX();
-			}
-		}
-		return 0;
+
+	// -----------------------------------------------------------------
+    // Methods Atributes
+    // -----------------------------------------------------------------
+	public Player[] getFlightsToArray() {
+		Player[] flights;
+		flights = new Player[first.size()];
+		int c = 0;
+		Player current = first;
+		 	while(current!=null) {
+		 		flights[c]= current;
+		 		current = current.getNext();
+		 		c++;
+		 	}
+		return flights;
 	}
 	public int getTreeHeight() {
 		return getTreeHeight(root);
@@ -247,6 +468,14 @@ public class Game {
 	public void setHeight(double height) {
 		this.height = height;
 	}
+	public Player getFirst() {
+		return first;
+	}
+	public void setFirst(Player first) {
+		this.first = first;
+	}
+
+
 	/**
 	 * @return the levelOne
 	 */

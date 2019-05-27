@@ -14,16 +14,23 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.StageStyle;
 import model.Game;
+import model.Player;
 import model.Score;
 
 
 public class PlayerController {
 	private Game g;
+	
+    @FXML
+    private ComboBox<String> optionsSearch;
     @FXML
     private TextField tfName;
 
@@ -31,16 +38,10 @@ public class PlayerController {
     private TextField tfNick;
 
     @FXML
-    private TextField idName;
+    private TextField search;
 
     @FXML
     private Label timeCheck111;
-
-    @FXML
-    private TextField idNick;
-
-    @FXML
-    private Label timeCheck1111;
 
     @FXML
     private ImageView foundScoreImg;
@@ -61,144 +62,209 @@ public class PlayerController {
     private VBox vBoxList;
 
     @FXML
+    private Label dId;
+    @FXML
     private Canvas canvas;
     
-    private TableView<Score> table;
-    private ObservableList<Score> data;
+    private TableView<Player> table;
+    private ObservableList<Player> data;
     
     public void initialize() {
     	try {
 			g= new Game();
-			g.initPlayers();
-	    	table =createTable();
+			table =createTable();
 	    	vBoxList.getChildren().add(table);
+	    	optionsSearch.getItems().addAll("Id","Name","Nick","Score");
+	   
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
-    	
-    }
-    private TableView<Score> createTable(){
-    	table = new TableView<Score>();
+    	//g.initPlayers();
+    	 }
+    private TableView<Player> createTable(){
+    	table = new TableView<Player>();
     	data = createData();
     	table.setEditable(true);
-
-    	TableColumn<Score, String> name= new TableColumn<Score, String>("NAME");
-    	name.setCellValueFactory(new PropertyValueFactory<Score, String>("name"));
+    	TableColumn<Player, String> id= new TableColumn<Player, String>("ID");
+    	id.setCellValueFactory(new PropertyValueFactory<Player, String>("id"));
     	
-    	TableColumn<Score, String> nickName= new TableColumn<Score, String>("NICK");
-    	nickName.setCellValueFactory(new PropertyValueFactory<Score, String>("nickName"));
+    	TableColumn<Player, String> name= new TableColumn<Player, String>("NAME");
+    	name.setCellValueFactory(new PropertyValueFactory<Player, String>("name"));
     	
-    	TableColumn<Score, Integer> score= new TableColumn<Score, Integer>("SCORE");
-    	score.setCellValueFactory(new PropertyValueFactory<Score, Integer>("score"));
+    	TableColumn<Player, String> nickName= new TableColumn<Player, String>("NICK");
+    	nickName.setCellValueFactory(new PropertyValueFactory<Player, String>("nickName"));
+    	
+    	TableColumn<Player, Integer> score= new TableColumn<Player, Integer>("SCORE");
+    	score.setCellValueFactory(new PropertyValueFactory<Player, Integer>("score"));
     	
     
     	table.setItems(data);
-    	table.getColumns().addAll(name, nickName, score);
+    	table.getColumns().addAll(id,name, nickName, score);
     	table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     	
     	return table;
     }
-    private ObservableList<Score> createData(){
+    @FXML
+    void search(ActionEvent event) {
+    	String o= (String) optionsSearch.getValue();
+    	try {
+    		
+	    	if(o.equals("Id")) {
+	    		search.setPromptText("Enter your id");
+	        	String id = search.getText();
+	        	long start = System.currentTimeMillis();
+	        	Player espNick = g.searchByCode(id);
+	        	if(id != "" && id != null) {
+	        		if(espNick != null) {
+	        			
+	        			foundScoreImg.setImage(new Image(espNick.getPhoto()));
+	        			dName.setText("Name: "+espNick.getName());
+	        			dNick.setText("NickName: "+espNick.getNickName());
+	        			dScore.setText("Score: "+espNick.getScore());
+	        			dId.setText("Id: "+espNick.getId());
+	        			long endTime = (System.currentTimeMillis() - start)/1000;
+	                   	timeCheck111.setText("Time: "+endTime);
+	        		}else {
+	        			Alert a = new Alert(AlertType.INFORMATION);
+	            		a.setContentText("Player with Id: " + id + " not found");
+	            		a.show();
+	        		}
+	        	} else {
+	        		Alert a = new Alert(AlertType.INFORMATION);
+	        		a.setContentText("Please type an id");
+	        		a.show();
+	        	}
+	        		
+	    	}else if(o.equals("Name")) {
+	    		search.setPromptText("Enter your name");
+	        	String id = search.getText();
+	        	long start = System.currentTimeMillis();
+	        	Player espNick = g.searchByName(id);
+	        	if(id != "" && id != null) {
+	        		if(espNick != null) {
+	        			
+	        			foundScoreImg.setImage(new Image(espNick.getPhoto()));
+	        			dName.setText("Name: "+espNick.getName());
+	        			dNick.setText("NickName: "+espNick.getNickName());
+	        			dScore.setText("Score: "+espNick.getScore());
+	        			dId.setText("Id: "+espNick.getId());
+	        			long endTime = (System.currentTimeMillis() - start)/1000;
+	                   	timeCheck111.setText("Time: "+endTime);
+	        		}else {
+	        			Alert a = new Alert(AlertType.INFORMATION);
+	            		a.setContentText("Player with name: " + id + " not found");
+	            		a.show();
+	        		}
+	        	} else {
+	        		Alert a = new Alert(AlertType.INFORMATION);
+	        		a.setContentText("Please type an name");
+	        		a.show();
+	        	}
+	    	}else if(o.equals("Nick")) {
+	    		search.setPromptText("Enter your nick");
+	        	String id = search.getText();
+	        	long start = System.currentTimeMillis();
+	        	Player espNick = g.searchByNick(id);
+	        	if(id != "" && id != null) {
+	        		if(espNick != null) {
+	        			
+	        			foundScoreImg.setImage(new Image(espNick.getPhoto()));
+	        			dName.setText("Name: "+espNick.getName());
+	        			dNick.setText("NickName: "+espNick.getNickName());
+	        			dScore.setText("Score: "+espNick.getScore());
+	        			dId.setText("Id: "+espNick.getId());
+	        			long endTime = (System.currentTimeMillis() - start)/1000;
+	                   	timeCheck111.setText("Time: "+endTime);
+	        		}else {
+	        			Alert a = new Alert(AlertType.INFORMATION);
+	            		a.setContentText("Player with Nick: " + id + " not found");
+	            		a.show();
+	        		}
+	        	} else {
+	        		Alert a = new Alert(AlertType.INFORMATION);
+	        		a.setContentText("Please type an nick");
+	        		a.show();
+	        	}
+	    	}else if(o.equals("Score")) {
+	    		search.setPromptText("Enter your id");
+	        	String id = search.getText();
+	        	long start = System.currentTimeMillis();
+	        	Player espNick = g.searchByScore(id);
+	        	if(id != "" && id != null) {
+	        		if(espNick != null) {
+	        			
+	        			foundScoreImg.setImage(new Image(espNick.getPhoto()));
+	        			dName.setText("Name: "+espNick.getName());
+	        			dNick.setText("NickName: "+espNick.getNickName());
+	        			dScore.setText("Score: "+espNick.getScore());
+	        			dId.setText("Id: "+espNick.getId());
+	        			long endTime = (System.currentTimeMillis() - start)/1000;
+	                   	timeCheck111.setText("Time: "+endTime);
+	        		}else {
+	        			Alert a = new Alert(AlertType.INFORMATION);
+	            		a.setContentText("Player with Score: " + id + " not found");
+	            		a.show();
+	        		}
+	        	} else {
+	        		Alert a = new Alert(AlertType.INFORMATION);
+	        		a.setContentText("Please type an score");
+	        		a.show();
+	        	}
+	    	}
+    	}catch(NumberFormatException e) {
+    		Alert info = new Alert(AlertType.ERROR);
+        	info.setTitle("Simulation");
+        	info.setHeaderText(null);
+        	info.initStyle(StageStyle.UTILITY);
+        	info.setContentText("Please introduce a value valid");
+        	info.show();
+    	} 
+    }
+    @FXML
+    void sortId(ActionEvent event) {
+    	data.clear();
+    	g.sortByCode();
+    	data.addAll(g.getFlightsToArray());
+    }
+
+    @FXML
+    void sortName(ActionEvent event) {
+    	data.clear();
+    	g.sortByName();
+    	data.addAll(g.getFlightsToArray());
+    }
+
+    @FXML
+    void sortNick(ActionEvent event) {
+    	data.clear();
+    	g.sortByNick();
+    	data.addAll(g.getFlightsToArray());
+    }
+
+    @FXML
+    void sortScore(ActionEvent event) {
+    	data.clear();
+    	g.sortByScore();
+    	data.addAll(g.getFlightsToArray());
+    }
+
+    private ObservableList<Player> createData(){
     	data = FXCollections.observableArrayList();
     	
-    	data.addAll(g.inorderListOfScore());
+    	data.addAll(g.getFlightsToArray());
     	return data;
     }
     @FXML
-    void inOrden(ActionEvent event) {
-    	data.clear();
-    	data.addAll(g.inorderListOfScore());
+    void register(ActionEvent event) {
+       	data.clear();
+    	g.addPlayer(tfName.getText(),tfNick.getText(),25.0);
+    	g.addScore(g.searchByName(tfName.getText()));
+    	data.addAll(g.getFlightsToArray());
     }
-
+   
     @FXML
-    void postOrden(ActionEvent event) {
-    	data.clear();
-    	data.addAll(g.postorderListOfScore());
-    }
-
-    @FXML
-    void preOrden(ActionEvent event) {
-    	data.clear();
-    	data.addAll(g.preorderListOfScore());
-    }
-    @FXML
-    public void register(ActionEvent event) {
-    	
-    }
-    
-    @FXML
-    public void searchName(ActionEvent event) {
-
-    	if(g != null) {
-    		String id = idName.getText();
-        	long start = System.currentTimeMillis();
-    		Score esp = g.searchName(id);
-    		long endTime = (System.currentTimeMillis() - start);
-           	timeCheck111.setText("Time: "+endTime);
-        	if(id != "" && id != null) {
-        		if(esp != null) {
-        			foundScoreImg.setImage(new Image(esp.getPhoto()));
-        			
-        			dName.setText("Name: "+esp.getName());
-        			dNick.setText("Nick Name: "+esp.getNickName());
-        			dScore.setText("Email: "+esp.getScore());
-        			
-        		}else {
-        			Alert a = new Alert(AlertType.INFORMATION);
-            		a.setContentText("Player with Name: " + id + " not found");
-            		a.show();
-        		}
-        		
-        	} else {
-        		Alert a = new Alert(AlertType.INFORMATION);
-        		a.setContentText("Please type an name");
-        		a.show();
-        	}
-    	} else {
-    		Alert a = new Alert(AlertType.INFORMATION);
-    		a.setContentText("Please load a file with the player info first");
-    		a.show();
-    	}
-    	
-    }
-
-    @FXML
-    public void searchNick(ActionEvent event) {
-    	if(g != null) {
-    		String id = idNick.getText();
-        	long start = System.currentTimeMillis();
-    		Score espNick = g.searchNick(id);
-    		long endTime = (System.currentTimeMillis() - start);
-           	timeCheck1111.setText("Time: "+endTime);
-        	if(id != "" && id != null) {
-        		if(espNick != null) {
-        			
-        			foundScoreImg.setImage(new Image(espNick.getPhoto()));
-        			dName.setText("Name: "+espNick.getName());
-        			dNick.setText("Last Name: "+espNick.getNickName());
-        			dScore.setText("Email: "+espNick.getScore());
-        			
-        		}else {
-        			Alert a = new Alert(AlertType.INFORMATION);
-            		a.setContentText("Player with Name: " + id + " not found");
-            		a.show();
-        		}
-        		
-        	} else {
-        		Alert a = new Alert(AlertType.INFORMATION);
-        		a.setContentText("Please type an name");
-        		a.show();
-        	}
-    	} else {
-    		Alert a = new Alert(AlertType.INFORMATION);
-    		a.setContentText("Please load a file with the player info first");
-    		a.show();
-    	}
-    }
-    @FXML
-    public void generate(ActionEvent event) {
+    void generateTree(ActionEvent event) {
     	if(g!= null) {
     		canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         	this.g.setWidth(canvas.getWidth());
@@ -224,9 +290,15 @@ public class PlayerController {
     public void drawImagesForTree(Score node, Score parent) {
     	if(node != null) {
     		canvas.getGraphicsContext2D().drawImage(new Image(node.getPhoto()), node.getX(), node.getY());
-    		canvas.getGraphicsContext2D().fillText(node.getScore()+"\n"+node.getName(), node.getX(), node.getY()+30);
+    		canvas.getGraphicsContext2D().setFill(Color.YELLOW);
+    		canvas.getGraphicsContext2D().fillOval(node.getX(), node.getY(), 60, 60);
+    		canvas.getGraphicsContext2D().setFill(Color.BLACK);
+    		canvas.getGraphicsContext2D().strokeOval(node.getX(), node.getY(), 60, 60);
+    		canvas.getGraphicsContext2D().fillText(node.getScore()+"\n"+node.getName(), node.getX()+8, node.getY()+25);
     		drawImagesForTree(node.getLeft(), node);
     		drawImagesForTree(node.getRight(), node);
+    		
+    	
     	}
     }
     
@@ -235,6 +307,49 @@ public class PlayerController {
     		canvas.getGraphicsContext2D().strokeLine(parent.getX()+25, parent.getY()+25, node.getX()+25, node.getY()+25);
     		drawLinesForTree(node.getLeft(), node);
     		drawLinesForTree(node.getRight(), node);
+    	}
+    }
+    @FXML
+    void generateList(ActionEvent event) {
+    	if(g!= null) {
+    		canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        	this.g.setWidth(canvas.getWidth());
+        	this.g.setHeight(canvas.getHeight());
+        	this.g.assignePositionsList();
+        	this.canvas.getGraphicsContext2D().setLineWidth(3);
+        	double ny = g.getTreeHeight()*90+50;
+        	if(ny > canvas.getHeight()) {
+        		canvas.setHeight(ny);
+        	}
+        	g.increaseBounds();
+        	this.canvas.setWidth(g.getWidth());
+        	drawLinesForList(g.getFirst());
+        	drawImagesForList(g.getFirst());
+    	} else {
+    		Alert a = new Alert(AlertType.INFORMATION);
+    		a.setContentText("Please load a file with the assistants info first");
+    		a.show();
+    	}
+    }
+
+    public void drawImagesForList(Player node) {
+    	if(node != null) {
+    		
+    		canvas.getGraphicsContext2D().drawImage(new Image(node.getPhoto()), node.getX(), node.getY());
+    		canvas.getGraphicsContext2D().fillText(node.getName()+"", node.getX(), node.getY());
+    		drawImagesForList(node.getNext());
+    	}
+    }
+    
+    public void drawLinesForList(Player node) {
+    	if(node != null) {
+    		if(node.getNext() != null) {
+    			canvas.getGraphicsContext2D().strokeLine(node.getX()+25, node.getY()+25, node.getNext().getX()+25, node.getNext().getY()+25);
+    		}
+    		if(node.getPrev() != null) {
+    			canvas.getGraphicsContext2D().strokeLine(node.getX()+25, node.getY()+50, node.getPrev().getX()+25, node.getPrev().getY()+50);
+    		}
+    		drawLinesForList(node.getNext());
     	}
     }
 
