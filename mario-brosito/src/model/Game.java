@@ -60,7 +60,9 @@ public class Game {
 						addScore(current.getLeft(), newOne);
 					}
 				}
-	}public Score searchName(String id) {
+	}
+	
+	public Score searchName(String id) {
 		
 		Score current = root;
 		boolean exit = false;
@@ -84,6 +86,7 @@ public class Game {
 		return current;
 		
 	}
+	
 	public Score searchNick(String id) {
 		
 		Score current = root;
