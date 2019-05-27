@@ -58,14 +58,20 @@ public class Level {
 					
 				}else if(element == 'T') {
 					// tube
-					Obstacle tube = new Slide(counterPosX, counterPosY, 64, 64);
-					tube.setImage(Slide.TOPTUBE);
+					Obstacle tube = new Slide(counterPosX, counterPosY, 64, 160);
+					tube.setImage(Slide.BIGTUBE);
+					figures.add(tube);
+					
+				}else if(element == 'w') {
+					// tube
+					Obstacle tube = new Slide(counterPosX, counterPosY, 64, 128);
+					tube.setImage(Slide.MEDIUMTUBE);
 					figures.add(tube);
 					
 				}else if(element == 't') {
 					// tube
-					Figure tube = new StaticFigure(counterPosX, counterPosY, 64, 32);
-					tube.setImage(Slide.BOTTOMTUBE);
+					Obstacle tube = new Slide(counterPosX, counterPosY, 64, 96);
+					tube.setImage(Slide.SMALLTUBE);
 					figures.add(tube);
 					
 				}else if(element == 'p') {
@@ -241,6 +247,10 @@ public class Level {
             current = current.getNextEnemy();
         }
         return enemies;
+    }
+    
+    public void setMarioPosition(int pos) {
+    	this.positionOfMario = pos;
     }
 }
 

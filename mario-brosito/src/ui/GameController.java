@@ -40,6 +40,7 @@ import model.SimpleBlock;
 import model.Slide;
 import model.StaticFigure;
 import thread.CoinAnimation;
+import thread.EnemyDeathAnimation;
 import thread.EnemyThread;
 import thread.Gravity;
 import thread.JumpingThread;
@@ -100,6 +101,7 @@ public class GameController {
     @FXML
     public void initialize() {
     	
+    	
     	jumping = new JumpingThread(this);
     	pressed = new HashSet<String>();
     	try {
@@ -133,7 +135,6 @@ public class GameController {
     	Thread mv = new MovementAndGravityThread(this);
     	threads.add(mv);
     	mv.start();
-    	
     }
     
     public void configureScene() {
@@ -177,19 +178,8 @@ public class GameController {
 			intersects = ((Mario) mario).isColliding(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
 			if(intersects.equals(Mario.ISMOVINGDOWN) && sprites.get(i) instanceof Enemy) {
 				if(sprites.get(i) instanceof Goomba) {
-					Goomba g = (Goomba) sprites.get(i);
-					Rectangle gRec = enemyRectangles.get(g);
-			        ImagesLoader sl = null;
-					try {
-						sl = new ImagesLoader(32, 16, 2, 1, Goomba.DEADGOOMBA);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-			     	BufferedImage[] goombas = sl.getSprites();
-					Image card = SwingFXUtils.toFXImage(goombas[0], null);
-					gRec.setFill(new ImagePattern(card));
-					gRec.setY(gRec.getY()+16);
-					gRec.setHeight(16);
+					EnemyDeathAnimation thread = new EnemyDeathAnimation(this, enemyRectangles.get(sprites.get(i)), (Enemy) sprites.get(i));
+					thread.start();
 				}else if(sprites.get(i) instanceof Koopa) {
 					Koopa k = (Koopa) sprites.get(i);
 				}
@@ -198,10 +188,47 @@ public class GameController {
     	return intersects;
     }
     
+    public void changeEnemyImage(int a, Enemy e, Rectangle gRec) {
+    	ImagesLoader sl = null;
+		try {
+			sl = new ImagesLoader(32, 16, 2, 1, Goomba.DEADGOOMBA);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+     	BufferedImage[] goombas = sl.getSprites();
+		if(a == 1) {
+			Image card = SwingFXUtils.toFXImage(goombas[0], null);
+			gRec.setFill(new ImagePattern(card));
+			gRec.setY(gRec.getY()+16);
+			gRec.setHeight(16);
+		}else if(a == 2) {
+			Image card = SwingFXUtils.toFXImage(goombas[1], null);
+			gRec.setFill(new ImagePattern(card));
+		}else if(a == 3) {
+			mainBackground.getChildren().remove(gRec);
+			boolean exit = false;
+			for (int i = 0; i < threads.size() && !exit; i++) {
+				if(threads.get(i) instanceof EnemyThread && ((EnemyThread) threads.get(i)).getEnemy() == e) {
+					((EnemyThread) threads.get(i)).deactivate();
+					exit = true;
+				}
+			}
+			mainGame.getLevelOne().getFigures().remove(e);
+			exit = false;
+			for (int i = 0; i < mainGame.getLevelOne().getFigures().size() && !exit; i++) {
+				if(mainGame.getLevelOne().getFigures().get(i) instanceof Mario) {
+					mainGame.getLevelOne().setMarioPosition(i);
+					exit = true;
+				}
+			}
+		}
+	}
+    
     public String isFalling() {
     	String intersects = "";
     	Figure f = null;
     	List<Figure> sprites = mainGame.getLevelOne().getFigures();
+    	
     	for (int i = 0; i < sprites.size() && intersects.isEmpty(); i++) {
     		
 			if(sprites.get(i) instanceof Mario )
@@ -420,11 +447,9 @@ public class GameController {
  	}
  
     public void moveImage(int a){
-
 		Mario m = (Mario) mainGame.getLevelOne().getMario();
 
 		String touch = isTouching();
-		System.out.println(touch);
 			if(mainMario.getX() >= maxRight && a==1 && !touch.equals(Mario.ISMOVINGRIGHT) ) {
 	    		mainMario.setX(mainMario.getX()+10);
 	    		maxRight +=10;
@@ -513,6 +538,7 @@ public class GameController {
 				mainBackground.getChildren().add(rec);
 				mainMario = rec;
 			}else if(f instanceof StaticFigure){
+				System.out.println(f.getPosY());
 				rec.setFill(new ImagePattern(new Image(f.getImage())));
 				mainBackground.getChildren().add(rec);
 			}else if(f instanceof MisteryBlock) {
@@ -526,6 +552,16 @@ public class GameController {
 				rec.setFill(new ImagePattern(new Image(f.getImage())));
 				mainBackground.getChildren().add(rec);
 			}else if(f instanceof Slide) {
+				if(f.getImage().equals(Slide.BIGTUBE)) {
+					rec.setWidth(64); 
+					rec.setHeight(160);
+				}else if(f.getImage().equals(Slide.MEDIUMTUBE)) {
+					rec.setWidth(64); 
+					rec.setHeight(128);
+				}else {
+					rec.setWidth(64); 
+					rec.setHeight(96);
+				}
 				rec.setFill(new ImagePattern(new Image(f.getImage())));
 				mainBackground.getChildren().add(rec);
 			}else if(f instanceof Goomba){
