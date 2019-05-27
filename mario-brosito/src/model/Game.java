@@ -310,16 +310,27 @@ public class Game {
 		}
 		return match;
 	}
-	public Player searchByName(String n) {
-		Player match = null;
-		Player current = first;
-		while(current!=null && match==null) {
-			if(current.getName().equalsIgnoreCase(n)) {
-				match = current;
+	public Player searchPlayerByName(Player[] p,String name) {
+		
+		sortByName();
+		name.toUpperCase();
+		int index = -1;
+		int low = 0;
+		int high = p.length-1;
+		
+		while(low <= high && index == -1) {
+			int mid = (low+high)/2;
+			int value = p[mid].getName().compareTo(name);
+			if(value < 0) {
+				low = mid+1;
+			} else if(value > 0) {
+				high = mid-1;
+			} else {
+				index = mid;
 			}
-			current = current.getNext();
 		}
-		return match;
+		Player f =  p[index];
+		return f;
 	}
 	public Player searchByNick(String n) {
 		Player match = null;
@@ -432,6 +443,7 @@ public class Game {
     // Methods Atributes
     // -----------------------------------------------------------------
 	public Player[] getPlayersToArray() {
+
 		Player[] players;
 		players = new Player[first.size()];
 		int c = 0;
@@ -442,6 +454,7 @@ public class Game {
 		 		c++;
 		 	}
 		return players;
+
 	}
 	public int getTreeHeight() {
 		return getTreeHeight(root);

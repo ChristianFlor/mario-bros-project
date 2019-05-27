@@ -75,13 +75,12 @@ public class PlayerController {
 			table =createTable();
 	    	vBoxList.getChildren().add(table);
 	    	optionsSearch.getItems().addAll("Id","Name","Nick","Score");
-	   
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	//g.initPlayers();
-    	 }
+    	
+    }
     private TableView<Player> createTable(){
     	table = new TableView<Player>();
     	data = createData();
@@ -140,7 +139,7 @@ public class PlayerController {
 	    		search.setPromptText("Enter your name");
 	        	String id = search.getText();
 	        	long start = System.currentTimeMillis();
-	        	Player espNick = g.searchByName(id);
+	        	Player espNick = g.searchPlayerByName(g.getPlayersToArray(),id);
 	        	if(id != "" && id != null) {
 	        		if(espNick != null) {
 	        			
@@ -259,8 +258,9 @@ public class PlayerController {
     void register(ActionEvent event) {
        	data.clear();
     	g.addPlayer(tfName.getText(),tfNick.getText(),25.0);
+
     	g.addScore(g.searchByName(tfName.getText()));
-    	data.addAll(g.getPlayersToArray());
+
     }
    
     @FXML
@@ -352,5 +352,4 @@ public class PlayerController {
     		drawLinesForList(node.getNext());
     	}
     }
-
 }
