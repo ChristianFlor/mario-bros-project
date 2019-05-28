@@ -2,6 +2,8 @@ package ui;
 
 import java.io.IOException;
 
+import javax.sound.sampled.Clip;
+
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -21,6 +23,7 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import model.SoundsLoader;
 
 
 
@@ -44,7 +47,6 @@ public class MenuController {
 
     @FXML
     private Label scoresLabel;
-    
     @FXML
     public void initialize() {
     	BackgroundImage myBI= new BackgroundImage(new Image("menuimg/back.png",685,480,false,true),
@@ -52,7 +54,7 @@ public class MenuController {
     			new BackgroundSize(685, 480, false, false, false, false));
   
     	marioPane.setBackground(new Background(myBI));
-    	
+
     }
     
 

@@ -32,7 +32,9 @@ public class LevelTimeThread extends Thread {
 			}
 		}
 	}
-	
+	public void activate() {
+		active = true;
+	}
 	public void deactivate() {
 		active = false;
 	}

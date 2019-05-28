@@ -74,7 +74,14 @@ public class GameController {
 	private ImagesLoader imloCoin;
 	private Set<String> pressed;
 	private Map<Figure, Rectangle> figureRectangles;
-
+	private boolean pause;
+	public boolean getPause() {
+		return pause;
+	}
+	private Clip ground;
+	public Clip getClip() {
+		return ground;
+	}
 	private BufferedImage[] marioPictures;
 	
 	private BufferedImage[] bigMarioPictures;
@@ -111,9 +118,11 @@ public class GameController {
 	
     @FXML
     public void initialize() {
+    	pause=false;
     	jumping = new JumpingThread(this);
     	pressed = new HashSet<String>();
     	try {
+    		ground = SoundsLoader.loadSounds(0);
 			mainGame = new Game();
 			imloMark= new ImagesLoader(32, 32, 1, 3,"src/uiImg/QuestionMark.png");
 			imloCoin =new ImagesLoader(32, 32, 1, 3,"src/uiImg/Coin.png");
@@ -147,12 +156,57 @@ public class GameController {
     	sound = new SoundsLoader();
     	
     }
-    
+    public void pause() {
+    	pause=true;
+    	ground.stop();
+		for (int i = 0; i < threads.size(); i++) {
+			Thread t = threads.get(i);
+			if(t.isAlive()) {
+				if(t instanceof CoinAnimation) {
+					((CoinAnimation) t).deactivate();
+				}else if(t instanceof EnemyThread) {
+					((EnemyThread) t).deactivate();
+				}else if(t instanceof LevelTimeThread) {
+					((LevelTimeThread) t).deactivate();
+				}else if(t instanceof MisteryBlockAnimation) {
+					((MisteryBlockAnimation) t).deactivate();
+				}else if(t instanceof MovementAndGravityThread) {
+					((MovementAndGravityThread) t).deactivate();
+				}else {
+					((PlatformThread) t).deactivate();
+				}
+			}
+		}
+	}
+    public void continues() {
+    	
+    	//ground.start();
+		for (int i = 0; i < threads.size(); i++) {
+			Thread t = threads.get(i);
+			if(t.isAlive()) {
+				if(t instanceof CoinAnimation) {
+					((CoinAnimation) t).activate();
+				}else if(t instanceof EnemyThread) {
+					((EnemyThread) t).activate();
+				}else if(t instanceof LevelTimeThread) {
+					((LevelTimeThread) t).activate();
+				}else if(t instanceof MisteryBlockAnimation) {
+					((MisteryBlockAnimation) t).activate();
+				}else if(t instanceof MovementAndGravityThread) {
+					((MovementAndGravityThread) t).activate();
+				}else {
+					((PlatformThread) t).activate();
+				}
+			}
+		}
+		pause=false;
+	}
     public void configureScene() {
 		mainScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent e) {
 				pressed.add(e.getCode().toString());
+				if(!pause) {
 					if(e.getCode().equals(KeyCode.D)) {
 						moveImage(1,0);
 					}
@@ -167,8 +221,18 @@ public class GameController {
 						}
 						c.start();
 						runThread(); 
+					}if(e.getCode().equals(KeyCode.ESCAPE)) {
+						Clip bang = SoundsLoader.loadSounds(25);
+				    	bang.start();
+						pause();
 					}
-				
+				}else {
+					if(e.getCode().equals(KeyCode.ESCAPE)) {
+						Clip bang = SoundsLoader.loadSounds(25);
+				    	bang.start();
+				    	continues();
+					}
+				}
 			}
 			});
 		mainScene.setOnKeyReleased(new EventHandler<KeyEvent>() {
@@ -182,8 +246,11 @@ public class GameController {
 		
     public void timeThread() {
     	LevelTimeThread lv = new LevelTimeThread(this);
-    	lv.start();
     	threads.add(lv);
+    	lv.start();
+
+    	threads.add(lv);
+
     }
     
     public String isTouching() { // borrar ultimo if
@@ -367,6 +434,7 @@ public class GameController {
     public void runThread(){
     	jumping = new JumpingThread(this);
     	jumping.start();
+    	
     }
 
 	public void misteryBlockThread() {
@@ -990,25 +1058,7 @@ public class GameController {
 			return jumping;
 		}
 
-	public void closeWindow() {
-		for (int i = 0; i < threads.size(); i++) {
-			Thread t = threads.get(i);
-			if(t.isAlive()) {
-				if(t instanceof CoinAnimation)
-					((CoinAnimation) t).deactivate();
-				else if(t instanceof EnemyThread)
-					((EnemyThread) t).deactivate();
-				else if(t instanceof LevelTimeThread)
-					((LevelTimeThread) t).deactivate();
-				else if(t instanceof MisteryBlockAnimation)
-					((MisteryBlockAnimation) t).deactivate();
-				else if(t instanceof MovementAndGravityThread)
-					((MovementAndGravityThread) t).deactivate();
-				else
-					((PlatformThread) t).deactivate();
-			}
-		}
-	}
+	
 
 	public void animateFlower(Rectangle powerUpRectangle, int counter) {
 		if(counter == -1) {
