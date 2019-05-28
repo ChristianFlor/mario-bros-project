@@ -75,6 +75,8 @@ public class GameController {
 	private BufferedImage[] marioPictures;
 	
 	private BufferedImage[] bigMarioPictures;
+	
+	private BufferedImage[] fireMarioPictures;
 
 	@FXML
 	private Label timeLabel;
@@ -128,6 +130,8 @@ public class GameController {
 			marioPictures = sl.getSprites();
 			sl = new ImagesLoader(32, 64, 7, 4, Mario.BIGMARIO);
 			bigMarioPictures = sl.getSprites();
+			sl = new ImagesLoader(32, 64, 7, 4, Mario.FIREMARIO);
+			fireMarioPictures = sl.getSprites();
 		} catch (IOException e) {
 			
 			e.printStackTrace();
@@ -314,7 +318,8 @@ public class GameController {
     public String isFalling() {
     	String intersects = "";
     	Figure f = null;
-
+    	List<Figure> sprites = mainGame.getLevelOne().getFigures();
+    	
     	for (int i = 0; i < mainGame.getLevelOne().getFigures().size() && intersects.isEmpty(); i++) {
 			if(sprites.get(i) instanceof Mario )
 				continue;
@@ -523,7 +528,7 @@ public class GameController {
 	for (int i = 0; i < threads.size(); i++) {
 		if(threads.get(i) instanceof EnemyThread && ((EnemyThread) threads.get(i)).getEnemy().getPosY() > 480) {
 			((EnemyThread) threads.get(i)).deactivate();
-			mainGame.getLevelOne().getFigures().remove(((EnemyThread) threads.get(i)).getEnemy());
+			//mainGame.getLevelOne().getFigures().remove(((EnemyThread) threads.get(i)).getEnemy());
 			boolean exit = false;
 			for (int j = 0; j < mainGame.getLevelOne().getFigures().size() && !exit; j++) {
 				if(mainGame.getLevelOne().getFigures().get(j) instanceof Mario) {
@@ -551,8 +556,8 @@ public class GameController {
 								figure.setPosX(figure.getPosX()-diff);
 						}
 					}
-				}else if(figure instanceof Mushroom) {
-					intersects = ((Mushroom) figure).mushroomIsColliding(sprites.get(i).getPosX(), sprites.get(i).getPosY(), sprites.get(i).getWidth(), sprites.get(i).getHeight());
+				}else if(figure instanceof PowerUp) {
+					intersects = ((PowerUp) figure).powerUpIsColliding(sprites.get(i).getPosX(), sprites.get(i).getPosY(), sprites.get(i).getWidth(), sprites.get(i).getHeight());
 					if(intersects && sprites.get(i) instanceof Mario) {
 						for (int j = 0; j < threads.size(); j++) {
 							if( threads.get(j) instanceof PowerUpThread && ((PowerUpThread) threads.get(j)).getPowerUp() == figure) {
@@ -576,7 +581,17 @@ public class GameController {
 							mainMario.setFill(new ImagePattern(cardd));
 							mainMario.setHeight(64);
 							mainGame.getLevelOne().getMario().setHeight(64);
-							mainGame.getLevelOne().getMario().setPosY(mainGame.getLevelOne().getMario().getPosY()-64);
+							mainGame.getLevelOne().getMario().setPosY(mainGame.getLevelOne().getMario().getPosY()-32);
+							mainMario.setY(mainGame.getLevelOne().getMario().getPosY());
+						}
+						if(figure instanceof Flower) {
+							mainGame.getLevelOne().getMario().setPowerState((PowerUp) figure);
+							mario.setImage(Mario.FIREMARIO);
+							Image cardd = SwingFXUtils.toFXImage(fireMarioPictures[0], null);
+							mainMario.setFill(new ImagePattern(cardd));
+							mainMario.setHeight(64);
+							mainGame.getLevelOne().getMario().setHeight(64);
+							mainGame.getLevelOne().getMario().setPosY(mainGame.getLevelOne().getMario().getPosY()-32);
 							mainMario.setY(mainGame.getLevelOne().getMario().getPosY());
 						}
 					}
@@ -635,6 +650,9 @@ public class GameController {
     		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Mushroom) {
     			changed = SwingFXUtils.toFXImage(bigMarioPictures[0], null);
 	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Flower) {
+    			changed = SwingFXUtils.toFXImage(fireMarioPictures[0], null);
+	    		mainMario.setFill(new ImagePattern(changed));
     		}
     	}
     	else if(key==1) {  // right movement
@@ -643,6 +661,9 @@ public class GameController {
 	    		mainMario.setFill(new ImagePattern(changed));
     		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Mushroom) {
     			changed = SwingFXUtils.toFXImage(bigMarioPictures[4], null);
+	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Flower) {
+    			changed = SwingFXUtils.toFXImage(fireMarioPictures[4], null);
 	    		mainMario.setFill(new ImagePattern(changed));
     		}
     	}
@@ -653,6 +674,9 @@ public class GameController {
     		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Mushroom) {
     			changed = SwingFXUtils.toFXImage(bigMarioPictures[5], null);
 	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Flower) {
+    			changed = SwingFXUtils.toFXImage(fireMarioPictures[5], null);
+	    		mainMario.setFill(new ImagePattern(changed));
     		}
     	}else if(key==3) {   // Right movement3
     		if(mainGame.getLevelOne().getMario().getPowerState() == null) {
@@ -660,6 +684,9 @@ public class GameController {
 	    		mainMario.setFill(new ImagePattern(changed));
     		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Mushroom) {
     			changed = SwingFXUtils.toFXImage(bigMarioPictures[6], null);
+	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Flower) {
+    			changed = SwingFXUtils.toFXImage(fireMarioPictures[6], null);
 	    		mainMario.setFill(new ImagePattern(changed));
     		}
     	}else if(key ==4) {   // Right movement3
@@ -669,6 +696,9 @@ public class GameController {
     		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Mushroom) {
     			changed = SwingFXUtils.toFXImage(bigMarioPictures[2], null);
 	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Flower) {
+    			changed = SwingFXUtils.toFXImage(fireMarioPictures[2], null);
+	    		mainMario.setFill(new ImagePattern(changed));
     		}
     	}else if(key ==5) {   // left movement1
     		if(mainGame.getLevelOne().getMario().getPowerState() == null) {
@@ -676,6 +706,9 @@ public class GameController {
 	    		mainMario.setFill(new ImagePattern(changed));
     		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Mushroom) {
     			changed = SwingFXUtils.toFXImage(bigMarioPictures[8], null);
+	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Flower) {
+    			changed = SwingFXUtils.toFXImage(fireMarioPictures[8], null);
 	    		mainMario.setFill(new ImagePattern(changed));
     		}
     	}
@@ -686,6 +719,9 @@ public class GameController {
     		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Mushroom) {
     			changed = SwingFXUtils.toFXImage(bigMarioPictures[9], null);
 	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Flower) {
+    			changed = SwingFXUtils.toFXImage(fireMarioPictures[9], null);
+	    		mainMario.setFill(new ImagePattern(changed));
     		}
     	}
     	else if(key ==7) {   // left movement3
@@ -695,13 +731,32 @@ public class GameController {
     		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Mushroom) {
     			changed = SwingFXUtils.toFXImage(bigMarioPictures[10], null);
 	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Flower) {
+    			changed = SwingFXUtils.toFXImage(fireMarioPictures[10], null);
+	    		mainMario.setFill(new ImagePattern(changed));
     		}
     	}else if(key == 8) {   // change to right
-    		changed = SwingFXUtils.toFXImage(marioPictures[7], null);
-    		mainMario.setFill(new ImagePattern(changed));
+    		if(mainGame.getLevelOne().getMario().getPowerState() == null) {
+	    		changed = SwingFXUtils.toFXImage(marioPictures[7], null);
+	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Mushroom) {
+    			changed = SwingFXUtils.toFXImage(bigMarioPictures[7], null);
+	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Flower) {
+    			changed = SwingFXUtils.toFXImage(fireMarioPictures[7], null);
+	    		mainMario.setFill(new ImagePattern(changed));
+    		}
     	}else if(key == 9) {  // change to left
-    		changed = SwingFXUtils.toFXImage(marioPictures[11], null);
-    		mainMario.setFill(new ImagePattern(changed));
+    		if(mainGame.getLevelOne().getMario().getPowerState() == null) {
+	    		changed = SwingFXUtils.toFXImage(marioPictures[11], null);
+	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Mushroom) {
+    			changed = SwingFXUtils.toFXImage(bigMarioPictures[11], null);
+	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Flower) {
+    			changed = SwingFXUtils.toFXImage(fireMarioPictures[11], null);
+	    		mainMario.setFill(new ImagePattern(changed));
+    		}
     	}
     	
     }
