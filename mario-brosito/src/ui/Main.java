@@ -34,7 +34,7 @@ public class Main extends Application{
 			}
 			
 		});
-		Clip bang = SoundsLoader.cargarSonido("/uilmusic/Ground_Theme.wav");
+		Clip bang = SoundsLoader.loadSounds(0);
     	bang.start();
 		
 		stage.setScene(scene);

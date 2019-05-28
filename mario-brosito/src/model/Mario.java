@@ -6,6 +6,7 @@ public class Mario extends Figure {
 
 	public final static String IMAGE = "src/uiImg/player.png";
 	public final static String BIGMARIO = "src/uiImg/BigPlayer.png";
+	public final static String FIREMARIO = "src/uiImg/FirePlayer.png";
 	public final static String ISMOVINGRIGHT = "Right";
 	public final static String ISMOVINGLEFT = "Left";
 	public final static String ISMOVINGUP = "Up";
@@ -59,6 +60,7 @@ public class Mario extends Figure {
 				collide = ISMOVINGRIGHT;
 				
 			}
+			
 			else if(this.getPosX() >= x2 && this.getPosY()+this.getHeight() >= y2 && this.getPosY()+this.getHeight()<=y2+h2) {
 				collide = ISMOVINGLEFT;
 			}else if(this.getPosY() >=y2+h2 && this.getPosX()+this.getWidth() > x2 && this.getPosX() < x2+w2) {//&& this.getPosX()+16 >= x2 && this.getPosX()+16 <= x2+w2

@@ -27,9 +27,7 @@ public class MovementAndGravityThread extends Thread {
 						boolean enter = false;
 						
 						int counter=0;
-						//int h = 0;
 						double z = Mario.GROUNDPOSITION;
-						///String falling = controller.isFalling();
 							double pos = controller.getMainGame().getLevelOne().getMario().getPosY();
 							
 								double rest = Mario.GROUNDPOSITION-pos;
@@ -46,19 +44,17 @@ public class MovementAndGravityThread extends Thread {
 									controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGDOWN);
 									double aux = 0;
 									while(!enter && controller.getMainGame().getLevelOne().getMario().getPosY() <= jumpFinal) {
-										//System.out.println(controller.getMainGame().getLevelOne().getMario().getPosY());
+									
 										controller.getMainGame().getLevelOne().getMario().setPosY(controller.getMainGame().getLevelOne().getMario().getPosY()+1);
 										
 										if(controller.isTouching().equals(Mario.ISMOVINGDOWN)) {
 										
 											aux = controller.getMainGame().getLevelOne().getMario().getPosY();
-											//counter = (7-counter)+7;
 											enter = true;
 										}
 									}
 									
 									if(enter) {
-										System.out.println(aux);
 										controller.moveImage(2, aux);
 										//counter++;
 										break;
@@ -74,7 +70,6 @@ public class MovementAndGravityThread extends Thread {
 									controller.moveImage(1,0);
 									
 									if(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGLEFT)) {
-										System.out.println(controller.getMainGame().getLevelOne().getMario().getState());
 								 		Platform.runLater(new Runnable() {
 											@Override
 											public void run() {

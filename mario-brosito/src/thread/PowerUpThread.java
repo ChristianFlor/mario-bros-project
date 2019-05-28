@@ -57,6 +57,12 @@ public class PowerUpThread extends Thread{
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						controller.figureIsTouching(powerUp);
+					}
+				});
 			}
 		}else if(powerUp instanceof Mushroom) {
 			while(active) {
@@ -67,7 +73,6 @@ public class PowerUpThread extends Thread{
 					e.printStackTrace();
 				}
 				Platform.runLater(new Runnable() {
-
 					@Override
 					public void run() {
 						if(controller.figureIsTouching(powerUp)) {
@@ -77,9 +82,7 @@ public class PowerUpThread extends Thread{
 								counter = 0;
 						}
 					}
-					
 				});
-				
 			}
 		}
 	}
