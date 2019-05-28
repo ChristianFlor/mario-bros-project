@@ -314,7 +314,7 @@ public class GameController {
     public String isFalling() {
     	String intersects = "";
     	Figure f = null;
-
+    	List<Figure> sprites = mainGame.getLevelOne().getFigures();
     	for (int i = 0; i < mainGame.getLevelOne().getFigures().size() && intersects.isEmpty(); i++) {
 			if(sprites.get(i) instanceof Mario )
 				continue;
