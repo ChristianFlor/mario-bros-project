@@ -96,6 +96,7 @@ public class Mario extends Figure {
 				
 			}
 		}
+		
 		return isBetween;
 	}
 
@@ -112,11 +113,11 @@ public class Mario extends Figure {
 
 	 public boolean isEnemyNear(double posX) {
 	    	boolean near = false;
-	    	double distance = 500;
+	    	double distance = 700;
 	    	double actualDistance =	Math.abs(this.getPosX() - posX);
 	    		if(actualDistance <= distance) {
 	    			near = true;
 	    		}
 	    	return near;
-	    }
+	 }
 }
