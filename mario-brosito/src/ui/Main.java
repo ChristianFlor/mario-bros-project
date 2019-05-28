@@ -41,12 +41,12 @@ public class Main extends Application{
 			
 		});
 		
-		String musicFile = "uilmusic/smb_coin.wav";     // For example
+		//String musicFile = "uilmusic/smb_coin.wav";     // For example
 
-		Media sound = new Media(new File(musicFile).toURI().toString());
+		/*Media sound = new Media(new File(musicFile).toURI().toString());
 		MediaPlayer mediaPlayer = new MediaPlayer(sound);
 		mediaPlayer.play();
-		
+		*/
 		stage.setScene(scene);
 		stage.setTitle("Mariosito");
 		stage.show();

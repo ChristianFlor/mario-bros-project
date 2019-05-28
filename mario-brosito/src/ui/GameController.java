@@ -115,7 +115,7 @@ public class GameController {
 			misteryBlockThread();
 			timeThread();
 			coinThread();
-			loadWorld3();
+			loadWorld1();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -393,7 +393,7 @@ public class GameController {
     public void spinFire(Rectangle fireRec, Figure fire, int f, int radius, int centerX, int centerY) {
     	double x = Math.sin(Math.toRadians((double)f)) * (radius);
         double y = Math.cos(Math.toRadians((double)f)) * (radius);
-        System.out.println((Math.pow(x-centerX, 2) + Math.pow(y-centerY, 2)));
+        //System.out.println((Math.pow(x-centerX, 2) + Math.pow(y-centerY, 2)));
         fire.setPosX(radius - Math.pow(x-centerX, 2));
         fire.setPosY(radius - Math.pow(y-centerY, 2));
         fireRec.setX(fire.getPosX());

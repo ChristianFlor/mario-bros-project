@@ -25,38 +25,45 @@ public class MovementAndGravityThread extends Thread {
 					
 					try {
 						boolean enter = false;
-						while(controller.isFalling().isEmpty() && !controller.getJumping().isAlive()) {
-								controller.moveImage(3);
+						int counter=0;
+						int h = 0;
+						double z = Mario.GROUNDPOSITION;
+						if(controller.isFalling().isEmpty() && !controller.getJumping().isAlive()) {
+							double pos = controller.getMainGame().getLevelOne().getMario().getPosY();
+							
+								double rest = Mario.GROUNDPOSITION-pos;
+								double ecuation = (42 + Math.sqrt((42*42)-(4*1.2*rest)))/(2*1.2);
+								ecuation = Math.round(ecuation);
+								counter = (int) ecuation;
+							
+								while(counter <= 35 && controller.isFalling().isEmpty() && !controller.getJumping().isAlive()) {
+									
+									double jump = z+1.2*counter*counter-42*counter;
+									controller.moveImage(2, jump);
+									counter++;
+									sleep(60);
+									
+							
+								}
+						
 								if(controller.getPressed().contains("D")) {
-									controller.moveImage(1);
+									controller.moveImage(1,0);
 
 									controller.getMainGame().getLevelOne().getMario().setState(Mario.ISDIAGONALRIGHT);
 								}else if(controller.getPressed().contains("A")) {
-									controller.moveImage(-1);
+									controller.moveImage(-1,0);
 
 									controller.getMainGame().getLevelOne().getMario().setState(Mario.ISDIAGONALLEFT);
 								}else {
 									controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGDOWN);
 								}
-								sleep(40);
+								//sleep(40);
 								enter = true;
 						}
 						if(enter)
 							controller.getMainGame().getLevelOne().getMario().setState(Mario.ISSTANDINGSTILL);
-						/*double rest = Mario.GROUNDPOSITION-controller.getMainGame().getLevelOne().getMario().getPosY();
-						double ecuation = (42 + Math.sqrt((42*42)-4*1.2*rest))/2*1.2;
-						System.out.println(ecuation);*/
-						int counter = 10;
-						double z = Mario.GROUNDPOSITION;
 						
-						while(counter<=Mario.GROUNDPOSITION && controller.isFalling().isEmpty() && !controller.getJumping().isAlive()) {
-							
-							double jump =z+3*counter*counter-42*counter;
-							controller.moveImage(2, jump);
-							sleep(100);
-							counter++;
-							
-						}
+						
 						if(controller.getPressed().contains("D") && !controller.getJumping().isAlive()) {
 							
 						 	if(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGLEFT)) {
