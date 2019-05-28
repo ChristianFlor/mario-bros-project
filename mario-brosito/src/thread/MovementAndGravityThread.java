@@ -25,12 +25,11 @@ public class MovementAndGravityThread extends Thread {
 					
 					try {
 						boolean enter = false;
-						while(controller.isFalling().isEmpty() && !controller.getJumping().isAlive()) {
-								controller.moveImage(3,0);
+						
 						int counter=0;
-						int h = 0;
+						//int h = 0;
 						double z = Mario.GROUNDPOSITION;
-						if(controller.isFalling().isEmpty() && !controller.getJumping().isAlive()) {
+						///String falling = controller.isFalling();
 							double pos = controller.getMainGame().getLevelOne().getMario().getPosY();
 							
 								double rest = Mario.GROUNDPOSITION-pos;
@@ -41,116 +40,125 @@ public class MovementAndGravityThread extends Thread {
 								while(counter <= 35 && controller.isFalling().isEmpty() && !controller.getJumping().isAlive()) {
 									
 									double jump = z+1.2*counter*counter-42*counter;
+									jump = Math.round(jump);
+									double jumpFinal = z+1.2*(counter+1)*(counter+1)-42*(counter+1);
+									jumpFinal = Math.round(jumpFinal);
+									controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGDOWN);
+									double aux = 0;
+									while(!enter && controller.getMainGame().getLevelOne().getMario().getPosY() <= jumpFinal) {
+										//System.out.println(controller.getMainGame().getLevelOne().getMario().getPosY());
+										controller.getMainGame().getLevelOne().getMario().setPosY(controller.getMainGame().getLevelOne().getMario().getPosY()+1);
+										
+										if(controller.isTouching().equals(Mario.ISMOVINGDOWN)) {
+										
+											aux = controller.getMainGame().getLevelOne().getMario().getPosY();
+											//counter = (7-counter)+7;
+											enter = true;
+										}
+									}
+									
+									if(enter) {
+										System.out.println(aux);
+										controller.moveImage(2, aux);
+										//counter++;
+										break;
+									}
 									controller.moveImage(2, jump);
 									counter++;
 									sleep(60);
 									
 							
 								}
-				
-								if(controller.getPressed().contains("D")) {
+						
+							if(controller.getPressed().contains("D")) {
 									controller.moveImage(1,0);
-
+									
+									if(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGLEFT)) {
+										System.out.println(controller.getMainGame().getLevelOne().getMario().getState());
+								 		Platform.runLater(new Runnable() {
+											@Override
+											public void run() {
+												
+										 		controller.changeMarioImage(8);
+											}
+								 		});
+								 		sleep(350);
+								 		
 									controller.getMainGame().getLevelOne().getMario().setState(Mario.ISDIAGONALRIGHT);
+									}else {
+										Platform.runLater(new Runnable() {
+											@Override
+											public void run() {
+										 		controller.changeMarioImage(3);
+											}
+								 		});
+										sleep(100);
+										Platform.runLater(new Runnable() {
+											@Override
+											public void run() {
+										 		controller.changeMarioImage(1);
+											}
+								 		});
+										sleep(100);
+										Platform.runLater(new Runnable() {
+											@Override
+											public void run() {
+										 		controller.changeMarioImage(2);
+											}
+								 		});
+										controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGRIGHT);
+									}
 								}else if(controller.getPressed().contains("A")) {
-									controller.moveImage(-1,0);
-
-									controller.getMainGame().getLevelOne().getMario().setState(Mario.ISDIAGONALLEFT);
-								}else {
-									controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGDOWN);
+									if(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGRIGHT)) {
+										Platform.runLater(new Runnable() {
+											@Override
+											public void run() {
+										 		controller.changeMarioImage(9);
+											}
+								 		});
+								 		sleep(350);
+								 		controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGLEFT);
+								 	}else {
+										Platform.runLater(new Runnable() {
+											@Override
+											public void run() {
+										 		controller.changeMarioImage(5);
+											}
+								 		});
+										sleep(100);
+										Platform.runLater(new Runnable() {
+											@Override
+											public void run() {
+										 		controller.changeMarioImage(6);
+											}
+								 		});
+										sleep(100);
+										Platform.runLater(new Runnable() {
+											@Override
+											public void run() {
+										 		controller.changeMarioImage(7);
+											}
+								 		});
+											controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGLEFT);
+								 	}
 								}
-								//sleep(40);
-								enter = true;
-						}
-						if(enter)
-							controller.getMainGame().getLevelOne().getMario().setState(Mario.ISSTANDINGSTILL);
-						
-						
-						if(controller.getPressed().contains("D") && !controller.getJumping().isAlive()) {
-							
-						 	if(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGLEFT)) {
-						 		Platform.runLater(new Runnable() {
-									@Override
-									public void run() {
-								 		controller.changeMarioImage(8);
-									}
-						 		});
-						 		sleep(350);
-						 		
-						 	}
-						 	Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-							 		controller.changeMarioImage(3);
+								else if(controller.getPressed().contains("W")) {
+									Platform.runLater(new Runnable() {
+										@Override
+										public void run() {
+									 		controller.changeMarioImage(4);
+										}
+							 		});
+									sleep(1100);
+									Platform.runLater(new Runnable() {
+										@Override
+										public void run() {
+									 		controller.changeMarioImage(0);
+										}
+							 		});
+								
 								}
-					 		});
-							sleep(100);
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-							 		controller.changeMarioImage(1);
-								}
-					 		});
-							sleep(100);
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-							 		controller.changeMarioImage(2);
-								}
-					 		});
-							controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGRIGHT);
-							
-							
-						}else if(controller.getPressed().contains("W")) {
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-							 		controller.changeMarioImage(4);
-								}
-					 		});
-							sleep(1100);
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-							 		controller.changeMarioImage(0);
-								}
-					 		});
-						}else if(controller.getPressed().contains("A") && !controller.getJumping().isAlive() ) {
-							
-							if(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGRIGHT)) {
-								Platform.runLater(new Runnable() {
-									@Override
-									public void run() {
-								 		controller.changeMarioImage(9);
-									}
-						 		});
-						 		sleep(350);
-						 		//controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGLEFT);
-						 	}
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-							 		controller.changeMarioImage(5);
-								}
-					 		});
-							sleep(100);
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-							 		controller.changeMarioImage(6);
-								}
-					 		});
-							sleep(100);
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-							 		controller.changeMarioImage(7);
-								}
-					 		});
-								controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGLEFT);
-						}
-						
-					}} catch (InterruptedException e) {
+					}catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 				

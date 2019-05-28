@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -130,6 +131,7 @@ public class GameController {
     	Thread mv = new MovementAndGravityThread(this);
     	threads.add(mv);
     	mv.start();
+    	
     }
     
     public void configureScene() {
@@ -155,6 +157,7 @@ public class GameController {
 			}
 		});
     }
+   
 		
     public void timeThread() {
     	LevelTimeThread lv = new LevelTimeThread(this);
@@ -302,7 +305,7 @@ public class GameController {
     	Figure f = null;
     	List<Figure> sprites = mainGame.getLevelOne().getFigures();
     	
-    	for (int i = 0; i < sprites.size() && intersects.isEmpty(); i++) {
+    	for (int i = 0; i < mainGame.getLevelOne().getFigures().size() && intersects.isEmpty(); i++) {
     		
 			if(sprites.get(i) instanceof Mario )
 				continue;
@@ -608,6 +611,12 @@ public class GameController {
     	}
     	else if(key ==7) {   // left movement3
     		changed = SwingFXUtils.toFXImage(marioPictures[10], null);
+    		mainMario.setFill(new ImagePattern(changed));
+    	}else if(key == 8) {   // change to right
+    		changed = SwingFXUtils.toFXImage(marioPictures[7], null);
+    		mainMario.setFill(new ImagePattern(changed));
+    	}else if(key == 9) {  // change to left
+    		changed = SwingFXUtils.toFXImage(marioPictures[11], null);
     		mainMario.setFill(new ImagePattern(changed));
     	}
     	
