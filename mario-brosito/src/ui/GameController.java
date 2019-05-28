@@ -118,11 +118,12 @@ public class GameController {
 	
     @FXML
     public void initialize() {
+    	sound = new SoundsLoader();
     	pause=false;
     	jumping = new JumpingThread(this);
     	pressed = new HashSet<String>();
     	try {
-    		ground = SoundsLoader.loadSounds(0);
+    		ground = sound.loadSounds(0);
 			mainGame = new Game();
 			imloMark= new ImagesLoader(32, 32, 1, 3,"src/uiImg/QuestionMark.png");
 			imloCoin =new ImagesLoader(32, 32, 1, 3,"src/uiImg/Coin.png");
@@ -153,7 +154,7 @@ public class GameController {
     	Thread mv = new MovementAndGravityThread(this);
     	threads.add(mv);
     	mv.start();
-    	sound = new SoundsLoader();
+    	
     	
     }
     public void pause() {
@@ -215,20 +216,21 @@ public class GameController {
 					}if(e.getCode().equals(KeyCode.W) && !jumping.isAlive() ){
 						Clip c;
 						if(mainGame.getLevelOne().getMario().getHeight() == 64) {
-							 c= sound.loadSounds(6);
+							 c= sound.loadSounds(7);
 						}else {
 							 c= sound.loadSounds(6);
 						}
 						c.start();
 						runThread(); 
 					}if(e.getCode().equals(KeyCode.ESCAPE)) {
-						Clip bang = SoundsLoader.loadSounds(25);
+						
+						Clip bang = sound.loadSounds(25);
 				    	bang.start();
 						pause();
 					}
 				}else {
 					if(e.getCode().equals(KeyCode.ESCAPE)) {
-						Clip bang = SoundsLoader.loadSounds(25);
+						Clip bang = sound.loadSounds(25);
 				    	bang.start();
 				    	continues();
 					}
