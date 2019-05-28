@@ -59,6 +59,7 @@ public class Mario extends Figure {
 				collide = ISMOVINGRIGHT;
 				
 			}
+			
 			else if(this.getPosX() >= x2 && this.getPosY()+this.getHeight() >= y2 && this.getPosY()+this.getHeight()<=y2+h2) {
 				collide = ISMOVINGLEFT;
 			}else if(this.getPosY() >=y2+h2 && this.getPosX()+this.getWidth() > x2 && this.getPosX() < x2+w2) {//&& this.getPosX()+16 >= x2 && this.getPosX()+16 <= x2+w2
