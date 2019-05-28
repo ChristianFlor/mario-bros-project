@@ -1,21 +1,15 @@
 package ui;
 
-
-import java.io.File;
+import javax.sound.sampled.Clip;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import model.SoundsLoader;
 
 public class Main extends Application{
 
@@ -40,14 +34,9 @@ public class Main extends Application{
 			}
 			
 		});
+		Clip bang = SoundsLoader.cargarSonido("/uilmusic/Ground_Theme.wav");
+    	bang.start();
 		
-		/*String musicFile = "uilmusic/smb_coin.wav";     // For example
-		//String musicFile = "uilmusic/smb_coin.wav";     // For example
-		/*Media sound = new Media(new File(musicFile).toURI().toString());
-		MediaPlayer mediaPlayer = new MediaPlayer(sound);
-		mediaPlayer.play();
-		mediaPlayer.play();
-		*/
 		stage.setScene(scene);
 		stage.setTitle("Mariosito");
 		stage.show();

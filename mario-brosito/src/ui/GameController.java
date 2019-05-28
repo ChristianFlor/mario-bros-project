@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -130,6 +131,7 @@ public class GameController {
     	Thread mv = new MovementAndGravityThread(this);
     	threads.add(mv);
     	mv.start();
+    	
     }
     
     public void configureScene() {
@@ -155,6 +157,7 @@ public class GameController {
 			}
 		});
     }
+   
 		
     public void timeThread() {
     	LevelTimeThread lv = new LevelTimeThread(this);
