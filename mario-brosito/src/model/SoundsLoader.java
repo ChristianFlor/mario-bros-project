@@ -10,7 +10,7 @@ import javax.sound.sampled.DataLine;
 
 public class SoundsLoader {
 	
-	public static Clip cargarSonido(final String ruta) {
+	public  Clip cargarSonido( String ruta) {
 		Clip clip = null;
 		try {
 			InputStream is = ClassLoader.class.getResourceAsStream(ruta);
@@ -24,7 +24,7 @@ public class SoundsLoader {
 		}
 		return clip;
 	}
-	 public static Clip loadSounds(int n) {
+	 public  Clip loadSounds(int n) {
 	    	Clip bang= null;
 	    	if(n==0) {
 	    		bang = cargarSonido("/uilmusic/Ground_Theme.wav");

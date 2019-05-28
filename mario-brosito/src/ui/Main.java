@@ -34,7 +34,8 @@ public class Main extends Application{
 			}
 			
 		});
-		Clip bang = SoundsLoader.loadSounds(0);
+		SoundsLoader m = new SoundsLoader();
+		Clip bang = m.loadSounds(0);
     	bang.start();
 		
 		stage.setScene(scene);

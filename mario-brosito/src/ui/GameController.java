@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.sound.sampled.Clip;
+
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -37,6 +39,7 @@ import model.Mushroom;
 import model.PowerUp;
 import model.SimpleBlock;
 import model.Slide;
+import model.SoundsLoader;
 import model.StaticFigure;
 import thread.CoinAnimation;
 import thread.EnemyDeathAnimation;
@@ -104,6 +107,8 @@ public class GameController {
 	
 	private JumpingThread jumping;
 	
+	private SoundsLoader sound;
+	
     @FXML
     public void initialize() {
     	jumping = new JumpingThread(this);
@@ -139,6 +144,7 @@ public class GameController {
     	Thread mv = new MovementAndGravityThread(this);
     	threads.add(mv);
     	mv.start();
+    	sound = new SoundsLoader();
     	
     }
     
@@ -153,6 +159,13 @@ public class GameController {
 					if(e.getCode().equals(KeyCode.A)) {
 						moveImage(-1,0);
 					}if(e.getCode().equals(KeyCode.W) && !jumping.isAlive() ){
+						Clip c;
+						if(mainGame.getLevelOne().getMario().getHeight() == 64) {
+							 c= sound.loadSounds(6);
+						}else {
+							 c= sound.loadSounds(6);
+						}
+						c.start();
 						runThread(); 
 					}
 				
@@ -170,6 +183,7 @@ public class GameController {
     public void timeThread() {
     	LevelTimeThread lv = new LevelTimeThread(this);
     	lv.start();
+    	threads.add(lv);
     }
     
     public String isTouching() { // borrar ultimo if
