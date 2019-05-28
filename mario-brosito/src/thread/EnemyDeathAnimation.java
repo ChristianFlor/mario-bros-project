@@ -20,7 +20,7 @@ public class EnemyDeathAnimation extends Thread{
     }
 
     public void run() {
-    	controller.moveImage(2);
+    	controller.moveImage(2,0);
       Platform.runLater(new Runnable() {
 		@Override
 		public void run() {
@@ -32,7 +32,7 @@ public class EnemyDeathAnimation extends Thread{
       } catch (InterruptedException e) {
 		e.printStackTrace();
       }
-      controller.moveImage(2);
+      controller.moveImage(2,0);
       Platform.runLater(new Runnable() {
   		@Override
   		public void run() {
