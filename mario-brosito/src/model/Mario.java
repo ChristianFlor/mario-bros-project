@@ -6,6 +6,7 @@ public class Mario extends Figure {
 
 	public final static String IMAGE = "src/uiImg/player.png";
 	public final static String BIGMARIO = "src/uiImg/BigPlayer.png";
+	public final static String FIREMARIO = "src/uiImg/FirePlayer.png";
 	public final static String ISMOVINGRIGHT = "Right";
 	public final static String ISMOVINGLEFT = "Left";
 	public final static String ISMOVINGUP = "Up";

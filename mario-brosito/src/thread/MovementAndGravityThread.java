@@ -27,16 +27,13 @@ public class MovementAndGravityThread extends Thread {
 						boolean enter = false;
 						
 						int counter=0;
-						//int h = 0;
 						double z = Mario.GROUNDPOSITION;
-						///String falling = controller.isFalling();
 							double pos = controller.getMainGame().getLevelOne().getMario().getPosY();
 							
 								double rest = Mario.GROUNDPOSITION-pos;
 								double ecuation = (42 + Math.sqrt((42*42)-(4*1.2*rest)))/(2*1.2);
 								ecuation = Math.round(ecuation);
 								counter = (int) ecuation;
-							
 								while(counter <= 35 && controller.isFalling().isEmpty() && !controller.getJumping().isAlive()) {
 									
 									double jump = z+1.2*counter*counter-42*counter;
@@ -46,19 +43,17 @@ public class MovementAndGravityThread extends Thread {
 									controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGDOWN);
 									double aux = 0;
 									while(!enter && controller.getMainGame().getLevelOne().getMario().getPosY() <= jumpFinal) {
-										//System.out.println(controller.getMainGame().getLevelOne().getMario().getPosY());
+									
 										controller.getMainGame().getLevelOne().getMario().setPosY(controller.getMainGame().getLevelOne().getMario().getPosY()+1);
 										
 										if(controller.isTouching().equals(Mario.ISMOVINGDOWN)) {
 										
 											aux = controller.getMainGame().getLevelOne().getMario().getPosY();
-											//counter = (7-counter)+7;
 											enter = true;
 										}
 									}
 									
 									if(enter) {
-										System.out.println(aux);
 										controller.moveImage(2, aux);
 										//counter++;
 										break;
@@ -71,10 +66,15 @@ public class MovementAndGravityThread extends Thread {
 								}
 						
 							if(controller.getPressed().contains("D")) {
-									controller.moveImage(1,0);
-									
+									Platform.runLater(new Runnable() {
+
+										@Override
+										public void run() {
+											controller.moveImage(1,0);
+										}
+										
+									});
 									if(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGLEFT)) {
-										System.out.println(controller.getMainGame().getLevelOne().getMario().getState());
 								 		Platform.runLater(new Runnable() {
 											@Override
 											public void run() {
@@ -168,5 +168,7 @@ public class MovementAndGravityThread extends Thread {
 	public void deactivate() {
 		active = false;
 	}
-	
+	public void activate() {
+		active = true;
+	}
 }

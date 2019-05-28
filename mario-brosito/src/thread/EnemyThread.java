@@ -52,7 +52,9 @@ public class EnemyThread extends Thread{
 	public Enemy getEnemy() {
 		return enemy;
 	}
-
+	public void activate() {
+		active = true;
+	}
 	public void deactivate() {
 		active = false;
 	}

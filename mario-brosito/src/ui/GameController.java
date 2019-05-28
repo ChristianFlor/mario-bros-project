@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import javax.sound.sampled.Clip;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -37,6 +37,7 @@ import model.Mushroom;
 import model.PowerUp;
 import model.SimpleBlock;
 import model.Slide;
+import model.SoundsLoader;
 import model.StaticFigure;
 import thread.CoinAnimation;
 import thread.EnemyDeathAnimation;
@@ -47,7 +48,7 @@ import thread.LevelTimeThread;
 import thread.MisteryBlockAnimation;
 import thread.MovementAndGravityThread;
 import thread.PlatformThread;
-import thread.PowerUpThread;
+import thread.MisteryBlockHitThread;
 import thread.SpinningFireThread;
 
 public class GameController {
@@ -71,10 +72,19 @@ public class GameController {
 	private ImagesLoader imloCoin;
 	private Set<String> pressed;
 	private Map<Figure, Rectangle> figureRectangles;
-
+	private boolean pause;
+	public boolean getPause() {
+		return pause;
+	}
+	private Clip ground;
+	public Clip getClip() {
+		return ground;
+	}
 	private BufferedImage[] marioPictures;
 	
 	private BufferedImage[] bigMarioPictures;
+	
+	private BufferedImage[] fireMarioPictures;
 
 	@FXML
 	private Label timeLabel;
@@ -102,11 +112,15 @@ public class GameController {
 	
 	private JumpingThread jumping;
 	
+	private SoundsLoader sound;
+	
     @FXML
     public void initialize() {
+    	pause=false;
     	jumping = new JumpingThread(this);
     	pressed = new HashSet<String>();
     	try {
+    		ground = SoundsLoader.loadSounds(0);
 			mainGame = new Game();
 			imloMark= new ImagesLoader(32, 32, 1, 3,"src/uiImg/QuestionMark.png");
 			imloCoin =new ImagesLoader(32, 32, 1, 3,"src/uiImg/Coin.png");
@@ -128,6 +142,8 @@ public class GameController {
 			marioPictures = sl.getSprites();
 			sl = new ImagesLoader(32, 64, 7, 4, Mario.BIGMARIO);
 			bigMarioPictures = sl.getSprites();
+			sl = new ImagesLoader(32, 64, 7, 4, Mario.FIREMARIO);
+			fireMarioPictures = sl.getSprites();
 		} catch (IOException e) {
 			
 			e.printStackTrace();
@@ -135,23 +151,86 @@ public class GameController {
     	Thread mv = new MovementAndGravityThread(this);
     	threads.add(mv);
     	mv.start();
+    	sound = new SoundsLoader();
     	
     }
-    
+    public void pause() {
+    	pause=true;
+    	ground.stop();
+		for (int i = 0; i < threads.size(); i++) {
+			Thread t = threads.get(i);
+			if(t.isAlive()) {
+				if(t instanceof CoinAnimation) {
+					((CoinAnimation) t).deactivate();
+				}else if(t instanceof EnemyThread) {
+					((EnemyThread) t).deactivate();
+				}else if(t instanceof LevelTimeThread) {
+					((LevelTimeThread) t).deactivate();
+				}else if(t instanceof MisteryBlockAnimation) {
+					((MisteryBlockAnimation) t).deactivate();
+				}else if(t instanceof MovementAndGravityThread) {
+					((MovementAndGravityThread) t).deactivate();
+				}else {
+					((PlatformThread) t).deactivate();
+				}
+			}
+		}
+	}
+    public void continues() {
+    	
+    	//ground.start();
+		for (int i = 0; i < threads.size(); i++) {
+			Thread t = threads.get(i);
+			if(t.isAlive()) {
+				if(t instanceof CoinAnimation) {
+					((CoinAnimation) t).activate();
+				}else if(t instanceof EnemyThread) {
+					((EnemyThread) t).activate();
+				}else if(t instanceof LevelTimeThread) {
+					((LevelTimeThread) t).activate();
+				}else if(t instanceof MisteryBlockAnimation) {
+					((MisteryBlockAnimation) t).activate();
+				}else if(t instanceof MovementAndGravityThread) {
+					((MovementAndGravityThread) t).activate();
+				}else {
+					((PlatformThread) t).activate();
+				}
+			}
+		}
+		pause=false;
+	}
     public void configureScene() {
 		mainScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent e) {
 				pressed.add(e.getCode().toString());
+				if(!pause) {
 					if(e.getCode().equals(KeyCode.D)) {
 						moveImage(1,0);
 					}
 					if(e.getCode().equals(KeyCode.A)) {
 						moveImage(-1,0);
 					}if(e.getCode().equals(KeyCode.W) && !jumping.isAlive() ){
+						Clip c;
+						if(mainGame.getLevelOne().getMario().getHeight() == 64) {
+							 c= sound.loadSounds(6);
+						}else {
+							 c= sound.loadSounds(6);
+						}
+						c.start();
 						runThread(); 
+					}if(e.getCode().equals(KeyCode.ESCAPE)) {
+						Clip bang = SoundsLoader.loadSounds(25);
+				    	bang.start();
+						pause();
 					}
-				
+				}else {
+					if(e.getCode().equals(KeyCode.ESCAPE)) {
+						Clip bang = SoundsLoader.loadSounds(25);
+				    	bang.start();
+				    	continues();
+					}
+				}
 			}
 			});
 		mainScene.setOnKeyReleased(new EventHandler<KeyEvent>() {
@@ -165,10 +244,15 @@ public class GameController {
 		
     public void timeThread() {
     	LevelTimeThread lv = new LevelTimeThread(this);
+    	threads.add(lv);
     	lv.start();
+
+    	threads.add(lv);
+
     }
     
-    public String isTouching() { // borrar ultimo if
+    public String isTouching() {
+    
 
     	String intersects = "";
     	List<Figure> sprites = mainGame.getLevelOne().getFigures();
@@ -178,32 +262,34 @@ public class GameController {
 			Figure f = sprites.get(i);
 			Figure mario = mainGame.getLevelOne().getMario();
 			intersects = ((Mario) mario).isColliding(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
-			if(intersects.equals(Mario.ISMOVINGDOWN) && sprites.get(i) instanceof Enemy) {
+			if(intersects.equals(Mario.ISMOVINGUP) && (f instanceof MisteryBlock))
+			System.out.println(intersects.equals(Mario.ISMOVINGUP) + " " + (sprites.get(i) instanceof MisteryBlock));
+			if(intersects.equals(Mario.ISMOVINGDOWN) && f instanceof Enemy) {
 				if(!sprites.get(i).getImage().equals(Koopa.KOOPASHELL)) {
 					EnemyDeathAnimation thread = new EnemyDeathAnimation(this, figureRectangles.get(sprites.get(i)), (Enemy) sprites.get(i));
 					thread.start();
 				}
-			} else if(intersects.equals(Mario.ISMOVINGUP) && sprites.get(i) instanceof MisteryBlock) {
-				MisteryBlock mb =  (MisteryBlock) sprites.get(i);
+			}else if(intersects.equals(Mario.ISMOVINGUP) && (f instanceof MisteryBlock)) {
+				MisteryBlock mb =  (MisteryBlock) f;
+				ImagesLoader sl = null;
+				try {
+					sl = new ImagesLoader(32, 32, 1, 4, StaticFigure.IRON);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				BufferedImage[] b = sl.getSprites();
+				Image card = SwingFXUtils.toFXImage(b[0], null);
+				figureRectangles.get(mb).setFill(new ImagePattern(card));
+				rectan.remove(figureRectangles.get(mb));
 				if(mb.getPower() == null && mb.getCoin() == null && !mb.getImage().equals(StaticFigure.IRON)) {
-					PowerUp pu = ((Mario) mario).nextPowerUp();
 					mb.setImage(StaticFigure.IRON);
-					ImagesLoader sl = null;
-					try {
-						sl = new ImagesLoader(32, 32, 1, 4, StaticFigure.IRON);
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-					BufferedImage[] b = sl.getSprites();
-					Image card = SwingFXUtils.toFXImage(b[0], null);
-					figureRectangles.get(mb).setFill(new ImagePattern(card));
-					rectan.remove(figureRectangles.get(mb));
+					PowerUp pu = ((Mario) mario).nextPowerUp();
 					mainGame.getLevelOne().getFigures().add(pu);
 					if(pu instanceof Mushroom) {
 						Rectangle r = new Rectangle(mb.getPosX(), mb.getPosY(), 32, 32);
 						pu.setPosX(mb.getPosX()); pu.setPosY(mb.getPosY());
 						r.setFill(new ImagePattern(new Image(Mushroom.IMAGE)));
-						PowerUpThread pw = new PowerUpThread(this, r, pu);
+						MisteryBlockHitThread pw = new MisteryBlockHitThread(this, r, pu);
 						pw.start();
 						threads.add(pw);
 					}else if(pu instanceof Flower) {
@@ -217,18 +303,58 @@ public class GameController {
 						BufferedImage[] blocks = sl.getSprites();
 						Image cardd = SwingFXUtils.toFXImage(blocks[0], null);
 						r.setFill(new ImagePattern(cardd));
-						PowerUpThread pw = new PowerUpThread(this, r, pu);
+						MisteryBlockHitThread pw = new MisteryBlockHitThread(this, r, pu);
 						pw.start();
 						threads.add(pw);
 					}
+				}else if(mb.getCoin()!=null && !mb.getImage().equals(StaticFigure.IRON)) {
+					mb.setImage(StaticFigure.IRON);
+					Rectangle r = new Rectangle(mb.getPosX(), mb.getPosY()-32, 32, 32);
+					try {
+						sl = new ImagesLoader(32, 32, 1, 4, Coin.COININBLOCK);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					BufferedImage[] blocks = sl.getSprites();
+					Image cardd = SwingFXUtils.toFXImage(blocks[0], null);
+					r.setFill(new ImagePattern(cardd));
+					MisteryBlockHitThread pw = new MisteryBlockHitThread(this, r, null);
+					pw.start();
 				}
 			}
 		}
     	return intersects;
     }
     
+    public void animateMisteryBlockCoin(Rectangle r, int iteration, int move) {
+    	
+    	if(iteration == -1) {
+    		mainBackground.getChildren().add(r);
+    	}else if(iteration == -2){
+    		mainBackground.getChildren().remove(r);
+    		int coins = Integer.parseInt(acumulatedCoins.getText().split(" ")[1]);
+			coins++;
+			if(coins < 10)
+				acumulatedCoins.setText("X 0" + coins);
+			else
+				acumulatedCoins.setText("X " + coins);
+    	}else {
+    		ImagesLoader sl = null;
+        	try {
+    			sl = new ImagesLoader(32, 32, 1, 4, Coin.COININBLOCK);
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+        	if(move == 0) {
+        		r.setY(r.getY()-8);
+        	}else
+        		r.setY(r.getY()+10);
+    		BufferedImage[] blocks = sl.getSprites();
+    		Image cardd = SwingFXUtils.toFXImage(blocks[iteration], null);
+    		r.setFill(new ImagePattern(cardd));
+    	}
+    }
     public void exitPowerUp(Rectangle r, PowerUp p, int iteration) {
-    	System.out.println(iteration);
     	if(iteration == 0) {
     		mainBackground.getChildren().add(r);
     		r.toBack();
@@ -316,6 +442,7 @@ public class GameController {
     	Figure f = null;
 
     	List<Figure> sprites =mainGame.getLevelOne().getFigures();
+
     	for (int i = 0; i < mainGame.getLevelOne().getFigures().size() && intersects.isEmpty(); i++) {
 			if(sprites.get(i) instanceof Mario )
 				continue;
@@ -350,6 +477,7 @@ public class GameController {
     public void runThread(){
     	jumping = new JumpingThread(this);
     	jumping.start();
+    	
     }
 
 	public void misteryBlockThread() {
@@ -426,7 +554,6 @@ public class GameController {
     }
     
     public void distanceToEnemies() {
-    	
     	Mario m = (Mario) mainGame.getLevelOne().getMario();
     	List<Enemy> enemies = mainGame.getLevelOne().getEnemies();
     	for (int i = 0; i < enemies.size(); i++) {
@@ -451,7 +578,6 @@ public class GameController {
     public void spinFire(Rectangle fireRec, Figure fire, int f, int radius, int centerX, int centerY) {
     	double x = Math.sin(Math.toRadians((double)f)) * (radius);
         double y = Math.cos(Math.toRadians((double)f)) * (radius);
-        //System.out.println((Math.pow(x-centerX, 2) + Math.pow(y-centerY, 2)));
         fire.setPosX(radius - Math.pow(x-centerX, 2));
         fire.setPosY(radius - Math.pow(y-centerY, 2));
         fireRec.setX(fire.getPosX());
@@ -461,7 +587,7 @@ public class GameController {
  	public void movePlatform(Rectangle platformRectangle, MovingPlatform platform) {
  		platform.setPosY(platform.getPosY()+8);
 			platformRectangle.setY(platform.getPosY());
- 		if(platform.getPosY() > 480) {
+ 		if(platform.getPosY() > 550) {
  			platform.setPosY(0);
  			platformRectangle.setY(platform.getPosY());
  		}
@@ -524,7 +650,7 @@ public class GameController {
 	for (int i = 0; i < threads.size(); i++) {
 		if(threads.get(i) instanceof EnemyThread && ((EnemyThread) threads.get(i)).getEnemy().getPosY() > 480) {
 			((EnemyThread) threads.get(i)).deactivate();
-			mainGame.getLevelOne().getFigures().remove(((EnemyThread) threads.get(i)).getEnemy());
+			//mainGame.getLevelOne().getFigures().remove(((EnemyThread) threads.get(i)).getEnemy());
 			boolean exit = false;
 			for (int j = 0; j < mainGame.getLevelOne().getFigures().size() && !exit; j++) {
 				if(mainGame.getLevelOne().getFigures().get(j) instanceof Mario) {
@@ -552,12 +678,12 @@ public class GameController {
 								figure.setPosX(figure.getPosX()-diff);
 						}
 					}
-				}else if(figure instanceof Mushroom) {
-					intersects = ((Mushroom) figure).mushroomIsColliding(sprites.get(i).getPosX(), sprites.get(i).getPosY(), sprites.get(i).getWidth(), sprites.get(i).getHeight());
+				}else if(figure instanceof PowerUp) {
+					intersects = ((PowerUp) figure).powerUpIsColliding(sprites.get(i).getPosX(), sprites.get(i).getPosY(), sprites.get(i).getWidth(), sprites.get(i).getHeight());
 					if(intersects && sprites.get(i) instanceof Mario) {
 						for (int j = 0; j < threads.size(); j++) {
-							if( threads.get(j) instanceof PowerUpThread && ((PowerUpThread) threads.get(j)).getPowerUp() == figure) {
-								((PowerUpThread) threads.get(j)).deactivate();
+							if( threads.get(j) instanceof MisteryBlockHitThread && ((MisteryBlockHitThread) threads.get(j)).getPowerUp() == figure) {
+								((MisteryBlockHitThread) threads.get(j)).deactivate();
 								threads.remove(j);
 							}
 						}
@@ -577,7 +703,17 @@ public class GameController {
 							mainMario.setFill(new ImagePattern(cardd));
 							mainMario.setHeight(64);
 							mainGame.getLevelOne().getMario().setHeight(64);
-							mainGame.getLevelOne().getMario().setPosY(mainGame.getLevelOne().getMario().getPosY()-64);
+							mainGame.getLevelOne().getMario().setPosY(mainGame.getLevelOne().getMario().getPosY()-32);
+							mainMario.setY(mainGame.getLevelOne().getMario().getPosY());
+						}
+						if(figure instanceof Flower) {
+							mainGame.getLevelOne().getMario().setPowerState((PowerUp) figure);
+							mario.setImage(Mario.FIREMARIO);
+							Image cardd = SwingFXUtils.toFXImage(fireMarioPictures[0], null);
+							mainMario.setFill(new ImagePattern(cardd));
+							mainMario.setHeight(64);
+							mainGame.getLevelOne().getMario().setHeight(64);
+							mainGame.getLevelOne().getMario().setPosY(mainGame.getLevelOne().getMario().getPosY()-32);
 							mainMario.setY(mainGame.getLevelOne().getMario().getPosY());
 						}
 					}
@@ -636,6 +772,9 @@ public class GameController {
     		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Mushroom) {
     			changed = SwingFXUtils.toFXImage(bigMarioPictures[0], null);
 	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Flower) {
+    			changed = SwingFXUtils.toFXImage(fireMarioPictures[0], null);
+	    		mainMario.setFill(new ImagePattern(changed));
     		}
     	}
     	else if(key==1) {  // right movement
@@ -644,6 +783,9 @@ public class GameController {
 	    		mainMario.setFill(new ImagePattern(changed));
     		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Mushroom) {
     			changed = SwingFXUtils.toFXImage(bigMarioPictures[4], null);
+	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Flower) {
+    			changed = SwingFXUtils.toFXImage(fireMarioPictures[4], null);
 	    		mainMario.setFill(new ImagePattern(changed));
     		}
     	}
@@ -654,6 +796,9 @@ public class GameController {
     		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Mushroom) {
     			changed = SwingFXUtils.toFXImage(bigMarioPictures[5], null);
 	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Flower) {
+    			changed = SwingFXUtils.toFXImage(fireMarioPictures[5], null);
+	    		mainMario.setFill(new ImagePattern(changed));
     		}
     	}else if(key==3) {   // Right movement3
     		if(mainGame.getLevelOne().getMario().getPowerState() == null) {
@@ -661,6 +806,9 @@ public class GameController {
 	    		mainMario.setFill(new ImagePattern(changed));
     		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Mushroom) {
     			changed = SwingFXUtils.toFXImage(bigMarioPictures[6], null);
+	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Flower) {
+    			changed = SwingFXUtils.toFXImage(fireMarioPictures[6], null);
 	    		mainMario.setFill(new ImagePattern(changed));
     		}
     	}else if(key ==4) {   // Right movement3
@@ -670,6 +818,9 @@ public class GameController {
     		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Mushroom) {
     			changed = SwingFXUtils.toFXImage(bigMarioPictures[2], null);
 	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Flower) {
+    			changed = SwingFXUtils.toFXImage(fireMarioPictures[2], null);
+	    		mainMario.setFill(new ImagePattern(changed));
     		}
     	}else if(key ==5) {   // left movement1
     		if(mainGame.getLevelOne().getMario().getPowerState() == null) {
@@ -677,6 +828,9 @@ public class GameController {
 	    		mainMario.setFill(new ImagePattern(changed));
     		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Mushroom) {
     			changed = SwingFXUtils.toFXImage(bigMarioPictures[8], null);
+	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Flower) {
+    			changed = SwingFXUtils.toFXImage(fireMarioPictures[8], null);
 	    		mainMario.setFill(new ImagePattern(changed));
     		}
     	}
@@ -687,6 +841,9 @@ public class GameController {
     		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Mushroom) {
     			changed = SwingFXUtils.toFXImage(bigMarioPictures[9], null);
 	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Flower) {
+    			changed = SwingFXUtils.toFXImage(fireMarioPictures[9], null);
+	    		mainMario.setFill(new ImagePattern(changed));
     		}
     	}
     	else if(key ==7) {   // left movement3
@@ -696,13 +853,32 @@ public class GameController {
     		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Mushroom) {
     			changed = SwingFXUtils.toFXImage(bigMarioPictures[10], null);
 	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Flower) {
+    			changed = SwingFXUtils.toFXImage(fireMarioPictures[10], null);
+	    		mainMario.setFill(new ImagePattern(changed));
     		}
     	}else if(key == 8) {   // change to right
-    		changed = SwingFXUtils.toFXImage(marioPictures[7], null);
-    		mainMario.setFill(new ImagePattern(changed));
+    		if(mainGame.getLevelOne().getMario().getPowerState() == null) {
+	    		changed = SwingFXUtils.toFXImage(marioPictures[7], null);
+	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Mushroom) {
+    			changed = SwingFXUtils.toFXImage(bigMarioPictures[7], null);
+	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Flower) {
+    			changed = SwingFXUtils.toFXImage(fireMarioPictures[7], null);
+	    		mainMario.setFill(new ImagePattern(changed));
+    		}
     	}else if(key == 9) {  // change to left
-    		changed = SwingFXUtils.toFXImage(marioPictures[11], null);
-    		mainMario.setFill(new ImagePattern(changed));
+    		if(mainGame.getLevelOne().getMario().getPowerState() == null) {
+	    		changed = SwingFXUtils.toFXImage(marioPictures[11], null);
+	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Mushroom) {
+    			changed = SwingFXUtils.toFXImage(bigMarioPictures[11], null);
+	    		mainMario.setFill(new ImagePattern(changed));
+    		}else if(mainGame.getLevelOne().getMario().getPowerState() instanceof Flower) {
+    			changed = SwingFXUtils.toFXImage(fireMarioPictures[11], null);
+	    		mainMario.setFill(new ImagePattern(changed));
+    		}
     	}
     	
     }
@@ -924,25 +1100,7 @@ public class GameController {
 			return jumping;
 		}
 
-	public void closeWindow() {
-		for (int i = 0; i < threads.size(); i++) {
-			Thread t = threads.get(i);
-			if(t.isAlive()) {
-				if(t instanceof CoinAnimation)
-					((CoinAnimation) t).deactivate();
-				else if(t instanceof EnemyThread)
-					((EnemyThread) t).deactivate();
-				else if(t instanceof LevelTimeThread)
-					((LevelTimeThread) t).deactivate();
-				else if(t instanceof MisteryBlockAnimation)
-					((MisteryBlockAnimation) t).deactivate();
-				else if(t instanceof MovementAndGravityThread)
-					((MovementAndGravityThread) t).deactivate();
-				else
-					((PlatformThread) t).deactivate();
-			}
-		}
-	}
+	
 
 	public void animateFlower(Rectangle powerUpRectangle, int counter) {
 		if(counter == -1) {

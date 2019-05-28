@@ -12,7 +12,7 @@ import javafx.stage.WindowEvent;
 import model.SoundsLoader;
 
 public class Main extends Application{
-
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -34,8 +34,8 @@ public class Main extends Application{
 			}
 			
 		});
-		Clip bang = SoundsLoader.cargarSonido("/uilmusic/Ground_Theme.wav");
-    	bang.start();
+		//eClip bang = SoundsLoader.loadSounds(0);
+    	//bang.start();
 		
 		stage.setScene(scene);
 		stage.setTitle("Mariosito");

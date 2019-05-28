@@ -117,7 +117,7 @@ public class Level {
 					coin.setImage(Coin.COIN);
 					Obstacle coinBlock = new MisteryBlock(counterPosX, counterPosY, 32,32, coin, null);
 					coinBlock.setImage(MisteryBlock.MISTERYBLOCK);
-					figures.add(coin);
+					//figures.add(coin);
 					figures.add(coinBlock);
 					
 				}else if(element == 's') {

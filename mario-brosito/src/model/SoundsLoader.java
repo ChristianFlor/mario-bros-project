@@ -9,7 +9,8 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 
 public class SoundsLoader {
-	public static Clip cargarSonido(final String ruta) {
+	
+	public  Clip cargarSonido( String ruta) {
 		Clip clip = null;
 		try {
 			InputStream is = ClassLoader.class.getResourceAsStream(ruta);
@@ -23,9 +24,11 @@ public class SoundsLoader {
 		}
 		return clip;
 	}
-	 public static Clip loadSounds(int n) {
+	 public  Clip loadSounds(int n) {
 	    	Clip bang= null;
-	    	if(n==1) {
+	    	if(n==0) {
+	    		bang = cargarSonido("/uilmusic/Ground_Theme.wav");
+	    	}else if(n==1) {
 	    		bang = cargarSonido("/uilmusic/smb_1-up.wav");
 	    	}else if(n==2) {
 	    		bang = cargarSonido("/uilmusic/smb_breakblock.wav");
@@ -60,7 +63,7 @@ public class SoundsLoader {
 	    	}else if(n==17) {
 	    		bang = cargarSonido("/uilmusic/smb_world_clear.wav");
 	    	}else if(n==18) {
-	    		bang = cargarSonido("/uilmusic/smb_.wav");
+	    		bang = cargarSonido("/uilmusic/Star.wav");
 	    	}else if(n==19) {
 	    		bang = cargarSonido("/uilmusic/smb_bowserfalls.wav");
 	    	}else if(n==20) {
@@ -69,9 +72,13 @@ public class SoundsLoader {
 	    		bang = cargarSonido("/uilmusic/smb_bump.wav");
 	    	}else if(n==22) {
 	    		bang = cargarSonido("/uilmusic/smb_gameover.wav");
+	    	}else if(n==23) {
+	    		bang = cargarSonido("/uilmusic/UnderGround.wav");
+	    	}else if(n==24) {
+	    		bang = cargarSonido("/uilmusic/Castle.wav");
+	    	}else if(n==25) {
+	    		bang = cargarSonido("/uilmusic/Pause.wav");
 	    	}
-	    	
-	    	
 	    	return bang;
 	    }
 }
