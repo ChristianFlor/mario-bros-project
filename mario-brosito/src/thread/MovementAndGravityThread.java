@@ -24,7 +24,6 @@ public class MovementAndGravityThread extends Thread {
 				while(active) {
 					
 					try {
-						
 						boolean enter = false;
 						while(controller.isFalling().isEmpty() && !controller.getJumping().isAlive()) {
 								controller.moveImage(3);
@@ -44,7 +43,20 @@ public class MovementAndGravityThread extends Thread {
 						}
 						if(enter)
 							controller.getMainGame().getLevelOne().getMario().setState(Mario.ISSTANDINGSTILL);
+						/*double rest = Mario.GROUNDPOSITION-controller.getMainGame().getLevelOne().getMario().getPosY();
+						double ecuation = (42 + Math.sqrt((42*42)-4*1.2*rest))/2*1.2;
+						System.out.println(ecuation);*/
+						int counter = 10;
+						double z = Mario.GROUNDPOSITION;
 						
+						while(counter<=Mario.GROUNDPOSITION && controller.isFalling().isEmpty() && !controller.getJumping().isAlive()) {
+							
+							double jump =z+3*counter*counter-42*counter;
+							controller.moveImage(2, jump);
+							sleep(100);
+							counter++;
+							
+						}
 						if(controller.getPressed().contains("D") && !controller.getJumping().isAlive()) {
 							
 						 	if(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGLEFT)) {

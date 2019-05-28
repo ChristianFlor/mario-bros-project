@@ -139,10 +139,10 @@ public class GameController {
 			public void handle(KeyEvent e) {
 				pressed.add(e.getCode().toString());
 					if(e.getCode().equals(KeyCode.D)) {
-						moveImage(1);
+						moveImage(1,0);
 					}
 					if(e.getCode().equals(KeyCode.A)) {
-						moveImage(-1);
+						moveImage(-1,0);
 					}if(e.getCode().equals(KeyCode.W) && !jumping.isAlive() ){
 						runThread(); 
 					}
@@ -231,6 +231,30 @@ public class GameController {
 			}
 		}
 	}
+    
+    
+    public Figure isBetween(double yFinal, double yActual) {
+    	boolean intersects = false;
+    	Figure f = null;
+    	List<Figure> sprites = mainGame.getLevelOne().getFigures();
+    	
+    	for (int i = 0; i < sprites.size() && !intersects; i++) {
+    		
+			if(sprites.get(i) instanceof Mario )
+				continue;
+			f = sprites.get(i);
+			
+			Figure mario = mainGame.getLevelOne().getMario();
+			intersects = ((Mario) mario).isThereSomethingInBetween(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight(), yFinal, yActual);
+		}
+    	
+    	if(!intersects) {
+    		f = null;
+    	}
+    	
+    	return f;
+    }
+    
     
     public String isFalling() {
     	String intersects = "";
@@ -474,7 +498,7 @@ public class GameController {
  		return intersects;
  	}
  
-    public void moveImage(int a){
+    public void moveImage(int a, double jump){
 		Mario m = (Mario) mainGame.getLevelOne().getMario();
 
 		String touch = isTouching();
@@ -504,13 +528,10 @@ public class GameController {
 	        	mainMario.setX(mainMario.getX()-8);
 	        	m.setPosX(mainMario.getX());
 	        	//m.setState(Mario.ISMOVINGLEFT);
-	        }else if(a==2 && !touch.equals(Mario.ISMOVINGUP)){
-	        	mainMario.setY(mainMario.getY()-8);
+	        }else if(a==2){ //&& !touch.equals(Mario.ISMOVINGUP
+	        	mainMario.setY(jump);
 	        	m.setPosY(mainMario.getY());
 	        }else if(a==3 && !touch.equals(Mario.ISMOVINGDOWN)){
-	        	mainMario.setY(mainMario.getY()+8);
-	        	m.setPosY(mainMario.getY());
-	        }else if(a==3 && touch.equals(Mario.ISMOVINGDOWN)){
 	        	mainMario.setY(mainMario.getY()+8);
 	        	m.setPosY(mainMario.getY());
 	        }
@@ -566,7 +587,6 @@ public class GameController {
 				mainBackground.getChildren().add(rec);
 				mainMario = rec;
 			}else if(f instanceof StaticFigure){
-				System.out.println(f.getPosY());
 				rec.setFill(new ImagePattern(new Image(f.getImage())));
 				mainBackground.getChildren().add(rec);
 			}else if(f instanceof MisteryBlock) {

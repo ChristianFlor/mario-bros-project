@@ -245,6 +245,7 @@ public class Level {
             current.setNextEnemy(enemy);
         }
     }
+	
     public Mario getMario() {
         return (Mario)figures.get(positionOfMario);
     }

@@ -76,6 +76,43 @@ public class EnemyDeathAnimation extends Thread{
   	      }
   	      controller.moveImage(2);
     	}
+    	controller.moveImage(2,0);
+      Platform.runLater(new Runnable() {
+		@Override
+		public void run() {
+			controller.changeEnemyImage(1, enemy, enemyRec);
+		}
+      });
+      try {
+		sleep(200);
+      } catch (InterruptedException e) {
+		e.printStackTrace();
+      }
+      controller.moveImage(2,0);
+      Platform.runLater(new Runnable() {
+  		@Override
+  		public void run() {
+  			
+  			controller.changeEnemyImage(2, enemy, enemyRec);
+  		}
+        });
+      try {
+		sleep(200);
+      } catch (InterruptedException e) {
+		e.printStackTrace();
+      }
+      
+      Platform.runLater(new Runnable() {
+  		@Override
+  		public void run() {
+  			controller.changeEnemyImage(3, enemy, enemyRec);
+  		}
+        });
+      try {
+    	  sleep(200);
+      } catch (InterruptedException e) {
+		e.printStackTrace();
+      }
     }
 
 	public Enemy getEnemy() {
