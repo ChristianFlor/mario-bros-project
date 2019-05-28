@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
@@ -20,7 +21,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane prefHeight="570.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.PlayerController">
+<StackPane prefHeight="480.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.PlayerController">
    <children>
       <BorderPane>
          <top>
@@ -35,7 +36,7 @@
             </HBox>
          </top>
          <center>
-            <TabPane prefHeight="500.0" prefWidth="845.0" style="-fx-background-color: #2A2E37;" stylesheets="@../CSS/dark-theme2.css" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <TabPane prefHeight="500.0" prefWidth="774.0" style="-fx-background-color: #2A2E37;" stylesheets="@../CSS/dark-theme2.css" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
               <tabs>
                   <Tab text="REGISTER">
                      <content>
@@ -51,13 +52,13 @@
                                     <Separator orientation="VERTICAL" prefHeight="345.0" prefWidth="9.0" visible="false" />
                                     <VBox alignment="CENTER" fillWidth="false" focusTraversable="true" prefHeight="345.0" prefWidth="362.0">
                                        <children>
-                                          <TextField fx:id="tfName" prefHeight="37.0" prefWidth="275.0" promptText="Enter your first name...">
+                                          <TextField fx:id="tfName" prefHeight="37.0" prefWidth="275.0" promptText="Enter your first name..." style="-fx-text-fill: black;">
                                              <font>
                                                 <Font name="Consolas" size="21.0" />
                                              </font>
                                           </TextField>
                                           <Separator prefHeight="45.0" prefWidth="390.0" visible="false" />
-                                          <TextField fx:id="tfNick" prefHeight="37.0" prefWidth="273.0" promptText="Enter your nickname...">
+                                          <TextField fx:id="tfNick" prefHeight="37.0" prefWidth="273.0" promptText="Enter your nickname..." style="-fx-text-fill: black;">
                                              <font>
                                                 <Font name="Consolas Bold" size="22.0" />
                                              </font>
@@ -91,113 +92,119 @@
                   <Tab text="PLAYERS">
                      <content>
                         <BorderPane prefHeight="452.0" prefWidth="805.0">
-                           <right>
-                              <VBox fillWidth="false" focusTraversable="true" prefHeight="436.0" prefWidth="401.0" BorderPane.alignment="CENTER">
+                           <center>
+                              <HBox fillHeight="false" prefHeight="471.0" prefWidth="780.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <Separator prefHeight="17.0" prefWidth="364.0" visible="false" />
-                                    <VBox alignment="CENTER" prefHeight="167.0" prefWidth="389.0" style="-fx-border-color: #4285F4; -fx-border-width: 2; -fx-border-radius: 15;">
+                                    <VBox fillWidth="false" focusTraversable="true" prefHeight="381.0" prefWidth="358.0" spacing="5.0">
                                        <children>
-                                          <Label text="Search Player" textFill="WHITE">
-                                             <font>
-                                                <Font name="Verdana Bold" size="24.0" />
-                                             </font>
-                                          </Label>
-                                          <HBox alignment="CENTER" prefHeight="47.0" prefWidth="364.0" spacing="8.0">
+                                          <HBox alignment="CENTER" prefHeight="46.0" prefWidth="323.0">
                                              <children>
-                                                <TextField fx:id="idName" prefHeight="37.0" prefWidth="178.0" promptText="Enter your name" style="-fx-text-fill: black;" />
-                                                <ImageView fitHeight="33.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../uiImg/busqueda.png" />
-                                                   </image>
-                                                </ImageView>
-                                                <Button mnemonicParsing="false" onAction="#searchName" prefHeight="39.0" prefWidth="92.0" text="Search" textFill="WHITE" />
-                                                <Label fx:id="timeCheck111" prefHeight="17.0" prefWidth="84.0" text="Time: xx ms" textFill="WHITE" />
+                                                <Button mnemonicParsing="false" onAction="#sortId" text="ID" translateX="-10.0" />
+                                                <Button mnemonicParsing="false" onAction="#sortName" prefHeight="39.0" prefWidth="67.0" text="Name" translateX="-5.0" />
+                                                <Button mnemonicParsing="false" onAction="#sortNick" prefHeight="39.0" prefWidth="59.0" text="Nick" translateX="5.0" />
+                                                <Button mnemonicParsing="false" onAction="#sortScore" prefHeight="39.0" prefWidth="67.0" text="Score" translateX="10.0" />
                                              </children>
-                                             <padding>
-                                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                                             </padding>
                                           </HBox>
-                                          <HBox alignment="CENTER" prefHeight="47.0" prefWidth="358.0" spacing="8.0">
-                                             <children>
-                                                <TextField fx:id="idNick" prefHeight="37.0" prefWidth="172.0" promptText="Enter yout nick name" style="-fx-text-fill: black;" />
-                                                <ImageView fitHeight="35.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../uiImg/busqueda.png" />
-                                                   </image>
-                                                </ImageView>
-                                                <Button mnemonicParsing="false" onAction="#searchNick" prefHeight="39.0" prefWidth="85.0" text="Search" textFill="WHITE" />
-                                                <Label fx:id="timeCheck1111" prefHeight="17.0" prefWidth="76.0" text="Time: xx ms" textFill="WHITE" />
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                                             </padding>
-                                          </HBox>
+                                          <VBox fx:id="vBoxList" alignment="CENTER" prefHeight="329.0" prefWidth="346.0" style="-fx-border-color: #4285F4; -fx-border-width: 2;" />
                                        </children>
+                                       <padding>
+                                          <Insets left="8.0" />
+                                       </padding>
                                     </VBox>
-                                    <Separator prefHeight="17.0" prefWidth="364.0" visible="false" />
-                                    <VBox alignment="CENTER" fillWidth="false" prefHeight="255.0" prefWidth="392.0" spacing="10.0" style="-fx-border-color: #4285F4; -fx-border-width: 2; -fx-border-radius: 15;">
+                                    <VBox fillWidth="false" focusTraversable="true" prefHeight="381.0" prefWidth="327.0">
                                        <children>
-                                          <Label text="See Data" textFill="WHITE">
-                                             <font>
-                                                <Font name="Consolas Bold" size="24.0" />
-                                             </font>
-                                          </Label>
-                                          <ImageView fx:id="foundScoreImg" fitHeight="140.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../uiImg/mario_dubs.png" />
-                                             </image>
-                                          </ImageView>
-                                          <GridPane alignment="CENTER_RIGHT" prefHeight="84.0" prefWidth="357.0">
-                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="231.0" minWidth="10.0" prefWidth="189.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="234.0" minWidth="10.0" prefWidth="188.0" />
-                                             </columnConstraints>
-                                             <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                             </rowConstraints>
+                                          <VBox alignment="CENTER" fillWidth="false" prefHeight="151.0" prefWidth="356.0" style="-fx-border-color: #4285F4; -fx-border-width: 2; -fx-border-radius: 15;">
                                              <children>
-                                                <Label fx:id="dName" text="Name: " textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Consolas Bold" size="14.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="dScore" text="Score:" textFill="WHITE" GridPane.rowIndex="1">
-                                                   <font>
-                                                      <Font name="Consolas Bold" size="14.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="dNick" text="Nick Name:" textFill="WHITE" GridPane.columnIndex="1">
-                                                   <font>
-                                                      <Font name="Consolas Bold" size="14.0" />
-                                                   </font>
-                                                </Label>
+                                                <HBox prefHeight="30.0" prefWidth="225.0">
+                                                   <children>
+                                                      <ImageView fitHeight="38.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../uiImg/busqueda.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <Label text="Search Player" textFill="WHITE">
+                                                         <font>
+                                                            <Font name="Verdana Bold" size="24.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" prefHeight="47.0" prefWidth="358.0" spacing="8.0">
+                                                   <padding>
+                                                      <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                                                   </padding>
+                                                   <children>
+                                                      <ComboBox fx:id="optionsSearch" prefHeight="25.0" prefWidth="97.0" promptText="Search By" style="-fx-background-color: #4285F4; -fx-background-radius: 15; -fx-text-fill: white;" visibleRowCount="5" />
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" prefHeight="47.0" prefWidth="364.0" spacing="8.0">
+                                                   <children>
+                                                      <TextField fx:id="search" prefHeight="37.0" prefWidth="148.0" promptText="Enter your name" style="-fx-text-fill: black;" />
+                                                      <Button mnemonicParsing="false" onAction="#search" prefHeight="39.0" prefWidth="75.0" text="Search" textFill="WHITE">
+                                                         <font>
+                                                            <Font size="10.0" />
+                                                         </font>
+                                                      </Button>
+                                                      <Label fx:id="timeCheck111" prefHeight="17.0" prefWidth="58.0" text="Time: xx" textFill="WHITE" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                                                   </padding>
+                                                </HBox>
                                              </children>
-                                          </GridPane>
+                                          </VBox>
+                                          <Separator prefHeight="10.0" prefWidth="364.0" visible="false" />
+                                          <VBox alignment="CENTER" fillWidth="false" prefHeight="220.0" prefWidth="347.0" spacing="10.0" style="-fx-border-color: #4285F4; -fx-border-width: 2; -fx-border-radius: 15;">
+                                             <children>
+                                                <Label text="See Data" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Consolas Bold" size="24.0" />
+                                                   </font>
+                                                </Label>
+                                                <ImageView fx:id="foundScoreImg" fitHeight="127.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../uiImg/mario_dubs.png" />
+                                                   </image>
+                                                </ImageView>
+                                                <GridPane alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="330.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="231.0" minWidth="10.0" prefWidth="149.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="234.0" minWidth="10.0" prefWidth="165.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <Label fx:id="dName" text="Name: " textFill="WHITE">
+                                                         <font>
+                                                            <Font name="Consolas Bold" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label fx:id="dScore" text="Score:" textFill="WHITE" GridPane.rowIndex="1">
+                                                         <font>
+                                                            <Font name="Consolas Bold" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label fx:id="dNick" text="NickName:" textFill="WHITE" GridPane.columnIndex="1">
+                                                         <font>
+                                                            <Font name="Consolas Bold" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label fx:id="dId" text="Id: " textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                         <font>
+                                                            <Font name="Consolas Bold" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </GridPane>
+                                             </children>
+                                          </VBox>
                                        </children>
                                     </VBox>
                                  </children>
-                              </VBox>
-                           </right>
-                           <left>
-                              <VBox fillWidth="false" focusTraversable="true" prefHeight="460.0" prefWidth="434.0" spacing="5.0" BorderPane.alignment="CENTER">
-                                 <children>
-                                    <Separator prefHeight="39.0" prefWidth="392.0" visible="false" />
-                                    <HBox alignment="CENTER" prefHeight="62.0" prefWidth="415.0">
-                                       <children>
-                                          <Button mnemonicParsing="false" onAction="#preOrden" text="Pre-Orden" translateX="-10.0" />
-                                          <Button mnemonicParsing="false" onAction="#inOrden" text="In-Orden" />
-                                          <Button mnemonicParsing="false" onAction="#postOrden" text="Post-Orden" translateX="10.0" />
-                                       </children>
-                                    </HBox>
-                                    <Separator prefHeight="14.0" prefWidth="392.0" visible="false" />
-                                    <VBox fx:id="vBoxList" alignment="CENTER" prefHeight="435.0" prefWidth="424.0" style="-fx-border-color: #4285F4; -fx-border-width: 2;" />
-                                 </children>
-                                 <padding>
-                                    <Insets left="8.0" />
-                                 </padding>
-                              </VBox>
-                           </left>
+                              </HBox>
+                           </center>
                         </BorderPane>
                      </content>
                   </Tab>
@@ -207,7 +214,8 @@
                            <bottom>
                               <HBox alignment="CENTER" prefHeight="44.0" prefWidth="794.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#generate" text="Generate" />
+                                    <Button mnemonicParsing="false" onAction="#generateTree" text="Generate Tree" />
+                                    <Button mnemonicParsing="false" onAction="#generateList" text="Generate List" translateX="10.0" />
                                  </children>
                               </HBox>
                            </bottom>

@@ -83,7 +83,7 @@ public class Mario extends Figure {
 		
 		
 		if((!(this.getPosX() > x2+w2) && !(this.getPosX()+this.getWidth() < x2)) && (!(this.getPosY() > y2+h2) && !(this.getPosY() + this.getHeight() < y2))){
-		
+
 			if(y2==416 || y2 == 448) {
 				grounded = "floor";
 			}
