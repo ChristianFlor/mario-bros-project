@@ -18,7 +18,7 @@ public class Gravity extends Thread{
     }
 
     public void run() {
-        while(!controller.isEnemyFalling(figure, figureRec)) {
+        while(!controller.isFigureFalling(figure, figureRec)) {
         	Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
