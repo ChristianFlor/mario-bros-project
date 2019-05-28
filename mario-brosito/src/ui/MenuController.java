@@ -24,6 +24,7 @@ import javafx.util.Duration;
 
 
 
+
 public class MenuController {
 	
     @FXML
@@ -51,6 +52,7 @@ public class MenuController {
     			new BackgroundSize(685, 480, false, false, false, false));
   
     	marioPane.setBackground(new Background(myBI));
+    	
     }
     
 
