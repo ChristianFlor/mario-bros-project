@@ -1,10 +1,8 @@
 package model;
 
-import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 
 public class Mario extends Figure {
-	
 
 	public final static String IMAGE = "src/uiImg/player.png";
 	
@@ -16,10 +14,6 @@ public class Mario extends Figure {
 	public final static String ISDIAGONALRIGHT = "DiagonalRight";
 	public final static String ISDIAGONALLEFT = "DiagonalLeft";
 
-
-
-
-	
 	public Mario(double posX, double posY, double width, double height) {
 		super(posX, posY, width, height);
 		powerState = null;
@@ -71,92 +65,8 @@ public class Mario extends Figure {
 				collide = ISMOVINGUP;
 			}
 			
-			
-			
-			
 		}
-		/*if((!(this.getPosX() > x2+w2) && !(this.getPosX()+this.getWidth() < x2)) && (!(this.getPosY() > y2+h2) && !(this.getPosY() + this.getHeight() < y2))) {
 		
-			double pointsX = w2/3;
-			
-			Point2D p1 = new Point2D(x2+pointsX, y2);
-			Point2D p2 = new Point2D(x2+pointsX*3, y2);
-			Point2D p12 = new Point2D(x2+pointsX*2, y2);
-		
-			double pointsY = h2/3;
-			Point2D p3 = new Point2D(x2, y2+pointsY);
-			Point2D p4 = new Point2D(x2, y2+(pointsY*2));
-			Point2D p5 = new Point2D(x2, y2+(pointsY*3));
-		
-			Point2D p6 = new Point2D(x2+w2, y2+(pointsY));
-			Point2D p7 = new Point2D(x2+w2, y2+(pointsY*2));
-			Point2D p8 = new Point2D(x2+w2, y2+(pointsY*3));
-			
-			
-			Point2D p9 = new Point2D(x2+pointsX,y2+h2 );
-			Point2D p10 = new Point2D(x2+(pointsX*2), y2+h2);
-			Point2D p11 = new Point2D(x2+(pointsX*3), y2+h2);
-			 
-			
-			
-			//Rectangle2D marioRec = new Rectangle2D(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
-			
-			
-			//System.out.println(state);
-			
-			if((marioRec.contains(p9) || marioRec.contains(p10)) || marioRec.contains(p11)) {
-
-				collide = ISMOVINGUP;
-			}
-			else if((marioRec.contains(p3) || marioRec.contains(p4) || marioRec.contains(p5))) {
-				
-				collide = ISMOVINGRIGHT;
-			}
-			else if((marioRec.contains(p6) || marioRec.contains(p7) || marioRec.contains(p8) )) 
-		
-				collide = ISMOVINGLEFT;
-			
-			else if((state.equals(ISMOVINGDOWN) ||state.equals(ISSTANDINGSTILL)) && (marioRec.contains(p1) || marioRec.contains(p2) || marioRec.contains(p12)))
-
-				collide = ISMOVINGDOWN;
-		
-			
-			*/
-			/*double halfOtherX = x2 + (w2/2);
-			double halfMarioX = this.getPosX() +(this.getWidth()/2);
-			double halfOtherY = y2 +(h2/2);
-			double halfMarioY = this.getPosY() +(this.getHeight()/2);
-			
-			
-			double x = (halfMarioX-halfOtherX)*(halfMarioX-halfOtherX);
-			double y = (halfMarioY-halfOtherY)*(halfMarioY-halfOtherY);
-			double distance = Math.sqrt(x+y);
-			
-			double distanceX = Math.abs(distance - this.getWidth()/2+w2/2);
-			double distanceY = Math.abs(distance - this.getHeight()/2+h2/2);
-			
-			if( (distance< this.getWidth()/2+w2/2) ){
-				
-				if(state.equals(ISMOVINGRIGHT)) {
-					collide = ISMOVINGRIGHT;
-					System.out.println("r");
-				}else if(state.equals(ISMOVINGLEFT)) {
-					collide = ISMOVINGLEFT;
-					System.out.println("l");
-				}
-			}
-			 if(distance< this.getHeight()/2+h2/2) {
-				System.out.println("d");
-				if(state.equals(ISMOVINGDOWN)) {
-					collide = ISMOVINGDOWN;
-					System.out.println("d");
-				}else if(state.equals(ISMOVINGUP)) {
-					System.out.println("u");
-					collide = ISMOVINGUP;
-				}
-			}*/
-
-	//	}
 		return collide;
 	}
 	
@@ -165,18 +75,6 @@ public class Mario extends Figure {
 		
 		
 		if((!(this.getPosX() > x2+w2) && !(this.getPosX()+this.getWidth() < x2)) && (!(this.getPosY() > y2+h2) && !(this.getPosY() + this.getHeight() < y2))){
-			/*Point2D p1 = new Point2D(x2, y2);
-			Point2D p2 = new Point2D(x2+w2, y2);
-			Point2D p12 = new Point2D(x2+w2/2, y2);
-			
-			Rectangle2D marioRec = new Rectangle2D(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
-			
-			
-			if((marioRec.contains(p1) || marioRec.contains(p2) || marioRec.contains(p12)) && ((y2 == 416 || y2 == 448) || y2<=this.getPosY())){
-				grounded = "floor";
-			}else if((marioRec.contains(p1) || marioRec.contains(p2) || marioRec.contains(p12)) && this.getPosX()+this.getWidth() > x2 && this.getPosX()<x2+w2){
-				grounded = "intersect";
-			}*/
 			
 			if(y2==416 || y2 == 448) {
 				grounded = "floor";
@@ -205,13 +103,11 @@ public class Mario extends Figure {
 
 	 public boolean isEnemyNear(double posX) {
 	    	boolean near = false;
-	    	double distance = 350;
+	    	double distance = 500;
 	    	double actualDistance =	Math.abs(this.getPosX() - posX);
 	    		if(actualDistance <= distance) {
 	    			near = true;
 	    		}
 	    	return near;
 	    }
-
-
 }

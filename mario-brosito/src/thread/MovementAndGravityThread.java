@@ -1,9 +1,6 @@
 package thread;
 
-import java.util.List;
-
 import javafx.application.Platform;
-import model.Enemy;
 import model.Mario;
 import ui.GameController;
 
@@ -42,15 +39,7 @@ public class MovementAndGravityThread extends Thread {
 								}else {
 									controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGDOWN);
 								}
-							try {
-	
 								sleep(40);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-	
-								
-								
 								enter = true;
 						}
 						if(enter)
@@ -59,42 +48,88 @@ public class MovementAndGravityThread extends Thread {
 						if(controller.getPressed().contains("D") && !controller.getJumping().isAlive()) {
 							
 						 	if(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGLEFT)) {
-						 		controller.changeMarioImage(8);
+						 		Platform.runLater(new Runnable() {
+									@Override
+									public void run() {
+								 		controller.changeMarioImage(8);
+									}
+						 		});
 						 		sleep(350);
 						 		
 						 	}
-							controller.changeMarioImage(3);
+						 	Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+							 		controller.changeMarioImage(3);
+								}
+					 		});
 							sleep(100);
-							controller.changeMarioImage(1);
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+							 		controller.changeMarioImage(1);
+								}
+					 		});
 							sleep(100);
-							controller.changeMarioImage(2);
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+							 		controller.changeMarioImage(2);
+								}
+					 		});
 							controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGRIGHT);
 							
 							
 						}else if(controller.getPressed().contains("W")) {
-							controller.changeMarioImage(4);
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+							 		controller.changeMarioImage(4);
+								}
+					 		});
 							sleep(1100);
-							controller.changeMarioImage(0);
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+							 		controller.changeMarioImage(0);
+								}
+					 		});
 						}else if(controller.getPressed().contains("A") && !controller.getJumping().isAlive() ) {
 							
 							if(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGRIGHT)) {
-						 		controller.changeMarioImage(9);
+								Platform.runLater(new Runnable() {
+									@Override
+									public void run() {
+								 		controller.changeMarioImage(9);
+									}
+						 		});
 						 		sleep(350);
 						 		//controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGLEFT);
 						 	}
-							controller.changeMarioImage(5);
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+							 		controller.changeMarioImage(5);
+								}
+					 		});
 							sleep(100);
-							controller.changeMarioImage(6);
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+							 		controller.changeMarioImage(6);
+								}
+					 		});
 							sleep(100);
-							controller.changeMarioImage(7);
-						
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+							 		controller.changeMarioImage(7);
+								}
+					 		});
 								controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGLEFT);
-							
-							
 						}
 						
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}

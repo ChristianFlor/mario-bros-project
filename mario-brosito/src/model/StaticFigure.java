@@ -7,6 +7,7 @@ public class StaticFigure extends Figure {
 	public static final String BASE3 = "uiImg/stone_Castle.png";
 	public static final String STAIR1 = "uiImg/chocolate.png";
 	public static final String STAIR2 = "uiImg/chocolate_UnderGround.png";
+	public static final String IRON = "src/uiImg/Iron.png";
 	public static final String FLAGPOLE = "uiImg/Flag.png";
 	public static final String FLAGTOP = "uiImg/FlagTop.png";
 	public static final String FLAGSPHERE = "uiImg/FlagSphere.png";

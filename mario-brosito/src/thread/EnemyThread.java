@@ -41,7 +41,7 @@ public class EnemyThread extends Thread{
         		
         	});
         	try {
-        		sleep(150);
+        		sleep(200);
         	} catch(InterruptedException e) {
         		e.printStackTrace();
         	}

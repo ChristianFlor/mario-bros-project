@@ -48,6 +48,7 @@ import thread.LevelTimeThread;
 import thread.MisteryBlockAnimation;
 import thread.MovementAndGravityThread;
 import thread.PlatformThread;
+import thread.SpinningFireThread;
 
 public class GameController {
 
@@ -98,10 +99,9 @@ public class GameController {
     private Label timeOfLevel;
 	
 	private JumpingThread jumping;
+	
     @FXML
     public void initialize() {
-    	
-    	
     	jumping = new JumpingThread(this);
     	pressed = new HashSet<String>();
     	try {
@@ -111,15 +111,11 @@ public class GameController {
 			rectan= new ArrayList<Rectangle>();
 			enemyRectangles = new HashMap<Enemy, Rectangle>(); 
 			rectanCoin= new ArrayList<Rectangle>();
-
-			//loadWorld2();
-
-
 			threads = new ArrayList<Thread>();
 			misteryBlockThread();
 			timeThread();
 			coinThread();
-			loadWorld1();
+			loadWorld3();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -177,11 +173,9 @@ public class GameController {
 			Figure mario = mainGame.getLevelOne().getMario();
 			intersects = ((Mario) mario).isColliding(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
 			if(intersects.equals(Mario.ISMOVINGDOWN) && sprites.get(i) instanceof Enemy) {
-				if(sprites.get(i) instanceof Goomba) {
+				if(!sprites.get(i).getImage().equals(Koopa.KOOPASHELL)) {
 					EnemyDeathAnimation thread = new EnemyDeathAnimation(this, enemyRectangles.get(sprites.get(i)), (Enemy) sprites.get(i));
 					thread.start();
-				}else if(sprites.get(i) instanceof Koopa) {
-					Koopa k = (Koopa) sprites.get(i);
 				}
 			}
 		}
@@ -221,6 +215,20 @@ public class GameController {
 					exit = true;
 				}
 			}
+		}else if(a == 4) {
+			gRec.setFill(new ImagePattern(new Image(Koopa.KOOPASHELL)));
+			e.setPosY(e.getPosY()+16);
+			e.setHeight(32);
+			gRec.setY(gRec.getY()+16);
+			gRec.setHeight(32);
+			e.setImage(Koopa.KOOPASHELL);
+			boolean exit = false;
+			for (int i = 0; i < threads.size() && !exit; i++) {
+				if(threads.get(i) instanceof EnemyThread && ((EnemyThread) threads.get(i)).getEnemy() == e) {
+					((EnemyThread) threads.get(i)).deactivate();
+					exit = true;
+				}
+			}
 		}
 	}
     
@@ -254,9 +262,6 @@ public class GameController {
 				intersects = ((Enemy) figure).enemyIsGrounded(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());				
 			}
 		}
-			
-	
-    	
     	return intersects;
     }
     
@@ -346,7 +351,7 @@ public class GameController {
     		boolean near = m.isEnemyNear(enemies.get(i).getPosX());
     		boolean exit = false;
     		for (int j = 0; j < threads.size() && !exit; j++) {
-    			if(threads.get(j) instanceof EnemyThread && ((EnemyThread) threads.get(j)).getEnemy() == enemies.get(i)) {
+    			if(threads.get(j) instanceof EnemyThread && ((EnemyThread) threads.get(j)).getEnemy() == enemies.get(i) ) {
     				exit = true;
     			}
 				
@@ -361,6 +366,16 @@ public class GameController {
     	
     }
     
+    public void spinFire(Rectangle fireRec, Figure fire, int f, int radius, int centerX, int centerY) {
+    	double x = Math.sin(Math.toRadians((double)f)) * (radius);
+        double y = Math.cos(Math.toRadians((double)f)) * (radius);
+        System.out.println((Math.pow(x-centerX, 2) + Math.pow(y-centerY, 2)));
+        fire.setPosX(radius - Math.pow(x-centerX, 2));
+        fire.setPosY(radius - Math.pow(y-centerY, 2));
+        fireRec.setX(fire.getPosX());
+        fireRec.setY(fire.getPosY());
+    }
+    
  	public void movePlatform(Rectangle platformRectangle, MovingPlatform platform) {
  		platform.setPosY(platform.getPosY()+8);
 			platformRectangle.setY(platform.getPosY());
@@ -371,7 +386,7 @@ public class GameController {
  	}
  	
  	public void makeFigureFall(Rectangle figureRec, Figure figure) {
- 		figure.setPosY(figure.getPosY()+6);
+ 		figure.setPosY(figure.getPosY()+8);
  		figureRec.setY(figure.getPosY());
  	}
  	
@@ -379,7 +394,7 @@ public class GameController {
  	ImagesLoader sl;
 	ImagesLoader sLoader;
      if(enemy.getState().equals(Mario.ISMOVINGLEFT)) {
-         enemy.setPosX(enemy.getPosX()-6);
+         enemy.setPosX(enemy.getPosX()-8);
          enemyRec.setX(enemy.getPosX());
          if(enemy instanceof Koopa) {
         	sLoader = new ImagesLoader(32, 48, 1, 4, enemy.getImage());
@@ -392,7 +407,7 @@ public class GameController {
 				enemyRec.setFill(new ImagePattern(card));
          }
      }else if(enemy.getState().equals(Mario.ISMOVINGRIGHT)) {
-         enemy.setPosX(enemy.getPosX()+6);
+         enemy.setPosX(enemy.getPosX()+8);
          enemyRec.setX(enemy.getPosX());
          if(enemy instanceof Koopa) {
          	sLoader = new ImagesLoader(32, 48, 1, 4, enemy.getImage());
@@ -424,6 +439,19 @@ public class GameController {
     }
     Gravity thread = new Gravity(this, enemyRec, enemy);
 	thread.start();
+	for (int i = 0; i < threads.size(); i++) {
+		if(threads.get(i) instanceof EnemyThread && ((EnemyThread) threads.get(i)).getEnemy().getPosY() > 480) {
+			((EnemyThread) threads.get(i)).deactivate();
+			mainGame.getLevelOne().getFigures().remove(((EnemyThread) threads.get(i)).getEnemy());
+			boolean exit = false;
+			for (int j = 0; j < mainGame.getLevelOne().getFigures().size() && !exit; j++) {
+				if(mainGame.getLevelOne().getFigures().get(j) instanceof Mario) {
+					mainGame.getLevelOne().setMarioPosition(j);
+					exit = true;
+				}
+			}
+		}
+	}
  	}
  	
  	public boolean enemyIsTouching(Enemy enemy) {
@@ -451,19 +479,19 @@ public class GameController {
 
 		String touch = isTouching();
 			if(mainMario.getX() >= maxRight && a==1 && !touch.equals(Mario.ISMOVINGRIGHT) ) {
-	    		mainMario.setX(mainMario.getX()+10);
-	    		maxRight +=10;
-	    		minLeft += 10;
-	    		mainBackground.setTranslateX(mainBackground.getTranslateX()-10);
+	    		mainMario.setX(mainMario.getX()+8);
+	    		maxRight +=8;
+	    		minLeft += 8;
+	    		mainBackground.setTranslateX(mainBackground.getTranslateX()-8);
 		    	
-	    		timeLabel.setTranslateX(timeLabel.getTranslateX()+10);
-	    		worldLabel.setTranslateX(worldLabel.getTranslateX()+10);
-	    		marioLabel.setTranslateX(marioLabel.getTranslateX()+10);
-	    		numberOfWorld.setTranslateX(numberOfWorld.getTranslateX()+10);
-	    		scoreOfMario.setTranslateX(scoreOfMario.getTranslateX()+10);
-	    		acumulatedCoins.setTranslateX(acumulatedCoins.getTranslateX()+10);
-	    		coinImage.setTranslateX(coinImage .getTranslateX()+10);
-	    		timeOfLevel.setTranslateX(timeOfLevel.getTranslateX()+10);
+	    		timeLabel.setTranslateX(timeLabel.getTranslateX()+8);
+	    		worldLabel.setTranslateX(worldLabel.getTranslateX()+8);
+	    		marioLabel.setTranslateX(marioLabel.getTranslateX()+8);
+	    		numberOfWorld.setTranslateX(numberOfWorld.getTranslateX()+8);
+	    		scoreOfMario.setTranslateX(scoreOfMario.getTranslateX()+8);
+	    		acumulatedCoins.setTranslateX(acumulatedCoins.getTranslateX()+8);
+	    		coinImage.setTranslateX(coinImage .getTranslateX()+8);
+	    		timeOfLevel.setTranslateX(timeOfLevel.getTranslateX()+8);
 	    		m.setPosX(mainMario.getX());
 	    	}
 	    	/*else if(mainMario.getX() <= minLeft && a==-1) {
@@ -486,7 +514,7 @@ public class GameController {
 	        	mainMario.setY(mainMario.getY()+8);
 	        	m.setPosY(mainMario.getY());
 	        }
-			distanceToEnemies();
+			//distanceToEnemies();
     	}
     
     public void changeMarioImage(int key) {
@@ -644,7 +672,9 @@ public class GameController {
     public void loadWorld3() throws IOException {
     	List<Figure> sprites = mainGame.getLevelThree().getFigures();
     	ImagesLoader sl = null;
-    	
+    	int counter = 1;
+    	int centerX = 0;
+    	int centerY = 0;
     	for (int i = 0; i < sprites.size(); i++) {
 			Figure f = sprites.get(i);
 			Rectangle rec = new Rectangle(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
@@ -656,8 +686,16 @@ public class GameController {
 				mainBackground.getChildren().add(rec);
 				mainMario = rec;
 			}else if(f instanceof StaticFigure){
-				rec.setFill(new ImagePattern(new Image(f.getImage())));
-				mainBackground.getChildren().add(rec);
+				if(f.getImage().equals(StaticFigure.IRON)) {
+					sl = new ImagesLoader(32, 32, 1, 4, f.getImage());
+					BufferedImage[] irons = sl.getSprites();
+					Image card = SwingFXUtils.toFXImage(irons[0], null);
+					rec.setFill(new ImagePattern(card));
+					mainBackground.getChildren().add(rec);
+				}else {
+					rec.setFill(new ImagePattern(new Image(f.getImage())));
+					mainBackground.getChildren().add(rec);
+				}
 			}else if(f instanceof MisteryBlock) {
 				sl = new ImagesLoader(32, 32, 1, 3, f.getImage());
 				BufferedImage[] blocks = sl.getSprites();
@@ -666,8 +704,20 @@ public class GameController {
 				rectan.add(rec);
 				mainBackground.getChildren().add(rec);
 			}else if(f instanceof SimpleBlock) {
-				rec.setFill(new ImagePattern(new Image(f.getImage())));
+				sl = new ImagesLoader(16, 16, 1, 4, f.getImage());
+				BufferedImage[] fires = sl.getSprites();
+				Image card = SwingFXUtils.toFXImage(fires[0], null);
+				rec.setFill(new ImagePattern(card));
 				mainBackground.getChildren().add(rec);
+				counter++;
+				if(counter == 1) {
+					centerX = (int) f.getPosX();
+					centerY = (int) f.getPosY();
+				}
+				SpinningFireThread thread = new SpinningFireThread(this, rec, f, 16*counter, centerX, centerY);
+				thread.start();
+				if(counter == 7)
+					counter = 1;
 			}else if(f instanceof Bowser){
 				sl = new ImagesLoader(64, 64, 2, 3, f.getImage());
 				BufferedImage[] boss = sl.getSprites();

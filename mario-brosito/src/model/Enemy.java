@@ -1,9 +1,5 @@
 package model;
 
-import com.sun.javafx.geom.Line2D;
-
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.shape.Rectangle;
 
 public abstract class Enemy extends Figure {
@@ -45,35 +41,26 @@ public abstract class Enemy extends Figure {
     public boolean enemyIsColliding(double x2, double y2, double width, double height) {
     	boolean collide = false;
     	if((!(this.getPosX() > x2+width) && !(this.getPosX()+this.getWidth() < x2)) && (!(this.getPosY() > y2+height) && !(this.getPosY() + this.getHeight() < y2))) {
-    		Rectangle enemyRec = new Rectangle(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
-    		Point2D p1 = new Point2D(x2, y2+(height/2));
-    		Point2D p2 = new Point2D(x2+width, y2+(height/2));
-    		if(enemyRec.contains(p1) || enemyRec.contains(p2)) {
-    			collide = true;
-    		}
+    		if(this.getPosX()<=x2 && this.getPosY()+this.getHeight() > y2 && this.getPosY()+this.getHeight()<=y2+height) {
+				collide = true;
+			}else if(this.getPosX() >= x2 && this.getPosY()+this.getHeight() > y2 && this.getPosY()+this.getHeight()<=y2+height) {
+				collide = true;
+			}
     	}
     	return collide;
     }
     
     public boolean enemyIsGrounded(double x2, double y2, double width, double height) {
     	boolean grounded = false;
-    	/*if((!(this.getPosX() > x2+width) && !(this.getPosX()+this.getWidth() < x2)) && (!(this.getPosY() > y2+height) && !(this.getPosY() + this.getHeight() < y2))) {
-    		Rectangle enemyRec = new Rectangle(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
-    		Point2D p1 = new Point2D(x2, y2);
-    		Point2D p2 = new Point2D(x2+width/2, y2);
-    		Point2D p3 = new Point2D(x2+width, y2);
-    		if(enemyRec.contains(p1) || enemyRec.contains(p2) || enemyRec.contains(p3)) {
-    			grounded = true;
-    		}
-    		
-    	}*/
     	Rectangle enemyRec = new Rectangle(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
     	
     	boolean intersect = enemyRec.intersects(x2, y2, width, height);
     	
     	if(intersect) {
-    		
-    		if(this.getPosY()<=y2) {
+    		if(y2==416 || y2 == 448) {
+    			grounded = true;
+    		}
+    		else if(this.getPosY()+this.getHeight()<=y2) {
     			grounded = true;
     		}
     	}

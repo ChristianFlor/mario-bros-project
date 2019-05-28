@@ -211,6 +211,21 @@ public class Level {
 					platform2.setImage(MovingPlatform.PLATFORM); 
 					figures.add(platform);
 					figures.add(platform2);
+				}else if(element == 'i') {
+					//castle
+					Figure iron = new StaticFigure(counterPosX, counterPosY, 32, 32);
+					iron.setImage(StaticFigure.IRON); 
+					figures.add(iron);
+				}else if(element == 'Z') {
+					//castle
+					Figure iron = new StaticFigure(counterPosX, counterPosY, 32, 32);
+					iron.setImage(StaticFigure.IRON); 
+					figures.add(iron);
+					for (int j = 0; j < 6; j++) {
+						Figure fire = new SimpleBlock(counterPosX+(8+(16*j)), counterPosY+8, 16, 16);
+						fire.setImage(SimpleBlock.SPINNINGFIRE);
+						figures.add(fire);
+					}
 				}
 			}
 			counterPosY+= 32;
