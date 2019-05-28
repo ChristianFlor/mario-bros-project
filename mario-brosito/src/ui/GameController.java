@@ -8,10 +8,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,11 +20,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
 import model.Bowser;
 import model.Coin;
 import model.Enemy;
 import model.Figure;
+import model.Flower;
 import model.Game;
 import model.Goomba;
 import model.ImagesLoader;
@@ -36,6 +32,8 @@ import model.Koopa;
 import model.Mario;
 import model.MisteryBlock;
 import model.MovingPlatform;
+import model.Mushroom;
+import model.PowerUp;
 import model.SimpleBlock;
 import model.Slide;
 import model.StaticFigure;
@@ -48,6 +46,7 @@ import thread.LevelTimeThread;
 import thread.MisteryBlockAnimation;
 import thread.MovementAndGravityThread;
 import thread.PlatformThread;
+import thread.PowerUpThread;
 import thread.SpinningFireThread;
 
 public class GameController {
@@ -115,7 +114,7 @@ public class GameController {
 			misteryBlockThread();
 			timeThread();
 			coinThread();
-			loadWorld3();
+			loadWorld1();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -177,9 +176,39 @@ public class GameController {
 					EnemyDeathAnimation thread = new EnemyDeathAnimation(this, enemyRectangles.get(sprites.get(i)), (Enemy) sprites.get(i));
 					thread.start();
 				}
+			} else if(intersects.equals(Mario.ISMOVINGUP) && sprites.get(i) instanceof MisteryBlock) {
+				MisteryBlock mb =  (MisteryBlock) sprites.get(i);
+				if(mb.getPower() == null && mb.getCoin() == null) {
+					PowerUp pu = ((Mario) mario).nextPowerUp();
+					if(pu instanceof Mushroom) {
+						Rectangle r = new Rectangle(pu.getPosX(), pu.getPosY(), pu.getWidth(), pu.getHeight());
+						r.setFill(new ImagePattern(new Image(Mushroom.IMAGE)));
+						PowerUpThread pw = new PowerUpThread(this, r, pu);
+						pw.start();
+					}else if(pu instanceof Flower) {
+						Rectangle r = new Rectangle(pu.getPosX(), pu.getPosY(), pu.getWidth(), pu.getHeight());
+						ImagesLoader sl = null;
+						try {
+							sl = new ImagesLoader(32, 32, 1, 4, Flower.IMAGE);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						BufferedImage[] blocks = sl.getSprites();
+						Image card = SwingFXUtils.toFXImage(blocks[0], null);
+						r.setFill(new ImagePattern(card));
+						PowerUpThread pw = new PowerUpThread(this, r, pu);
+						pw.start();
+					}
+				}
 			}
 		}
     	return intersects;
+    }
+    
+    public void exitPowerUp(Rectangle r, PowerUp p) {
+    	r.setY(r.getY()-8);
+    	p.setPosY(p.getPosY()-8);
+	
     }
     
     public void changeEnemyImage(int a, Enemy e, Rectangle gRec) {
@@ -535,7 +564,7 @@ public class GameController {
 	        	mainMario.setY(mainMario.getY()+8);
 	        	m.setPosY(mainMario.getY());
 	        }
-			//distanceToEnemies();
+			distanceToEnemies();
     	}
     
     public void changeMarioImage(int key) {

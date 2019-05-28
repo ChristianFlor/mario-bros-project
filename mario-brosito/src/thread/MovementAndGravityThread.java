@@ -26,13 +26,13 @@ public class MovementAndGravityThread extends Thread {
 					try {
 						boolean enter = false;
 						while(controller.isFalling().isEmpty() && !controller.getJumping().isAlive()) {
-								controller.moveImage(3);
+								controller.moveImage(3,0);
 								if(controller.getPressed().contains("D")) {
-									controller.moveImage(1);
+									controller.moveImage(1,0);
 
 									controller.getMainGame().getLevelOne().getMario().setState(Mario.ISDIAGONALRIGHT);
 								}else if(controller.getPressed().contains("A")) {
-									controller.moveImage(-1);
+									controller.moveImage(-1,0);
 
 									controller.getMainGame().getLevelOne().getMario().setState(Mario.ISDIAGONALLEFT);
 								}else {
