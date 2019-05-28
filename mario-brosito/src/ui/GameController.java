@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -47,7 +46,7 @@ import thread.LevelTimeThread;
 import thread.MisteryBlockAnimation;
 import thread.MovementAndGravityThread;
 import thread.PlatformThread;
-import thread.PowerUpThread;
+import thread.MisteryBlockHitThread;
 import thread.SpinningFireThread;
 
 public class GameController {
@@ -172,7 +171,8 @@ public class GameController {
     	lv.start();
     }
     
-    public String isTouching() { // borrar ultimo if
+    public String isTouching() {
+    
 
     	String intersects = "";
     	List<Figure> sprites = mainGame.getLevelOne().getFigures();
@@ -182,32 +182,34 @@ public class GameController {
 			Figure f = sprites.get(i);
 			Figure mario = mainGame.getLevelOne().getMario();
 			intersects = ((Mario) mario).isColliding(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
-			if(intersects.equals(Mario.ISMOVINGDOWN) && sprites.get(i) instanceof Enemy) {
+			if(intersects.equals(Mario.ISMOVINGUP) && (f instanceof MisteryBlock))
+			System.out.println(intersects.equals(Mario.ISMOVINGUP) + " " + (sprites.get(i) instanceof MisteryBlock));
+			if(intersects.equals(Mario.ISMOVINGDOWN) && f instanceof Enemy) {
 				if(!sprites.get(i).getImage().equals(Koopa.KOOPASHELL)) {
 					EnemyDeathAnimation thread = new EnemyDeathAnimation(this, figureRectangles.get(sprites.get(i)), (Enemy) sprites.get(i));
 					thread.start();
 				}
-			} else if(intersects.equals(Mario.ISMOVINGUP) && sprites.get(i) instanceof MisteryBlock) {
-				MisteryBlock mb =  (MisteryBlock) sprites.get(i);
+			}else if(intersects.equals(Mario.ISMOVINGUP) && (f instanceof MisteryBlock)) {
+				MisteryBlock mb =  (MisteryBlock) f;
+				ImagesLoader sl = null;
+				try {
+					sl = new ImagesLoader(32, 32, 1, 4, StaticFigure.IRON);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				BufferedImage[] b = sl.getSprites();
+				Image card = SwingFXUtils.toFXImage(b[0], null);
+				figureRectangles.get(mb).setFill(new ImagePattern(card));
+				rectan.remove(figureRectangles.get(mb));
 				if(mb.getPower() == null && mb.getCoin() == null && !mb.getImage().equals(StaticFigure.IRON)) {
-					PowerUp pu = ((Mario) mario).nextPowerUp();
 					mb.setImage(StaticFigure.IRON);
-					ImagesLoader sl = null;
-					try {
-						sl = new ImagesLoader(32, 32, 1, 4, StaticFigure.IRON);
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-					BufferedImage[] b = sl.getSprites();
-					Image card = SwingFXUtils.toFXImage(b[0], null);
-					figureRectangles.get(mb).setFill(new ImagePattern(card));
-					rectan.remove(figureRectangles.get(mb));
+					PowerUp pu = ((Mario) mario).nextPowerUp();
 					mainGame.getLevelOne().getFigures().add(pu);
 					if(pu instanceof Mushroom) {
 						Rectangle r = new Rectangle(mb.getPosX(), mb.getPosY(), 32, 32);
 						pu.setPosX(mb.getPosX()); pu.setPosY(mb.getPosY());
 						r.setFill(new ImagePattern(new Image(Mushroom.IMAGE)));
-						PowerUpThread pw = new PowerUpThread(this, r, pu);
+						MisteryBlockHitThread pw = new MisteryBlockHitThread(this, r, pu);
 						pw.start();
 						threads.add(pw);
 					}else if(pu instanceof Flower) {
@@ -221,18 +223,58 @@ public class GameController {
 						BufferedImage[] blocks = sl.getSprites();
 						Image cardd = SwingFXUtils.toFXImage(blocks[0], null);
 						r.setFill(new ImagePattern(cardd));
-						PowerUpThread pw = new PowerUpThread(this, r, pu);
+						MisteryBlockHitThread pw = new MisteryBlockHitThread(this, r, pu);
 						pw.start();
 						threads.add(pw);
 					}
+				}else if(mb.getCoin()!=null && !mb.getImage().equals(StaticFigure.IRON)) {
+					mb.setImage(StaticFigure.IRON);
+					Rectangle r = new Rectangle(mb.getPosX(), mb.getPosY()-32, 32, 32);
+					try {
+						sl = new ImagesLoader(32, 32, 1, 4, Coin.COININBLOCK);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					BufferedImage[] blocks = sl.getSprites();
+					Image cardd = SwingFXUtils.toFXImage(blocks[0], null);
+					r.setFill(new ImagePattern(cardd));
+					MisteryBlockHitThread pw = new MisteryBlockHitThread(this, r, null);
+					pw.start();
 				}
 			}
 		}
     	return intersects;
     }
     
+    public void animateMisteryBlockCoin(Rectangle r, int iteration, int move) {
+    	
+    	if(iteration == -1) {
+    		mainBackground.getChildren().add(r);
+    	}else if(iteration == -2){
+    		mainBackground.getChildren().remove(r);
+    		int coins = Integer.parseInt(acumulatedCoins.getText().split(" ")[1]);
+			coins++;
+			if(coins < 10)
+				acumulatedCoins.setText("X 0" + coins);
+			else
+				acumulatedCoins.setText("X " + coins);
+    	}else {
+    		ImagesLoader sl = null;
+        	try {
+    			sl = new ImagesLoader(32, 32, 1, 4, Coin.COININBLOCK);
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+        	if(move == 0) {
+        		r.setY(r.getY()-8);
+        	}else
+        		r.setY(r.getY()+10);
+    		BufferedImage[] blocks = sl.getSprites();
+    		Image cardd = SwingFXUtils.toFXImage(blocks[iteration], null);
+    		r.setFill(new ImagePattern(cardd));
+    	}
+    }
     public void exitPowerUp(Rectangle r, PowerUp p, int iteration) {
-    	System.out.println(iteration);
     	if(iteration == 0) {
     		mainBackground.getChildren().add(r);
     		r.toBack();
@@ -429,7 +471,6 @@ public class GameController {
     }
     
     public void distanceToEnemies() {
-    	
     	Mario m = (Mario) mainGame.getLevelOne().getMario();
     	List<Enemy> enemies = mainGame.getLevelOne().getEnemies();
     	for (int i = 0; i < enemies.size(); i++) {
@@ -463,7 +504,7 @@ public class GameController {
  	public void movePlatform(Rectangle platformRectangle, MovingPlatform platform) {
  		platform.setPosY(platform.getPosY()+8);
 			platformRectangle.setY(platform.getPosY());
- 		if(platform.getPosY() > 480) {
+ 		if(platform.getPosY() > 550) {
  			platform.setPosY(0);
  			platformRectangle.setY(platform.getPosY());
  		}
@@ -558,8 +599,8 @@ public class GameController {
 					intersects = ((PowerUp) figure).powerUpIsColliding(sprites.get(i).getPosX(), sprites.get(i).getPosY(), sprites.get(i).getWidth(), sprites.get(i).getHeight());
 					if(intersects && sprites.get(i) instanceof Mario) {
 						for (int j = 0; j < threads.size(); j++) {
-							if( threads.get(j) instanceof PowerUpThread && ((PowerUpThread) threads.get(j)).getPowerUp() == figure) {
-								((PowerUpThread) threads.get(j)).deactivate();
+							if( threads.get(j) instanceof MisteryBlockHitThread && ((MisteryBlockHitThread) threads.get(j)).getPowerUp() == figure) {
+								((MisteryBlockHitThread) threads.get(j)).deactivate();
 								threads.remove(j);
 							}
 						}

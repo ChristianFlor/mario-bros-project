@@ -7,7 +7,7 @@ import model.Mushroom;
 import model.PowerUp;
 import ui.GameController;
 
-public class PowerUpThread extends Thread{
+public class MisteryBlockHitThread extends Thread{
 
 	private GameController controller;
 	private Rectangle powerUpRectangle;
@@ -15,7 +15,7 @@ public class PowerUpThread extends Thread{
 	private boolean active;
 	private int counter;
 	
-	public PowerUpThread(GameController c, Rectangle pr, PowerUp pu) {
+	public MisteryBlockHitThread(GameController c, Rectangle pr, PowerUp pu) {
 		this.controller = c;
 		this.powerUpRectangle = pr;
 		this.powerUp = pu;
@@ -25,6 +25,7 @@ public class PowerUpThread extends Thread{
 
 	@Override
 	public void run() {
+		if(powerUp != null) {
 		counter = 0;
 		while(counter < 4) {
 			if(counter == 0) {
@@ -85,6 +86,53 @@ public class PowerUpThread extends Thread{
 				});
 			}
 		}
+		}else {
+			try {
+				counter = -1;
+				int exit = 0;
+				while(active) {
+					if(exit <= 5) {
+						Platform.runLater(new Runnable() {
+	
+							@Override
+							public void run() {
+								controller.animateMisteryBlockCoin(powerUpRectangle, counter, 0);
+							}
+							
+						});
+					}else {
+						Platform.runLater(new Runnable() {
+							
+							@Override
+							public void run() {
+								controller.animateMisteryBlockCoin(powerUpRectangle, counter, 1);
+							}
+							
+						});
+					}
+					sleep(100);
+					counter++;
+					if(counter == 4) {
+						counter = 0;
+					}
+					exit ++;
+					if(exit == 10) {
+Platform.runLater(new Runnable() {
+							
+							@Override
+							public void run() {
+								controller.animateMisteryBlockCoin(powerUpRectangle, -2, 1);
+							}
+							
+						});
+						deactivate();
+					}
+				}
+					
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public PowerUp getPowerUp() {
@@ -99,7 +147,7 @@ public class PowerUpThread extends Thread{
 					controller.moveMushroom(powerUp, powerUpRectangle, -1);
 				}
 			});
-		}else if(powerUp instanceof Flower) {
+		}else if(powerUp instanceof Flower || powerUp == null) {
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {

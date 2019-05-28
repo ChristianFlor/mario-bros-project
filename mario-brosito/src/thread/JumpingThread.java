@@ -66,16 +66,34 @@ public class JumpingThread extends Thread {
 						}
 						
 					}
-						controller.moveImage(2, jump);
+					double jump2 = controller.getMainGame().getLevelOne().getMario().getPosY();
+						Platform.runLater(new Runnable() {
+
+							@Override
+							public void run() {
+								controller.moveImage(2, jump2);
+							}
+							
+						});
 								counter++;
 						
 					
 					if(controller.getPressed().contains("D")) {
-						controller.moveImage(1,0);
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								controller.moveImage(1,0);
+							}
+						});
 						controller.getMainGame().getLevelOne().getMario().setState(Mario.ISDIAGONALRIGHT);
 						
 					}else if(controller.getPressed().contains("A")) {
-						controller.moveImage(-1,0);
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								controller.moveImage(-1,0);
+							}
+						});
 						controller.getMainGame().getLevelOne().getMario().setState(Mario.ISDIAGONALLEFT);
 					}
 				

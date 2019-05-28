@@ -34,8 +34,8 @@ public class Main extends Application{
 			}
 			
 		});
-		Clip bang = SoundsLoader.loadSounds(0);
-    	bang.start();
+		//eClip bang = SoundsLoader.loadSounds(0);
+    	//bang.start();
 		
 		stage.setScene(scene);
 		stage.setTitle("Mariosito");
