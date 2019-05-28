@@ -260,6 +260,7 @@ public class PlayerController {
     	g.addPlayer(tfName.getText(),tfNick.getText(),25.0);
 
     	g.addScore(g.searchByCode(tfName.getText()));
+    	//g.addScore(g.searchByName(tfName.getText()));
 
     }
    

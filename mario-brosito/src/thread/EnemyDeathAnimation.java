@@ -25,6 +25,7 @@ public class EnemyDeathAnimation extends Thread{
     public void run() {
     	if(enemy instanceof Goomba) {
 	    	controller.moveImage(2,0);
+	    	//controller.moveImage(2);
 	      Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
@@ -37,6 +38,7 @@ public class EnemyDeathAnimation extends Thread{
 			e.printStackTrace();
 	      }
 	      controller.moveImage(2,0);
+	      //controller.moveImage(2);
 	      Platform.runLater(new Runnable() {
 	  		@Override
 	  		public void run() {
@@ -63,6 +65,7 @@ public class EnemyDeathAnimation extends Thread{
 	      }
     	}else if(enemy instanceof Koopa) {
     		controller.moveImage(2,0);
+    		//controller.moveImage(2);
   	      Platform.runLater(new Runnable() {
   			@Override
   			public void run() {
@@ -75,6 +78,7 @@ public class EnemyDeathAnimation extends Thread{
   			e.printStackTrace();
   	      }
   	      controller.moveImage(2,0);
+  	     // controller.moveImage(2);
     	}
     	controller.moveImage(2,0);
       Platform.runLater(new Runnable() {
