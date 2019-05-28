@@ -12,7 +12,7 @@ import javafx.stage.WindowEvent;
 import model.SoundsLoader;
 
 public class Main extends Application{
-
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -25,17 +25,19 @@ public class Main extends Application{
 		Scene scene = new Scene(root);
 		loader = new FXMLLoader(getClass().getResource("brosito.fxml"));
 		loader.load();
+		/*
 		GameController gc = loader.getController();
+		
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
 			@Override
 			public void handle(WindowEvent event) {
-				gc.closeWindow();
+				gc.pause();
 			}
 			
 		});
-		Clip bang = SoundsLoader.loadSounds(0);
-    	bang.start();
+		*/
+		
 		
 		stage.setScene(scene);
 		stage.setTitle("Mariosito");

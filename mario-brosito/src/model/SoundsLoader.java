@@ -76,6 +76,8 @@ public class SoundsLoader {
 	    		bang = cargarSonido("/uilmusic/UnderGround.wav");
 	    	}else if(n==24) {
 	    		bang = cargarSonido("/uilmusic/Castle.wav");
+	    	}else if(n==25) {
+	    		bang = cargarSonido("/uilmusic/Pause.wav");
 	    	}
 	    	return bang;
 	    }
