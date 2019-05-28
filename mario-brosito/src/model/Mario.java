@@ -66,7 +66,6 @@ public class Mario extends Figure {
 			}
 
 		}
-		System.out.println(collide);
 		return collide;
 	}
 	

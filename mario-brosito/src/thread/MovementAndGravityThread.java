@@ -150,13 +150,13 @@ public class MovementAndGravityThread extends Thread {
 								controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGLEFT);
 						}
 						
-					} catch (InterruptedException e) {
+					}} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-				}
+				
 				
 			}
-		
+	}
 	public void deactivate() {
 		active = false;
 	}

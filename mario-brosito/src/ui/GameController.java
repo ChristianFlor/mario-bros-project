@@ -69,7 +69,7 @@ public class GameController {
 	private ImagesLoader imloMark;
 	private ImagesLoader imloCoin;
 	private Set<String> pressed;
-	private Map<Enemy, Rectangle> enemyRectangles;
+	private Map<Figure, Rectangle> enemyRectangles;
 
 	private BufferedImage[] marioPictures;
 
@@ -108,7 +108,7 @@ public class GameController {
 			imloMark= new ImagesLoader(32, 32, 1, 3,"src/uiImg/QuestionMark.png");
 			imloCoin =new ImagesLoader(32, 32, 1, 3,"src/uiImg/Coin.png");
 			rectan= new ArrayList<Rectangle>();
-			enemyRectangles = new HashMap<Enemy, Rectangle>(); 
+			enemyRectangles = new HashMap<Figure, Rectangle>(); 
 			rectanCoin= new ArrayList<Rectangle>();
 			threads = new ArrayList<Thread>();
 			misteryBlockThread();
@@ -178,24 +178,34 @@ public class GameController {
 				}
 			} else if(intersects.equals(Mario.ISMOVINGUP) && sprites.get(i) instanceof MisteryBlock) {
 				MisteryBlock mb =  (MisteryBlock) sprites.get(i);
-				if(mb.getPower() == null && mb.getCoin() == null) {
+				if(mb.getPower() == null && mb.getCoin() == null && !mb.getImage().equals(StaticFigure.IRON)) {
 					PowerUp pu = ((Mario) mario).nextPowerUp();
+					mb.setImage(StaticFigure.IRON);
+					ImagesLoader sl = null;
+					try {
+						sl = new ImagesLoader(32, 32, 1, 4, StaticFigure.IRON);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					BufferedImage[] b = sl.getSprites();
+					Image card = SwingFXUtils.toFXImage(b[0], null);
+					enemyRectangles.get(mb).setFill(new ImagePattern(card));
+					rectan.remove(enemyRectangles.get(mb));
 					if(pu instanceof Mushroom) {
-						Rectangle r = new Rectangle(pu.getPosX(), pu.getPosY(), pu.getWidth(), pu.getHeight());
+						Rectangle r = new Rectangle(mb.getPosX(), mb.getPosY(), 32, 32);
 						r.setFill(new ImagePattern(new Image(Mushroom.IMAGE)));
 						PowerUpThread pw = new PowerUpThread(this, r, pu);
 						pw.start();
 					}else if(pu instanceof Flower) {
 						Rectangle r = new Rectangle(pu.getPosX(), pu.getPosY(), pu.getWidth(), pu.getHeight());
-						ImagesLoader sl = null;
 						try {
 							sl = new ImagesLoader(32, 32, 1, 4, Flower.IMAGE);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
 						BufferedImage[] blocks = sl.getSprites();
-						Image card = SwingFXUtils.toFXImage(blocks[0], null);
-						r.setFill(new ImagePattern(card));
+						Image cardd = SwingFXUtils.toFXImage(blocks[0], null);
+						r.setFill(new ImagePattern(cardd));
 						PowerUpThread pw = new PowerUpThread(this, r, pu);
 						pw.start();
 					}
@@ -205,7 +215,9 @@ public class GameController {
     	return intersects;
     }
     
-    public void exitPowerUp(Rectangle r, PowerUp p) {
+    public void exitPowerUp(Rectangle r, PowerUp p, int iteration) {
+    	if(iteration == 0)
+    		mainBackground.getChildren().add(r);
     	r.setY(r.getY()-8);
     	p.setPosY(p.getPosY()-8);
 	
@@ -625,6 +637,7 @@ public class GameController {
 				rec.setFill(new ImagePattern(card));
 				rectan.add(rec);
 				mainBackground.getChildren().add(rec);
+				enemyRectangles.put(f, rec);
 			}else if(f instanceof SimpleBlock) {
 				rec.setFill(new ImagePattern(new Image(f.getImage())));
 				mainBackground.getChildren().add(rec);

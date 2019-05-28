@@ -10,24 +10,27 @@ public class PowerUpThread extends Thread{
 	private GameController controller;
 	private Rectangle powerUpRectangle;
 	private PowerUp powerUp;
+	private int counter;
 	
 	public PowerUpThread(GameController c, Rectangle pr, PowerUp pu) {
 		this.controller = c;
 		this.powerUpRectangle = pr;
 		this.powerUp = pu;
+		counter = 0;
 	}
 
 	@Override
 	public void run() {
 		
-		int counter = 0;
 		while(counter < 4) {
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					controller.exitPowerUp(powerUpRectangle, powerUp);
-				}
-			});
+			
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						controller.exitPowerUp(powerUpRectangle, powerUp, counter);
+					}
+				});	
+				counter++;
 			try {
 				sleep(100);
 			} catch (InterruptedException e) {
