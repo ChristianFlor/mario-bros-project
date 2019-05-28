@@ -18,15 +18,21 @@ public class JumpingThread extends Thread {
 		
 		int counter = 0;
 		double z = controller.getMainGame().getLevelOne().getMario().getPosY();
+		
 	
 		while(counter <=14) {
+		
 			double jump =z+3*counter*counter-42*counter;
-			double jumpFinal = z+3*(counter+1)*(counter+1)-42*(counter+1);
 			
+			double jumpFinal = z+3*(counter+1)*(counter+1)-42*(counter+1);
 			boolean enter = false;
 			
 			if(counter<7) {
-				while(!enter && controller.getMainGame().getLevelOne().getMario().getPosY() != jumpFinal) {
+				controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGUP);
+				
+				while(!enter && controller.getMainGame().getLevelOne().getMario().getPosY() >= jumpFinal) {
+
+					System.out.println(controller.getMainGame().getLevelOne().getMario().getPosY() + " " + jumpFinal);
 					controller.getMainGame().getLevelOne().getMario().setPosY(controller.getMainGame().getLevelOne().getMario().getPosY()-1);
 					if(controller.isTouching().equals(Mario.ISMOVINGUP)) {
 						jump = controller.getMainGame().getLevelOne().getMario().getPosY();
@@ -34,33 +40,27 @@ public class JumpingThread extends Thread {
 						enter = true;
 					}
 				}
-			}else {
-				
-				while(!enter && controller.getMainGame().getLevelOne().getMario().getPosY() != jumpFinal) {
+			}else if(counter<=13 && counter >=7){
+				controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGDOWN);
+				while(!enter && controller.getMainGame().getLevelOne().getMario().getPosY() <= jumpFinal) {
 					controller.getMainGame().getLevelOne().getMario().setPosY(controller.getMainGame().getLevelOne().getMario().getPosY()+1);
 					
 					if(controller.isTouching().equals(Mario.ISMOVINGDOWN)) {
 					
 						jump = controller.getMainGame().getLevelOne().getMario().getPosY();
-						counter = (7-counter)+7;
+					
 						enter = true;
 					}
 				}
 				
 				if(enter) {
 					controller.moveImage(2, jump);
-					//counter++;
+					
 					break;
 				}
 				
 			}
-			try {
-				sleep(40);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
+			
 			controller.moveImage(2, jump);
 			counter++;
 			
@@ -74,7 +74,13 @@ public class JumpingThread extends Thread {
 			}
 		
 			
-			
+			try {
+				sleep(60);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
 			
 		}
 	
