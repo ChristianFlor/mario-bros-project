@@ -46,6 +46,9 @@ public class TransitionController {
 
 	    	bC.setMainScene(scene);
 	    	bC.configureScene();
+	    	if(!(bC.getPause())) {
+	    		bC.getClip().start();
+	    	}
 
 	    	root.translateXProperty().set(scene.getHeight());
 

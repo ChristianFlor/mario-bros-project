@@ -41,4 +41,7 @@ public class PlatformThread extends Thread{
 	public void deactivate() {
 		active = false;
 	}
+	public void activate() {
+		active = true;
+	}
 }
