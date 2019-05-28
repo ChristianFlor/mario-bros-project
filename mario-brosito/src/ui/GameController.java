@@ -116,11 +116,12 @@ public class GameController {
 	
     @FXML
     public void initialize() {
+    	sound = new SoundsLoader();
     	pause=false;
     	jumping = new JumpingThread(this);
     	pressed = new HashSet<String>();
     	try {
-    		ground = SoundsLoader.loadSounds(0);
+    		ground = sound.loadSounds(0);
 			mainGame = new Game();
 			imloMark= new ImagesLoader(32, 32, 1, 3,"src/uiImg/QuestionMark.png");
 			imloCoin =new ImagesLoader(32, 32, 1, 3,"src/uiImg/Coin.png");
@@ -151,7 +152,7 @@ public class GameController {
     	Thread mv = new MovementAndGravityThread(this);
     	threads.add(mv);
     	mv.start();
-    	sound = new SoundsLoader();
+    	
     	
     }
     public void pause() {
@@ -213,20 +214,20 @@ public class GameController {
 					}if(e.getCode().equals(KeyCode.W) && !jumping.isAlive() ){
 						Clip c;
 						if(mainGame.getLevelOne().getMario().getHeight() == 64) {
-							 c= sound.loadSounds(6);
+							 c= sound.loadSounds(7);
 						}else {
 							 c= sound.loadSounds(6);
 						}
 						c.start();
 						runThread(); 
 					}if(e.getCode().equals(KeyCode.ESCAPE)) {
-						Clip bang = SoundsLoader.loadSounds(25);
+						Clip bang = sound.loadSounds(25);
 				    	bang.start();
 						pause();
 					}
 				}else {
 					if(e.getCode().equals(KeyCode.ESCAPE)) {
-						Clip bang = SoundsLoader.loadSounds(25);
+						Clip bang = sound.loadSounds(25);
 				    	bang.start();
 				    	continues();
 					}
@@ -696,7 +697,10 @@ public class GameController {
 							}
 						}
 						Figure mario = mainGame.getLevelOne().getMario();
+						
 						if(figure instanceof Mushroom) {
+							Clip clip = sound.loadSounds(12);
+							clip.start();
 							mainGame.getLevelOne().getMario().setPowerState((PowerUp) figure);
 							mario.setImage(Mario.BIGMARIO);
 							Image cardd = SwingFXUtils.toFXImage(bigMarioPictures[0], null);
@@ -707,6 +711,8 @@ public class GameController {
 							mainMario.setY(mainGame.getLevelOne().getMario().getPosY());
 						}
 						if(figure instanceof Flower) {
+							Clip clip = sound.loadSounds(12);
+							clip.start();
 							mainGame.getLevelOne().getMario().setPowerState((PowerUp) figure);
 							mario.setImage(Mario.FIREMARIO);
 							Image cardd = SwingFXUtils.toFXImage(fireMarioPictures[0], null);
