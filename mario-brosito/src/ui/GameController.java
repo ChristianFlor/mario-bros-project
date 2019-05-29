@@ -410,7 +410,7 @@ public class GameController {
 			mainGame = new Game();
 			initialize();
 			mainBackground.setTranslateX(0);
-		} catch (IOException e) {
+		} catch (IOException | IllegalInputException | IntegerValuesException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

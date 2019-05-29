@@ -8,6 +8,9 @@ import java.security.SecureRandom;
 
 import org.junit.jupiter.api.Test;
 
+import customExceptions.IllegalInputException;
+import customExceptions.IntegerValuesException;
+
 public class GameTest {
 	
 	private Game game;
@@ -16,11 +19,11 @@ public class GameTest {
 		
 	}
 	
-	public void setupScenary2() throws IOException {
+	public void setupScenary2() throws IOException, IllegalInputException, IntegerValuesException {
 		game = new Game();
 	}
 	
-	public void setupScenary3() throws IOException {
+	public void setupScenary3() throws IOException, IllegalInputException, IntegerValuesException {
 		
 		game = new Game();
 		
@@ -54,33 +57,39 @@ public class GameTest {
 	public void testAddPlayer() {
 		try {
 			setupScenary1();
-			game = new Game();
+			try {
+				game = new Game();
+				String name1 = "Ana";
+				String name2 = "Gabriel";
+				String name3 = "Sara";
+				String name4 = "Sol";
+				String name5 = "Jairo";
+				String nickname1 = "ani11";
+				String nickname2 = "gabomarc";
+				String nickname3 = "samn";
+				String nickname4 = "sunshine";
+				String nickname5 ="jardz";
+				int score1 = 80;
+				int score2 = 40;
+				int score3 = 50;
+				int score4 = 95;
+				int score5 = 110;
+				
+				game.addPlayer(name1, nickname1, score1);
+				game.addPlayer(name2, nickname2, score2);
+				game.addPlayer(name3, nickname3, score3);
+				game.addPlayer(name4, nickname4, score4);
+				game.addPlayer(name5, nickname5, score5);
+				
+				Player[] players = game.getPlayersToArray();
+				
+				assertTrue("The list is null", players.length > 0);
+			} catch (IllegalInputException | IntegerValuesException e) {
+				
+				e.printStackTrace();
+			}
 			
-			String name1 = "Ana";
-			String name2 = "Gabriel";
-			String name3 = "Sara";
-			String name4 = "Sol";
-			String name5 = "Jairo";
-			String nickname1 = "ani11";
-			String nickname2 = "gabomarc";
-			String nickname3 = "samn";
-			String nickname4 = "sunshine";
-			String nickname5 ="jardz";
-			int score1 = 80;
-			int score2 = 40;
-			int score3 = 50;
-			int score4 = 95;
-			int score5 = 110;
 			
-			game.addPlayer(name1, nickname1, score1);
-			game.addPlayer(name2, nickname2, score2);
-			game.addPlayer(name3, nickname3, score3);
-			game.addPlayer(name4, nickname4, score4);
-			game.addPlayer(name5, nickname5, score5);
-			
-			Player[] players = game.getPlayersToArray();
-			
-			assertTrue("The list is null", players.length > 0);
 			
 			
 		} catch (IOException e) {
@@ -94,41 +103,47 @@ public class GameTest {
 	public void testAddScore() {
 		
 		try {
-			setupScenary2();
-			String name1 = "Javi";
-			String name2 = "Luis";
-			String name3 = "Isabella";
-			String name4 = "William";
-			String name5 = "Sofia";
-			String nickname1 = "lara98";
-			String nickname2 = "luisk4";
-			String nickname3 = "isagrwm";
-			String nickname4 = "willav";
-			String nickname5 ="sofy24";
-			int score1 = 90;
-			int score2 = 100;
-			int score3 = 80;
-			int score4 = 30;
-			int score5 = 58;
+			try {
+				setupScenary2();
+				String name1 = "Javi";
+				String name2 = "Luis";
+				String name3 = "Isabella";
+				String name4 = "William";
+				String name5 = "Sofia";
+				String nickname1 = "lara98";
+				String nickname2 = "luisk4";
+				String nickname3 = "isagrwm";
+				String nickname4 = "willav";
+				String nickname5 ="sofy24";
+				int score1 = 90;
+				int score2 = 100;
+				int score3 = 80;
+				int score4 = 30;
+				int score5 = 58;
+				
+				Player p1 = new Player(name1, nickname1, score1);
+				Player p2 = new Player(name2, nickname2, score2);
+				Player p3 = new Player(name3, nickname3, score3);
+				Player p4 = new Player(name4, nickname4, score4);
+				Player p5 = new Player(name5, nickname5, score5);
+				
+				game.addScore(p1);
+				
+				game.addScore(p2);
+				game.addScore(p3);
+				game.addScore(p4);
+				game.addScore(p5);
+				
+				Score root = game.getRoot();
+				assertNotNull("The root must not be null since the first element has just been added to the tree", root);
+			/*	assertTrue("The score added must have the id of the player recently created", name1.equals(root.getName()));
+				assertTrue("The score added must have the id of the player recently added", score1 == root.getScore());
+			*/	System.out.println(root.getName());
+			} catch (IllegalInputException | IntegerValuesException e) {
+				
+				e.printStackTrace();
+			}
 			
-			Player p1 = new Player(name1, nickname1, score1);
-			Player p2 = new Player(name2, nickname2, score2);
-			Player p3 = new Player(name3, nickname3, score3);
-			Player p4 = new Player(name4, nickname4, score4);
-			Player p5 = new Player(name5, nickname5, score5);
-			
-			game.addScore(p1);
-			
-			game.addScore(p2);
-			game.addScore(p3);
-			game.addScore(p4);
-			game.addScore(p5);
-			
-			Score root = game.getRoot();
-			assertNotNull("The root must not be null since the first element has just been added to the tree", root);
-		/*	assertTrue("The score added must have the id of the player recently created", name1.equals(root.getName()));
-			assertTrue("The score added must have the id of the player recently added", score1 == root.getScore());
-		*/	System.out.println(root.getName());
 			
 		} catch (IOException e) {
 			
@@ -152,6 +167,12 @@ public class GameTest {
 		} catch (IOException e) {
 			
 			e.printStackTrace();
+		} catch (IllegalInputException e) {
+			
+			e.printStackTrace();
+		} catch (IntegerValuesException e) {
+			
+			e.printStackTrace();
 		}
 		
 	}
@@ -171,6 +192,12 @@ public class GameTest {
 		} catch (IOException e) {
 			
 			e.printStackTrace();
+		} catch (IllegalInputException e) {
+	
+			e.printStackTrace();
+		} catch (IntegerValuesException e) {
+			
+			e.printStackTrace();
 		}
 		
 	}
@@ -187,7 +214,7 @@ public class GameTest {
 				assertTrue("The players are not sort by nickname", players[i].getNickName().compareTo(players[i+1].getNickName())<=0);
 			}
 		
-		} catch (IOException e) {
+		} catch (IOException | IllegalInputException | IntegerValuesException e) {
 			
 			e.printStackTrace();
 		}
@@ -207,7 +234,7 @@ public class GameTest {
 				assertTrue("The players are not sort by code", players[i].getId().compareTo(players[i+1].getId())<=0);
 			}
 		
-		} catch (IOException e) {
+		} catch (IOException | IllegalInputException | IntegerValuesException e) {
 			
 			e.printStackTrace();
 		}
@@ -238,6 +265,12 @@ public class GameTest {
 			assertTrue("The player was not found", searched5.getName().equals(nameToSearch5));
 		
 		} catch (IOException e) {
+			
+			e.printStackTrace();
+		} catch (IllegalInputException e) {
+			
+			e.printStackTrace();
+		} catch (IntegerValuesException e) {
 			
 			e.printStackTrace();
 		}
@@ -284,6 +317,11 @@ public class GameTest {
 		} catch (IOException e) {
 			
 			e.printStackTrace();
+		} catch (IllegalInputException e) {
+			
+			e.printStackTrace();
+		} catch (IntegerValuesException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -310,7 +348,7 @@ public class GameTest {
 			assertTrue("The player was not found", searched4.getNickName().equals(nickNameToSearch4));
 			assertTrue("The player was not found", searched5.getNickName().equals(nickNameToSearch5));
 		
-		} catch (IOException e) {
+		} catch (IOException | IllegalInputException | IntegerValuesException e) {
 			
 			e.printStackTrace();
 		}
@@ -339,7 +377,7 @@ public class GameTest {
 			assertTrue("The player was not found", searched4.getScore() == scoreToSearch4);
 			assertTrue("The player was not found", searched5.getScore() == scoreToSearch5);
 		
-		} catch (IOException e) {
+		} catch (IOException | IllegalInputException | IntegerValuesException e) {
 			
 			e.printStackTrace();
 		}
