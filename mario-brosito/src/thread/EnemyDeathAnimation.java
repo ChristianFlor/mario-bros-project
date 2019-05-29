@@ -23,8 +23,43 @@ public class EnemyDeathAnimation extends Thread{
 
     @Override
     public void run() {
+    	
     	if(enemy instanceof Goomba) {
-	    	controller.moveImage(2,0);
+    		int counter = 0;
+    		/*double z = controller.getMainGame().getLevelOne().getMario().getPosY();//enemy.getPosY()+enemy.getHeight();
+    		while(counter<=8) {
+    			double jump = z+3*counter*counter-24*counter;
+    			controller.moveImage(2, jump);
+    			try {
+					sleep(60);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+    			counter++;
+    		}
+    		*/
+    		/*while(counter<7) {
+    			controller.moveImage(3, 0);
+    			try {
+					sleep(60);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    			counter++;
+    		}
+    		counter=0;
+    		while(controller.getMainGame().getLevelOne().getMario().getPosY()<=enemy.getPosY()+enemy.getHeight()) {
+    			controller.moveImage(4, 0);
+    			try {
+					sleep(60);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    			counter++;
+    		}*/
+	    	
 	    	//controller.moveImage(2);
 	      Platform.runLater(new Runnable() {
 			@Override
@@ -37,8 +72,6 @@ public class EnemyDeathAnimation extends Thread{
 	      } catch (InterruptedException e) {
 			e.printStackTrace();
 	      }
-	      controller.moveImage(2,0);
-	      //controller.moveImage(2);
 	      Platform.runLater(new Runnable() {
 	  		@Override
 	  		public void run() {
@@ -63,9 +96,10 @@ public class EnemyDeathAnimation extends Thread{
 	      } catch (InterruptedException e) {
 			e.printStackTrace();
 	      }
+	      
     	}else if(enemy instanceof Koopa) {
     		controller.moveImage(2,0);
-    		//controller.moveImage(2);
+    		
   	      Platform.runLater(new Runnable() {
   			@Override
   			public void run() {
@@ -77,10 +111,8 @@ public class EnemyDeathAnimation extends Thread{
   	      } catch (InterruptedException e) {
   			e.printStackTrace();
   	      }
-  	      controller.moveImage(2,0);
   	     // controller.moveImage(2);
     	}
-    	controller.moveImage(2,0);
       Platform.runLater(new Runnable() {
 		@Override
 		public void run() {
@@ -92,7 +124,6 @@ public class EnemyDeathAnimation extends Thread{
       } catch (InterruptedException e) {
 		e.printStackTrace();
       }
-      controller.moveImage(2,0);
       Platform.runLater(new Runnable() {
   		@Override
   		public void run() {

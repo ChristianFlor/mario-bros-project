@@ -14,6 +14,7 @@ public abstract class PowerUp extends Figure{
 			}else if(this.getPosX() >= x2 && this.getPosY()+this.getHeight() > y2 && this.getPosY()+this.getHeight()<=y2+height) {
 				collide = true;
 			}
+    		
     	}
     	return collide;
     }

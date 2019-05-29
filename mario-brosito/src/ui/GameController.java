@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.sound.sampled.Clip;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -21,6 +25,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import model.Bowser;
 import model.Coin;
 import model.Enemy;
@@ -114,11 +119,13 @@ public class GameController {
 	
 	private SoundsLoader sound;
 	
+	private Thread mv;
+	
     @FXML
     public void initialize() {
     	sound = new SoundsLoader();
     	pause=false;
-    	jumping = new JumpingThread(this);
+    	jumping = new JumpingThread(this,0);
     	pressed = new HashSet<String>();
     	try {
     		ground = sound.loadSounds(0);
@@ -149,7 +156,7 @@ public class GameController {
 			
 			e.printStackTrace();
 		}
-    	Thread mv = new MovementAndGravityThread(this);
+    	mv = new MovementAndGravityThread(this);
     	threads.add(mv);
     	mv.start();
     	
@@ -252,7 +259,8 @@ public class GameController {
 
     }
     
-    public String isTouching() {
+    @SuppressWarnings("deprecation")
+	public String isTouching() {
     
 
     	String intersects = "";
@@ -262,13 +270,17 @@ public class GameController {
 				continue;
 			Figure f = sprites.get(i);
 			Figure mario = mainGame.getLevelOne().getMario();
+			
 			intersects = ((Mario) mario).isColliding(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
-			if(intersects.equals(Mario.ISMOVINGUP) && (f instanceof MisteryBlock))
-			System.out.println(intersects.equals(Mario.ISMOVINGUP) + " " + (sprites.get(i) instanceof MisteryBlock));
+			
+			
 			if(intersects.equals(Mario.ISMOVINGDOWN) && f instanceof Enemy) {
-				if(!sprites.get(i).getImage().equals(Koopa.KOOPASHELL)) {
+				jumping.stop();
+				if(f instanceof Goomba) { // !sprites.get(i).getImage().equals(Koopa.KOOPASHELL)
+					
 					EnemyDeathAnimation thread = new EnemyDeathAnimation(this, figureRectangles.get(sprites.get(i)), (Enemy) sprites.get(i));
 					thread.start();
+					
 				}
 			}else if(intersects.equals(Mario.ISMOVINGUP) && (f instanceof MisteryBlock)) {
 				MisteryBlock mb =  (MisteryBlock) f;
@@ -282,6 +294,7 @@ public class GameController {
 				Image card = SwingFXUtils.toFXImage(b[0], null);
 				figureRectangles.get(mb).setFill(new ImagePattern(card));
 				rectan.remove(figureRectangles.get(mb));
+				
 				if(mb.getPower() == null && mb.getCoin() == null && !mb.getImage().equals(StaticFigure.IRON)) {
 					mb.setImage(StaticFigure.IRON);
 					PowerUp pu = ((Mario) mario).nextPowerUp();
@@ -364,7 +377,9 @@ public class GameController {
     	r.setY(p.getPosY());
     }
     
-    public void changeEnemyImage(int a, Enemy e, Rectangle gRec) {
+    @SuppressWarnings("deprecation")
+	public void changeEnemyImage(int a, Enemy e, Rectangle gRec) {
+    	
     	ImagesLoader sl = null;
 		try {
 			sl = new ImagesLoader(32, 16, 2, 1, Goomba.DEADGOOMBA);
@@ -385,7 +400,7 @@ public class GameController {
 			boolean exit = false;
 			for (int i = 0; i < threads.size() && !exit; i++) {
 				if(threads.get(i) instanceof EnemyThread && ((EnemyThread) threads.get(i)).getEnemy() == e) {
-					((EnemyThread) threads.get(i)).deactivate();
+					((EnemyThread) threads.get(i)).stop();
 					exit = true;
 				}
 			}
@@ -476,7 +491,7 @@ public class GameController {
     }
     
     public void runThread(){
-    	jumping = new JumpingThread(this);
+    	jumping = new JumpingThread(this,0);
     	jumping.start();
     	
     }
@@ -762,14 +777,23 @@ public class GameController {
 	        }else if(a==2){ //&& !touch.equals(Mario.ISMOVINGUP
 	        	mainMario.setY(jump);
 	        	m.setPosY(mainMario.getY());
-	        }else if(a==3 && !touch.equals(Mario.ISMOVINGDOWN)){
+	        }else if(a==3 ){
+	        	mainMario.setY(mainMario.getY()-8);
+	        	m.setPosY(mainMario.getY());
+	        }else if(a==4 && !touch.equals(Mario.ISMOVINGDOWN)) {
 	        	mainMario.setY(mainMario.getY()+8);
 	        	m.setPosY(mainMario.getY());
 	        }
 			distanceToEnemies();
     	}
     
-    public void changeMarioImage(int key) {
+    /**
+	 * @return the mv
+	 */
+	public Thread getMv() {
+		return mv;
+	}
+	public void changeMarioImage(int key) {
     	Image changed = null;
     	if(key ==0 ) {    // normal position
     		if(mainGame.getLevelOne().getMario().getPowerState() == null) {
