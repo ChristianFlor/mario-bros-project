@@ -170,5 +170,6 @@ public class MovementAndGravityThread extends Thread {
 	}
 	public void activate() {
 		active = true;
+		new Thread(this).start();
 	}
 }

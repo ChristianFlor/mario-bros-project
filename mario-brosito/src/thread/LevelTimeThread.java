@@ -34,6 +34,7 @@ public class LevelTimeThread extends Thread {
 	}
 	public void activate() {
 		active = true;
+		new Thread(this).start();
 	}
 	public void deactivate() {
 		active = false;
