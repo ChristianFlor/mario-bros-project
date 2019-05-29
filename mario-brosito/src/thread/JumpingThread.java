@@ -8,17 +8,18 @@ import ui.GameController;
 public class JumpingThread extends Thread {
 	
 	private GameController controller;
-	
-	public JumpingThread(GameController controller){
+	private int key;
+	public JumpingThread(GameController controller,int key){
 		this.controller = controller;
-
+		this.key = key;
 	}
+	
 	@Override
 	public void run() {
 		
-		
-				int counter = 0;
 				double z = controller.getMainGame().getLevelOne().getMario().getPosY();
+				int counter = 0;
+				
 				double jump = 0;
 			
 				while(counter <=14) {
@@ -109,7 +110,7 @@ public class JumpingThread extends Thread {
 				}
 			
 				controller.getMainGame().getLevelOne().getMario().setState(Mario.ISSTANDINGSTILL);
-				
+		
 	}
 	
 	

@@ -34,6 +34,7 @@ public class MovementAndGravityThread extends Thread {
 								double ecuation = (42 + Math.sqrt((42*42)-(4*1.2*rest)))/(2*1.2);
 								ecuation = Math.round(ecuation);
 								counter = (int) ecuation;
+								
 								while(counter <= 35 && controller.isFalling().isEmpty() && !controller.getJumping().isAlive()) {
 									
 									double jump = z+1.2*counter*counter-42*counter;
