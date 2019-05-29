@@ -6,9 +6,12 @@ public abstract class Enemy extends Figure {
 
     private String state;
     
+    private boolean dead;
+    
     public Enemy(double posX, double posY, double width, double height) {
         super(posX, posY, width, height);
         state = Mario.ISSTANDINGSTILL;
+        dead = false;
     }
 
     private Enemy nextEnemy;
@@ -67,5 +70,19 @@ public abstract class Enemy extends Figure {
     	
     	return grounded;
     }
+
+	/**
+	 * @return the dead
+	 */
+	public boolean isDead() {
+		return dead;
+	}
+
+	/**
+	 * @param dead the dead to set
+	 */
+	public void setDead(boolean dead) {
+		this.dead = dead;
+	}
     
 }

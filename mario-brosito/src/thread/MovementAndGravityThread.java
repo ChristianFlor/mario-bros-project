@@ -37,7 +37,16 @@ public class MovementAndGravityThread extends Thread {
 								
 								while(controller.isFalling().isEmpty() && !controller.getJumping().isAlive()) {
 									if(controller.getMainGame().getLevelOne().getMario().getPosY() +controller.getMainGame().getLevelOne().getMario().getHeight()*1.8 >= controller.getMainScene().getHeight()) {
-										controller.deadMario();
+										Platform.runLater(new Runnable() {
+
+											@Override
+											public void run() {
+												controller.deadMario();
+												
+											}
+											
+										});
+										
 										
 									}
 									System.out.println(4);

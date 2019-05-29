@@ -257,7 +257,7 @@ public class PlayerController {
     @FXML
     void register(ActionEvent event) {
        	data.clear();
-    	g.addPlayer(tfName.getText(),tfNick.getText(),25.0);
+    	g.addPlayer(tfName.getText(),tfNick.getText(),25);
 
     	g.addScore(g.searchPlayer(tfName.getText()));
     	data.addAll(g.getPlayersToArray());

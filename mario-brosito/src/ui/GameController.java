@@ -412,6 +412,12 @@ public class GameController {
     	for (int i = 0; i < sprites.size() && intersects.isEmpty(); i++) {
 			if(sprites.get(i) instanceof Mario)
 				continue;
+			else if(sprites.get(i) instanceof Enemy) {
+				Enemy ene = (Enemy) sprites.get(i);
+				if(ene.isDead()) {
+					continue;
+				}
+			}
 			Figure f = sprites.get(i);
 			Figure mario = mainGame.getLevelOne().getMario();
 			
@@ -613,14 +619,13 @@ public class GameController {
 					exit = true;
 				}
 			}
-			mainGame.getLevelOne().getFigures().remove(e);
+			
+			
+			int pos = mainGame.getLevelOne().getFigures().indexOf(e);
+			Enemy goom = (Enemy) mainGame.getLevelOne().getFigures().get(pos);
+			goom.setDead(true);
 			exit = false;
-			for (int i = 0; i < mainGame.getLevelOne().getFigures().size() && !exit; i++) {
-				if(mainGame.getLevelOne().getFigures().get(i) instanceof Mario) {
-					mainGame.getLevelOne().setMarioPosition(i);
-					exit = true;
-				}
-			}
+			
 		}else if(a == 4) {
 			gRec.setFill(new ImagePattern(new Image(Koopa.KOOPASHELL)));
 			e.setPosY(e.getPosY()+16);
@@ -668,8 +673,14 @@ public class GameController {
     	List<Figure> sprites =mainGame.getLevelOne().getFigures();
 
     	for (int i = 0; i < mainGame.getLevelOne().getFigures().size() && intersects.isEmpty(); i++) {
-			if(sprites.get(i) instanceof Mario )
+			if(sprites.get(i) instanceof Mario)
 				continue;
+			else if(sprites.get(i) instanceof Enemy) {
+				Enemy ene = (Enemy) sprites.get(i);
+				if(ene.isDead()) {
+					continue;
+				}
+			}
 			f = sprites.get(i);
 			
 			Figure mario = mainGame.getLevelOne().getMario();
@@ -915,7 +926,7 @@ public class GameController {
 								threads.remove(j);
 							}
 						}
-						mainGame.getLevelOne().getFigures().remove(figure);
+						//mainGame.getLevelOne().getFigures().remove(figure);
 						boolean exit = false;
 						for (int j = 0; j < mainGame.getLevelOne().getFigures().size() && !exit; j++) {
 							if(mainGame.getLevelOne().getFigures().get(j) instanceof Mario) {
