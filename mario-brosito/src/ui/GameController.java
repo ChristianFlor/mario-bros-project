@@ -128,8 +128,6 @@ public class GameController {
     	jumping = new JumpingThread(this,0);
     	pressed = new HashSet<String>();
     	try {
-
-
     		ground = sound.loadSounds(0);
 
 			mainGame = new Game();
@@ -191,6 +189,7 @@ public class GameController {
 	public void pause() {
     	pause=true;
     	ground.stop();
+
 		for (int i = 0; i < threads.size(); i++) {
 			Thread t = threads.get(i);
 			if(t.isAlive()) {
@@ -210,6 +209,7 @@ public class GameController {
 			}
 		}
 	}
+    
     @SuppressWarnings("deprecation")
 	public void continues() {
     	pause=false;
@@ -260,6 +260,7 @@ public class GameController {
 						pause();
 					}
 				}else {
+
 
 					if(e.getCode().equals(KeyCode.ESCAPE)) {
 

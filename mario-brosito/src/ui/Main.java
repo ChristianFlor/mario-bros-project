@@ -27,6 +27,7 @@ public class Main extends Application{
 		loader.load();
 		GameController gc = loader.getController();
 
+
 		
 		stage.setScene(scene);
 		stage.setTitle("Mariosito");
