@@ -128,7 +128,7 @@ public class GameController {
     	jumping = new JumpingThread(this,0);
     	pressed = new HashSet<String>();
     	try {
-    		ground = sound.loadSounds(0);
+    		
 			mainGame = new Game();
 			imloMark= new ImagesLoader(32, 32, 1, 3,"src/uiImg/QuestionMark.png");
 			imloCoin =new ImagesLoader(32, 32, 1, 3,"src/uiImg/Coin.png");
@@ -139,7 +139,7 @@ public class GameController {
 			misteryBlockThread();
 			timeThread();
 			coinThread();
-			loadWorld1();
+			loadWorld3();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -162,7 +162,7 @@ public class GameController {
     	
     	
     }
-    public void pause() {
+    public void closeWindow() {
     	pause=true;
     	ground.stop();
 		for (int i = 0; i < threads.size(); i++) {
@@ -184,34 +184,58 @@ public class GameController {
 			}
 		}
 	}
-    public void continues() {
-    	
-    	//ground.start();
+    @SuppressWarnings("deprecation")
+	public void pause() {
+    	pause=true;
+    	ground.stop();
 		for (int i = 0; i < threads.size(); i++) {
 			Thread t = threads.get(i);
 			if(t.isAlive()) {
 				if(t instanceof CoinAnimation) {
-					((CoinAnimation) t).activate();
+					((CoinAnimation) t).suspend();
 				}else if(t instanceof EnemyThread) {
-					((EnemyThread) t).activate();
+					((EnemyThread) t).suspend();
 				}else if(t instanceof LevelTimeThread) {
-					((LevelTimeThread) t).activate();
+					((LevelTimeThread) t).suspend();
 				}else if(t instanceof MisteryBlockAnimation) {
-					((MisteryBlockAnimation) t).activate();
+					((MisteryBlockAnimation) t).suspend();
 				}else if(t instanceof MovementAndGravityThread) {
-					((MovementAndGravityThread) t).activate();
+					((MovementAndGravityThread) t).suspend();
 				}else {
-					((PlatformThread) t).activate();
+					((PlatformThread) t).suspend();
 				}
 			}
 		}
-		pause=false;
+	}
+    @SuppressWarnings("deprecation")
+	public void continues() {
+    	pause=false;
+    	ground.start();
+		for (int i = 0; i < threads.size(); i++) {
+			Thread t = threads.get(i);
+			if(t.isAlive()) {
+				if(t instanceof CoinAnimation) {
+					((CoinAnimation) t).resume();
+				}else if(t instanceof EnemyThread) {
+					((EnemyThread) t).resume();
+				}else if(t instanceof LevelTimeThread) {
+					((LevelTimeThread) t).resume();
+				}else if(t instanceof MisteryBlockAnimation) {
+					((MisteryBlockAnimation) t).resume();
+				}else if(t instanceof MovementAndGravityThread) {
+					((MovementAndGravityThread) t).resume();
+				}else {
+					((PlatformThread) t).resume();
+				}
+			}
+		}
 	}
     public void configureScene() {
 		mainScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent e) {
 				pressed.add(e.getCode().toString());
+				
 				if(!pause) {
 					if(e.getCode().equals(KeyCode.D)) {
 						moveImage(1,0);
@@ -233,7 +257,7 @@ public class GameController {
 						pause();
 					}
 				}else {
-					if(e.getCode().equals(KeyCode.ESCAPE)) {
+					if(e.getCode().equals(KeyCode.Q)) {
 						Clip bang = sound.loadSounds(25);
 				    	bang.start();
 				    	continues();
@@ -914,6 +938,8 @@ public class GameController {
     }
     
     public void loadWorld1() throws IOException {
+    	ground = sound.loadSounds(0);
+    	ground.stop();
     	List<Figure> sprites = mainGame.getLevelOne().getFigures();
     	ImagesLoader sl = null;
     	
@@ -973,6 +999,8 @@ public class GameController {
     }
     
     public void loadWorld2() throws IOException {
+    	ground = sound.loadSounds(23);
+    	ground.stop();
     	List<Figure> sprites = mainGame.getLevelTwo().getFigures();
     	ImagesLoader sl = null;
     	
@@ -1032,6 +1060,8 @@ public class GameController {
     }
 
     public void loadWorld3() throws IOException {
+    	ground = sound.loadSounds(24);
+    	ground.stop();
     	List<Figure> sprites = mainGame.getLevelThree().getFigures();
     	ImagesLoader sl = null;
     	int counter = 1;

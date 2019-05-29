@@ -41,6 +41,7 @@ public class MisteryBlockAnimation extends Thread{
 			e.printStackTrace();
 		}
 	}
+	
 	public void activate() {
 		active = true;
 	}
