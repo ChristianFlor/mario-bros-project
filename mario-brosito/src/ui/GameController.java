@@ -190,7 +190,7 @@ public class GameController {
 					((MisteryBlockAnimation) t).deactivate();
 				}else if(t instanceof MovementAndGravityThread) {
 					((MovementAndGravityThread) t).deactivate();
-				}else {
+				}else if(t instanceof PlatformThread){
 					((PlatformThread) t).deactivate();
 				}
 			}
@@ -297,6 +297,26 @@ public class GameController {
 
     }
     
+    public void deadMario() {
+    	Image changed = new Image(Mario.SMALLDEADMARIO);
+		mainMario.setFill(new ImagePattern(changed));
+		
+		Clip bang = sound.loadSounds(9);
+    	bang.start();
+		pause();
+		
+    	jumping.suspend();
+		closeWindow();
+		mainBackground.getChildren().clear();
+		try {
+			mainGame = new Game();
+			initialize();
+			mainBackground.setTranslateX(0);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
     @SuppressWarnings("deprecation")
 	public String isTouching() {
     
@@ -311,6 +331,11 @@ public class GameController {
 			
 			intersects = ((Mario) mario).isColliding(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
 			
+			if(!intersects.equals(Mario.ISMOVINGDOWN) && !intersects.isEmpty() && f instanceof Enemy){
+				
+				deadMario();
+				break;
+			}
 			
 			if(intersects.equals(Mario.ISMOVINGDOWN) && f instanceof Enemy) {
 				jumping.stop();
@@ -878,6 +903,11 @@ public class GameController {
 	        	mainMario.setY(mainMario.getY()+8);
 	        	m.setPosY(mainMario.getY());
 	        }
+	        else if(a==5  && (!touch.equals(Mario.ISMOVINGRIGHT))) {
+	    		mainMario.setX(mainMario.getX()+20);
+	    		m.setPosX(mainMario.getX());
+	    		//m.setState(Mario.ISMOVINGRIGHT);
+	    	}
 			distanceToEnemies();
     	}
     
