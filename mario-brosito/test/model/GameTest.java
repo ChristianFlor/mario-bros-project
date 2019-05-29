@@ -1,11 +1,10 @@
 package model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.IOException;
 import java.security.SecureRandom;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -79,6 +78,10 @@ public class GameTest {
 			game.addPlayer(name4, nickname4, score4);
 			game.addPlayer(name5, nickname5, score5);
 			
+			Player[] players = game.getPlayersToArray();
+			
+			assertTrue("The list is null", players.length > 0);
+			
 			
 		} catch (IOException e) {
 		
@@ -115,13 +118,17 @@ public class GameTest {
 			Player p5 = new Player(name5, nickname5, score5);
 			
 			game.addScore(p1);
+			
 			game.addScore(p2);
 			game.addScore(p3);
 			game.addScore(p4);
 			game.addScore(p5);
 			
-			
-			
+			Score root = game.getRoot();
+			assertNotNull("The root must not be null since the first element has just been added to the tree", root);
+		/*	assertTrue("The score added must have the id of the player recently created", name1.equals(root.getName()));
+			assertTrue("The score added must have the id of the player recently added", score1 == root.getScore());
+		*/	System.out.println(root.getName());
 			
 		} catch (IOException e) {
 			
@@ -139,7 +146,7 @@ public class GameTest {
 			Player[] players = game.getPlayersToArray();
 			
 			for (int i = 0; i < players.length-1; i++) {
-				assertTrue("The players are not sort by code", players[i].getScore()<players[i+1].getScore());
+				assertTrue("The players are not sort by score", players[i].getScore()<players[i+1].getScore());
 			}
 		
 		} catch (IOException e) {
@@ -177,7 +184,7 @@ public class GameTest {
 			Player[] players = game.getPlayersToArray();
 			
 			for (int i = 0; i < players.length-1; i++) {
-				assertTrue("The players are not sort by name", players[i].getNickName().compareTo(players[i+1].getNickName())<=0);
+				assertTrue("The players are not sort by nickname", players[i].getNickName().compareTo(players[i+1].getNickName())<=0);
 			}
 		
 		} catch (IOException e) {
@@ -197,7 +204,7 @@ public class GameTest {
 			Player[] players = game.getPlayersToArray();
 			
 			for (int i = 0; i < players.length-1; i++) {
-				assertTrue("The players are not sort by name", players[i].getId().compareTo(players[i+1].getId())<=0);
+				assertTrue("The players are not sort by code", players[i].getId().compareTo(players[i+1].getId())<=0);
 			}
 		
 		} catch (IOException e) {

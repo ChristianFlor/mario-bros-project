@@ -26,16 +26,7 @@ public class Main extends Application{
 		loader = new FXMLLoader(getClass().getResource("brosito.fxml"));
 		loader.load();
 		GameController gc = loader.getController();
-		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
-			@Override
-			public void handle(WindowEvent event) {
-				gc.closeWindow();
-			}
-			
-		});
-		//eClip bang = SoundsLoader.loadSounds(0);
-    	//bang.start();
 		
 		stage.setScene(scene);
 		stage.setTitle("Mariosito");
