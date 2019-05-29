@@ -53,6 +53,7 @@ import thread.LevelTimeThread;
 import thread.MisteryBlockAnimation;
 import thread.MovementAndGravityThread;
 import thread.PlatformThread;
+import thread.SimpleBlockThread;
 import thread.MisteryBlockHitThread;
 import thread.SpinningFireThread;
 
@@ -140,7 +141,7 @@ public class GameController {
 			misteryBlockThread();
 			timeThread();
 			coinThread();
-			loadWorld3();
+			loadWorld1();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -365,10 +366,32 @@ public class GameController {
 					r.setFill(new ImagePattern(cardd));
 					MisteryBlockHitThread pw = new MisteryBlockHitThread(this, r, null);
 					pw.start();
+				} 
+			} else if(intersects.equals(Mario.ISMOVINGUP) && (f instanceof SimpleBlock)) {
+				SimpleBlock sb = (SimpleBlock) f;
+				Rectangle r = new Rectangle(sb.getPosX(), sb.getPosY()-32, 32, 32);
+				if(mainGame.getLevelOne().getMario().getPowerState() == null) {
+					SimpleBlockThread sbt = new SimpleBlockThread(this, sb, r);
+					sbt.start();
+				} else if (mainGame.getLevelOne().getMario().getPowerState() != null) {
+				rectan.remove(figureRectangles.get(sb));
 				}
 			}
 		}
     	return intersects;
+    }
+    
+    public void marioTouchSimpleBlock(Rectangle r, SimpleBlock sb) {
+    	int counter = 0;
+    	while(counter < 4) {
+    	
+    	r.setY(sb.getPosY()-1);
+    	sb.setPosY(sb.getPosY()-1);
+    	counter++;
+    	}
+    	r.setY(sb.getPosY());
+    	sb.setPosY(sb.getPosY());
+    	
     }
     
     public void animateMisteryBlockCoin(Rectangle r, int iteration, int move) {
