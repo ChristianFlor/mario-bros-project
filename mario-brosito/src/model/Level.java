@@ -153,7 +153,7 @@ public class Level {
 					
 				}else if(element == 'C') {
 					//castle
-					
+					System.out.println(counterPosY);
 					Figure castle = new StaticFigure(counterPosX, counterPosY, 160, 160);
 					castle.setImage(StaticFigure.CASTLE);
 					figures.add(castle);

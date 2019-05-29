@@ -257,7 +257,7 @@ public class PlayerController {
     @FXML
     void register(ActionEvent event) {
        	data.clear();
-    	g.addPlayer(tfName.getText(),tfNick.getText(),25.0);
+    	g.addPlayer(tfName.getText(),tfNick.getText(),25);
 
     	g.addScore(g.searchPlayer(tfName.getText()));
     	data.addAll(g.getPlayersToArray());
@@ -291,12 +291,13 @@ public class PlayerController {
     }
     public void drawImagesForTree(Score node, Score parent) {
     	if(node != null) {
-    		canvas.getGraphicsContext2D().drawImage(new Image(node.getPhoto()), node.getX(), node.getY());
+    		
     		canvas.getGraphicsContext2D().setFill(Color.YELLOW);
-    		canvas.getGraphicsContext2D().fillOval(node.getX(), node.getY(), 60, 60);
+    		canvas.getGraphicsContext2D().fillOval(node.getX(), node.getY(), 70, 70);
     		canvas.getGraphicsContext2D().setFill(Color.BLACK);
-    		canvas.getGraphicsContext2D().strokeOval(node.getX(), node.getY(), 60, 60);
-    		canvas.getGraphicsContext2D().fillText(node.getScore()+"\n"+node.getName(), node.getX()+8, node.getY()+25);
+    		canvas.getGraphicsContext2D().strokeOval(node.getX(), node.getY(), 70, 70);
+    		canvas.getGraphicsContext2D().fillText(node.getScore()+"\n"+node.getName(), node.getX()+6, node.getY()+30);
+    		canvas.getGraphicsContext2D().drawImage(new Image(node.getPhoto()), node.getX()+50, node.getY(),60,60);
     		drawImagesForTree(node.getLeft(), node);
     		drawImagesForTree(node.getRight(), node);
     		
@@ -337,7 +338,7 @@ public class PlayerController {
     public void drawImagesForList(Player node) {
     	if(node != null) {
     		
-    		canvas.getGraphicsContext2D().drawImage(new Image(node.getPhoto()), node.getX()-20, node.getY()-20);
+    		canvas.getGraphicsContext2D().drawImage(new Image(node.getPhoto()), node.getX(), node.getY()+10,60,60);
     		canvas.getGraphicsContext2D().fillText(node.getName()+"", node.getX(), node.getY());
     		drawImagesForList(node.getNext());
     	}
