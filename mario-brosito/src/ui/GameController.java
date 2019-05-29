@@ -57,6 +57,7 @@ import thread.LevelTimeThread;
 import thread.MisteryBlockAnimation;
 import thread.MovementAndGravityThread;
 import thread.PlatformThread;
+import thread.SimpleBlockThread;
 import thread.MisteryBlockHitThread;
 import thread.SpinningFireThread;
 
@@ -376,6 +377,7 @@ public class GameController {
 					bang.start();
 					MisteryBlockHitThread pw = new MisteryBlockHitThread(this, r, null);
 					pw.start();
+
 				}else if(mb.getPower() != null && !mb.getImage().equals(StaticFigure.IRON)) {
 					mb.setImage(StaticFigure.IRON);
 					PowerUp pu = mb.getPower();
@@ -411,10 +413,24 @@ public class GameController {
 						pw.start();
 						threads.add(pw);
 					}
+
 				}
 			}
 		}
     	return intersects;
+    }
+    
+    public void marioTouchSimpleBlock(Rectangle r, SimpleBlock sb) {
+    	int counter = 0;
+    	while(counter < 4) {
+    	
+    	r.setY(sb.getPosY()-1);
+    	sb.setPosY(sb.getPosY()-1);
+    	counter++;
+    	}
+    	r.setY(sb.getPosY());
+    	sb.setPosY(sb.getPosY());
+    	
     }
     
     public void animateMisteryBlockCoin(Rectangle r, int iteration, int move) {
