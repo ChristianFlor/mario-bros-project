@@ -222,7 +222,7 @@
                            <center>
                               <ScrollPane pannable="true" style="-fx-border-color: #4285F4; -fx-border-width: 2;" BorderPane.alignment="CENTER">
                                  <content>
-                                    <Canvas fx:id="canvas" height="551.0" width="1138.0" />
+                                    <Canvas fx:id="canvas" height="329.0" width="677.0" />
                                  </content>
                               </ScrollPane>
                            </center>
