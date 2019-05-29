@@ -18,6 +18,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
@@ -132,7 +134,7 @@ public class GameController {
 			misteryBlockThread();
 			timeThread();
 			coinThread();
-			loadWorld3();
+			loadWorld1();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -914,6 +916,7 @@ public class GameController {
     }
     
     public void loadWorld1() throws IOException {
+    	
     	ground = sound.loadSounds(0);
     	ground.stop();
     	List<Figure> sprites = mainGame.getLevelOne().getFigures();

@@ -6,11 +6,11 @@ public class Player {
 	public Player() {
 		
 	}
-	public static final String MARIO ="/player-interface/src/uiGif/mario.gif";
-	public static final String LUIGI ="/player-interface/src/uiGif/luigi.gif";
-	public static final String KOOPAS ="/player-interface/src/uiGif/Koopas.gif";
-	public static final String BOWSER ="/player-interface/src/uiGif/bowser.gif";
-	public static final String TOAD ="/player-interface/src/uiGif/toad.gif";
+	public static final String MARIO ="https://www.smashbros.com/wiiu-3ds/images/character/mario/main.png";
+	public static final String LUIGI ="https://freepngimg.com/thumb/luigi/21913-5-luigi.png";
+	public static final String KOOPAS ="https://www.mariowiki.com/images/5/5c/SuperMarioParty_KoopaTroopa.png";
+	public static final String BOWSER ="https://vignette.wikia.nocookie.net/mario/images/e/e1/Bowser-0.png/revision/latest?cb=20161119195258&path-prefix=es";
+	public static final String TOAD ="http://clipart-library.com/images/Bcgopdxc8.png";
 	
 	private String name;
 	private String nickName;
@@ -29,10 +29,12 @@ public class Player {
 		this.score = s;
 		String in= name.substring(0, 2);
 		this.id= in+(r.nextInt(10000));
-		this.photo = "https://robohash.org/numquamquaeratunde.bmp";
-		//selectImg(score);
+		//this.photo = "https://robohash.org/numquamquaeratunde.bmp";
+		selectImg(s);
+		this.setX(x);
+		this.setY(y);
 	}
-	public void selectImg(int score) {
+	public void selectImg(double score) {
 		if(score<=50) {
 			this.setPhoto(BOWSER);
 		}else if(score > 50 && score<=60) {

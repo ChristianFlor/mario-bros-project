@@ -63,6 +63,7 @@ public class TransitionController {
 	    		//javafx.scene.paint.Color c = javafx.scene.paint.Color.rgb(0, 0, 0);
 	    		scene.setFill(c);
 	    		transitionPane.getChildren().add(root);
+
 	    		transitionPane.setBackground(new Background(new BackgroundFill(c, null, null)));
 	    	});                               
 	    	timeline.play();

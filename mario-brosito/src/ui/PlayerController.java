@@ -259,7 +259,8 @@ public class PlayerController {
        	data.clear();
     	g.addPlayer(tfName.getText(),tfNick.getText(),25.0);
 
-    	g.addScore(g.searchByCode(tfName.getText()));
+    	g.addScore(g.searchPlayer(tfName.getText()));
+    	data.addAll(g.getPlayersToArray());
     	//g.addScore(g.searchByName(tfName.getText()));
 
     }
@@ -336,7 +337,7 @@ public class PlayerController {
     public void drawImagesForList(Player node) {
     	if(node != null) {
     		
-    		canvas.getGraphicsContext2D().drawImage(new Image(node.getPhoto()), node.getX(), node.getY());
+    		canvas.getGraphicsContext2D().drawImage(new Image(node.getPhoto()), node.getX()-20, node.getY()-20);
     		canvas.getGraphicsContext2D().fillText(node.getName()+"", node.getX(), node.getY());
     		drawImagesForList(node.getNext());
     	}
