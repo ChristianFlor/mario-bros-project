@@ -130,8 +130,7 @@ public class GameController {
     	jumping = new JumpingThread(this,0);
     	pressed = new HashSet<String>();
     	try {
-    		ground = sound.loadSounds(0);
-
+    	
 			mainGame = new Game();
 			imloMark= new ImagesLoader(32, 32, 1, 3,"src/uiImg/QuestionMark.png");
 			imloCoin =new ImagesLoader(32, 32, 1, 3,"src/uiImg/Coin.png");
@@ -262,11 +261,7 @@ public class GameController {
 						pause();
 					}
 				}else {
-
-
 					if(e.getCode().equals(KeyCode.ESCAPE)) {
-
-
 						Clip bang = sound.loadSounds(25);
 				    	bang.start();
 				    	continues();
