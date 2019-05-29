@@ -2,12 +2,6 @@ package model;
 
 public class Score {
 	
-	public static final String MARIO ="/player-interface/src/uiGif/mario.gif";
-	public static final String LUIGI ="/player-interface/src/uiGif/luigi.gif";
-	public static final String KOOPAS ="/player-interface/src/uiGif/Koopas.gif";
-	public static final String BOWSER ="/player-interface/src/uiGif/bowser.gif";
-	public static final String TOAD ="/player-interface/src/uiGif/toad.gif";
-	
 	public static final String MARIO ="https://www.smashbros.com/wiiu-3ds/images/character/mario/main.png";
 	public static final String LUIGI ="https://freepngimg.com/thumb/luigi/21913-5-luigi.png";
 	public static final String KOOPAS ="https://www.mariowiki.com/images/5/5c/SuperMarioParty_KoopaTroopa.png";
