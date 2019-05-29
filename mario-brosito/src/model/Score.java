@@ -2,11 +2,7 @@ package model;
 
 public class Score {
 	
-	public static final String MARIO ="/player-interface/src/uiGif/mario.gif";
-	public static final String LUIGI ="/player-interface/src/uiGif/luigi.gif";
-	public static final String KOOPAS ="/player-interface/src/uiGif/Koopas.gif";
-	public static final String BOWSER ="/player-interface/src/uiGif/bowser.gif";
-	public static final String TOAD ="/player-interface/src/uiGif/toad.gif";
+	
 	
 	public static final String MARIO ="https://www.smashbros.com/wiiu-3ds/images/character/mario/main.png";
 	public static final String LUIGI ="https://freepngimg.com/thumb/luigi/21913-5-luigi.png";
@@ -15,7 +11,7 @@ public class Score {
 	public static final String TOAD ="http://clipart-library.com/images/Bcgopdxc8.png";
 	
 	private String name;
-	private double score;
+	private int score;
 	private String photo;
 	
 	private Score right;
@@ -24,7 +20,7 @@ public class Score {
 	private double x;
 	private double y;
 	
-	public Score(String n, double s) {
+	public Score(String n, int s) {
 		this.name = n;
 		this.score = s;
 		selectImg(s);
@@ -34,16 +30,16 @@ public class Score {
 	public String toString() {
 		return name+score;
 	}
-	public void selectImg(double score) {
-		if(score<=50) {
+	public void selectImg(int score) {
+		if(score<=3240) {
 			this.setPhoto(BOWSER);
-		}else if(score > 50 && score<=60) {
+		}else if(score > 3240 && score<=6480) {
 			this.setPhoto(TOAD);
-		}else if(score > 60 && score<=80) {
+		}else if(score > 6480 && score<=9720) {
 			this.setPhoto(KOOPAS);
-		}else if(score > 80 && score<=90) {
+		}else if(score > 9720 && score<=12960) {
 			this.setPhoto(LUIGI);
-		}else if(score > 90 && score<=100) {
+		}else if(score > 12960 && score<=16500) {
 			this.setPhoto(MARIO);
 		}
 	}
@@ -57,12 +53,12 @@ public class Score {
 	}
 
 
-	public double getScore() {
+	public int getScore() {
 		return score;
 	}
 
 
-	public void setScore(double score) {
+	public void setScore(int score) {
 		this.score = score;
 	}
 
