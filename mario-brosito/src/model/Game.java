@@ -38,7 +38,7 @@ public class Game {
 	// -----------------------------------------------------------------
     // Methods for add List
     // -----------------------------------------------------------------
-	public void addPlayer(String n, String nick, double s) {
+	public void addPlayer(String n, String nick, int s) {
 		Player p= new Player(n,nick,s);
 		if(first == null){
 			first =p;
@@ -348,15 +348,15 @@ public class Game {
     // -----------------------------------------------------------------
 	
 	public void initPlayers() {
-		addPlayer("Carlos","Carlosches",90.0);
+		addPlayer("Carlos","Carlosches",9800);
 		addScore(searchPlayer("Carlos"));
-		addPlayer("Cesar","Sleeptight",100);
+		addPlayer("Cesar","Sleeptight",14000);
 		addScore(searchPlayer("Cesar"));
-		addPlayer("Ana","Anamvgd",80);
+		addPlayer("Ana","Anamvgd",1000);
 		addScore(searchPlayer("Ana"));
-		addPlayer("Christian","Rolfman",30);
+		addPlayer("Christian","Rolfman",6000);
 		addScore(searchPlayer("Christian"));
-		addPlayer("Alejandra","ale",58);
+		addPlayer("Alejandra","Yepes",7000);
 		addScore(searchPlayer("Alejandra"));
 	}
 	public int sizeOfPlayer(){

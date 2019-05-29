@@ -9,6 +9,7 @@ public class Mario extends Figure {
 	public final static String FIREMARIO = "src/uiImg/FirePlayer.png";
 	public final static String SMALLSTARMARIO = "src/uiImg/SmallBlackMario.png";
 	public final static String BIGSTARMARIO = "src/uiImg/BigBlackMario.png";
+	public final static String SMALLDEADMARIO = "uiImg/SmallDeadMario.png";
 	public final static String ISMOVINGRIGHT = "Right";
 	public final static String ISMOVINGLEFT = "Left";
 	public final static String ISMOVINGUP = "Up";
@@ -18,6 +19,7 @@ public class Mario extends Figure {
 	public final static String ISDIAGONALLEFT = "DiagonalLeft";
 	public final static double GROUNDPOSITION = 384;
 	public final static double MAXHEIGHT = 17;
+	
 	public Mario(double posX, double posY, double width, double height) {
 		super(posX, posY, width, height);
 		powerState = null;

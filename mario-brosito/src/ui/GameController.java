@@ -51,6 +51,7 @@ import thread.LevelTimeThread;
 import thread.MisteryBlockAnimation;
 import thread.MovementAndGravityThread;
 import thread.PlatformThread;
+import thread.SimpleBlockThread;
 import thread.MisteryBlockHitThread;
 import thread.SpinningFireThread;
 
@@ -275,7 +276,7 @@ public class GameController {
 					((MisteryBlockAnimation) t).deactivate();
 				}else if(t instanceof MovementAndGravityThread) {
 					((MovementAndGravityThread) t).deactivate();
-				}else {
+				}else if(t instanceof PlatformThread){
 					((PlatformThread) t).deactivate();
 				}
 			}
@@ -382,6 +383,26 @@ public class GameController {
 
     }
     
+    public void deadMario() {
+    	Image changed = new Image(Mario.SMALLDEADMARIO);
+		mainMario.setFill(new ImagePattern(changed));
+		
+		Clip bang = sound.loadSounds(9);
+    	bang.start();
+		pause();
+		
+    	jumping.suspend();
+		closeWindow();
+		mainBackground.getChildren().clear();
+		try {
+			mainGame = new Game();
+			initialize();
+			mainBackground.setTranslateX(0);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
     @SuppressWarnings("deprecation")
 	public String isTouching() {
     
@@ -396,6 +417,11 @@ public class GameController {
 			
 			intersects = ((Mario) mario).isColliding(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
 			
+			if(!intersects.equals(Mario.ISMOVINGDOWN) && !intersects.isEmpty() && f instanceof Enemy){
+				
+				deadMario();
+				break;
+			}
 			
 			if(intersects.equals(Mario.ISMOVINGDOWN) && f instanceof Enemy) {
 				jumping.stop();
@@ -465,6 +491,7 @@ public class GameController {
 					bang.start();
 					MisteryBlockHitThread pw = new MisteryBlockHitThread(this, r, null);
 					pw.start();
+
 				}else if(mb.getPower() != null && !mb.getImage().equals(StaticFigure.IRON)) {
 					mb.setImage(StaticFigure.IRON);
 					PowerUp pu = mb.getPower();
@@ -500,10 +527,24 @@ public class GameController {
 						pw.start();
 						threads.add(pw);
 					}
+
 				}
 			}
 		}
     	return intersects;
+    }
+    
+    public void marioTouchSimpleBlock(Rectangle r, SimpleBlock sb) {
+    	int counter = 0;
+    	while(counter < 4) {
+    	
+    	r.setY(sb.getPosY()-1);
+    	sb.setPosY(sb.getPosY()-1);
+    	counter++;
+    	}
+    	r.setY(sb.getPosY());
+    	sb.setPosY(sb.getPosY());
+    	
     }
     
     public void animateMisteryBlockCoin(Rectangle r, int iteration, int move) {
@@ -967,6 +1008,11 @@ public class GameController {
 	        	mainMario.setY(mainMario.getY()+8);
 	        	m.setPosY(mainMario.getY());
 	        }
+	        else if(a==5  && (!touch.equals(Mario.ISMOVINGRIGHT))) {
+	    		mainMario.setX(mainMario.getX()+20);
+	    		m.setPosX(mainMario.getX());
+	    		//m.setState(Mario.ISMOVINGRIGHT);
+	    	}
 			distanceToEnemies();
     	}
     

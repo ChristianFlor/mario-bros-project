@@ -14,7 +14,7 @@ public class Player {
 	
 	private String name;
 	private String nickName;
-	private double score;
+	private int score;
 	private String id;
 	private String photo;
 	
@@ -22,28 +22,27 @@ public class Player {
 	private Player prev;
 	private double x;
 	private double y;
-	public Player(String n, String nick, double s) {
+	public Player(String n, String nick, int s) {
 		SecureRandom r = new SecureRandom();
 		this.name = n;
 		this.nickName=nick;
 		this.score = s;
 		String in= name.substring(0, 2);
 		this.id= in+(r.nextInt(10000));
-		//this.photo = "https://robohash.org/numquamquaeratunde.bmp";
 		selectImg(s);
 		this.setX(x);
 		this.setY(y);
 	}
-	public void selectImg(double score) {
-		if(score<=50) {
+	public void selectImg(int score) {
+		if(score<=3240) {
 			this.setPhoto(BOWSER);
-		}else if(score > 50 && score<=60) {
+		}else if(score > 3240 && score<=6480) {
 			this.setPhoto(TOAD);
-		}else if(score > 60 && score<=80) {
+		}else if(score > 6480 && score<=9720) {
 			this.setPhoto(KOOPAS);
-		}else if(score > 80 && score<=90) {
+		}else if(score > 9720 && score<=12960) {
 			this.setPhoto(LUIGI);
-		}else if(score > 90 && score<=100) {
+		}else if(score > 12960 && score<=16500) {
 			this.setPhoto(MARIO);
 		}
 	}
@@ -61,12 +60,12 @@ public class Player {
 	}
 
 
-	public double getScore() {
+	public int getScore() {
 		return score;
 	}
 
 
-	public void setScore(double score) {
+	public void setScore(int score) {
 		this.score = score;
 	}
 

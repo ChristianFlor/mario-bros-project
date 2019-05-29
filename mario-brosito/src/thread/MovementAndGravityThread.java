@@ -35,8 +35,12 @@ public class MovementAndGravityThread extends Thread {
 								ecuation = Math.round(ecuation);
 								counter = (int) ecuation;
 								
-								while(counter <= 35 && controller.isFalling().isEmpty() && !controller.getJumping().isAlive()) {
-									
+								while(controller.isFalling().isEmpty() && !controller.getJumping().isAlive()) {
+									if(controller.getMainGame().getLevelOne().getMario().getPosY() +controller.getMainGame().getLevelOne().getMario().getHeight()*1.8 >= controller.getMainScene().getHeight()) {
+										controller.deadMario();
+										
+									}
+									System.out.println(4);
 									double jump = z+1.2*counter*counter-42*counter;
 									jump = Math.round(jump);
 									double jumpFinal = z+1.2*(counter+1)*(counter+1)-42*(counter+1);
@@ -67,6 +71,7 @@ public class MovementAndGravityThread extends Thread {
 								}
 						
 							if(controller.getPressed().contains("D")) {
+								
 									Platform.runLater(new Runnable() {
 
 										@Override
