@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Set;
 import javax.sound.sampled.Clip;
 
+import customExceptions.IllegalInputException;
+import customExceptions.IntegerValuesException;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -73,7 +75,9 @@ public class GameController {
 	private int minLeft;
 	
 	private Game mainGame;
-	
+	public Game getGame() {
+		return mainGame;
+	}
 	private Scene mainScene;
 	private List<Rectangle> rectan;
 	private List<Rectangle> rectanCoin;
@@ -114,6 +118,9 @@ public class GameController {
 
     @FXML
     private Label scoreOfMario;
+    public Label getScoreOfMario() {
+		return scoreOfMario;
+	}
 
     @FXML
     private Label acumulatedCoins;
@@ -131,7 +138,7 @@ public class GameController {
 	private Thread mv;
 	
     @FXML
-    public void initialize() {
+    public void initialize() throws IllegalInputException, IntegerValuesException {
     	sound = new SoundsLoader();
     	pause=false;
     	jumping = new JumpingThread(this,0);

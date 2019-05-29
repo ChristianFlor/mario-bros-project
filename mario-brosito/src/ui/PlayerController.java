@@ -3,6 +3,8 @@ package ui;
 
 import java.io.IOException;
 
+import customExceptions.IllegalInputException;
+import customExceptions.IntegerValuesException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,7 +30,7 @@ import model.Score;
 
 public class PlayerController {
 	private Game g;
-	
+	private GameController game;
     @FXML
     private ComboBox<String> optionsSearch;
     @FXML
@@ -69,16 +71,13 @@ public class PlayerController {
     private TableView<Player> table;
     private ObservableList<Player> data;
     
-    public void initialize() {
-    	try {
-			g= new Game();
+    public void initialize() throws IOException, IllegalInputException, IntegerValuesException {
+    	g=new Game();
+			//g= game.getGame();
 			table =createTable();
 	    	vBoxList.getChildren().add(table);
 	    	optionsSearch.getItems().addAll("Id","Name","Nick","Score");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
     	
     }
     private TableView<Player> createTable(){
@@ -255,14 +254,26 @@ public class PlayerController {
     	return data;
     }
     @FXML
-    void register(ActionEvent event) {
-       	data.clear();
-    	g.addPlayer(tfName.getText(),tfNick.getText(),25.0);
+    void register(ActionEvent event){
+    	data.clear();
+       	//int n = Integer.parseInt(game.getScoreOfMario().getText());
+    	try {
+			g.addPlayer(tfName.getText(),tfNick.getText(),10000);
+			g.addScore(g.searchPlayer(tfName.getText()));
+			Alert a = new Alert(AlertType.CONFIRMATION);
+    		a.setContentText("The player is register");
+    		a.show();
+		} catch (IllegalInputException e) {
+			Alert a = new Alert(AlertType.ERROR);
+    		a.setContentText(e.getMessage());
+    		a.show();
+		} catch (IntegerValuesException e) {
+			Alert a = new Alert(AlertType.ERROR);
+    		a.setContentText(e.getMessage());
+    		a.show();
+		}
 
-    	g.addScore(g.searchPlayer(tfName.getText()));
     	data.addAll(g.getPlayersToArray());
-    	//g.addScore(g.searchByName(tfName.getText()));
-
     }
    
     @FXML

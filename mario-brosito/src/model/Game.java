@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import customExceptions.IllegalInputException;
+import customExceptions.IntegerValuesException;
+
 public class Game {
 	// -----------------------------------------------------------------
     // Constant
@@ -25,7 +28,7 @@ public class Game {
 	private double width;
 	private double height;
 
-	public Game() throws IOException {
+	public Game() throws IOException, IllegalInputException,IntegerValuesException {
 		levelOne = new Level();
 		levelOne.loadLevel(Level.LEVEL_ONE_PATH);
 		levelTwo = new Level();
@@ -38,7 +41,17 @@ public class Game {
 	// -----------------------------------------------------------------
     // Methods for add List
     // -----------------------------------------------------------------
-	public void addPlayer(String n, String nick, int s) {
+	public void addPlayer(String n, String nick, int s)throws  IllegalInputException,IntegerValuesException{
+		if(n.isEmpty()|| n==null) {
+			throw new IllegalInputException(n);
+		}else if(isNumeric(n)) {
+			throw new IntegerValuesException(n);
+		}
+		if(nick.isEmpty() || nick==null || isNumeric(nick)) {
+			throw new IllegalInputException(nick);
+		}else if(isNumeric(nick)) {
+			throw new IntegerValuesException(nick);
+		}
 		Player p= new Player(n,nick,s);
 		if(first == null){
 			first =p;
@@ -51,11 +64,24 @@ public class Game {
 			current.getNext().setPrev(current);
 		}
 	}
+	public boolean isNumeric(String cadena){
+		try {
+			Integer.parseInt(cadena);
+			return true;
+		} catch (NumberFormatException nfe){
+			return false;
+		}
+	}
 	// -----------------------------------------------------------------
     // Methods for add tree
     // -----------------------------------------------------------------
 	
-	public void addScore(Player p) {
+	public void addScore(Player p)throws  IllegalInputException {
+		if(p.getName().isEmpty() || p.getName()==null) {
+			throw new IllegalInputException(p.getName());
+		}else if(p.getNickName().isEmpty() || p.getNickName()==null) {
+			throw new IllegalInputException(p.getNickName());
+		}
 		Score s= new Score(p.getName(), p.getScore());
 		if(root == null) {
 			root= s;
@@ -329,7 +355,10 @@ public class Game {
 				index = mid;
 			}
 		}
-		Player f =  p[index];
+		Player f = null;
+		if(index != -1) {
+			f =  p[index];
+		}
 		return f;
 	}
 	public Player searchByNick(String n) {
@@ -347,7 +376,7 @@ public class Game {
     // Methods of model solution
     // -----------------------------------------------------------------
 	
-	public void initPlayers() {
+	public void initPlayers() throws IllegalInputException, IntegerValuesException {
 		addPlayer("Carlos","Carlosches",9800);
 		addScore(searchPlayer("Carlos"));
 		addPlayer("Cesar","Sleeptight",14000);
