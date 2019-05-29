@@ -25,7 +25,7 @@ public class Gravity extends Thread{
 					controller.makeFigureFall(figureRec, figure);
 				}
         	});
-        	if(figure.getPosY()> 480)
+        	if(figure.getPosY()> 550)
         		break;
         	try {
         		sleep(150);

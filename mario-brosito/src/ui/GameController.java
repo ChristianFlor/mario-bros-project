@@ -34,10 +34,12 @@ import model.Mario;
 import model.MisteryBlock;
 import model.MovingPlatform;
 import model.Mushroom;
+import model.OneUp;
 import model.PowerUp;
 import model.SimpleBlock;
 import model.Slide;
 import model.SoundsLoader;
+import model.Star;
 import model.StaticFigure;
 import thread.CoinAnimation;
 import thread.EnemyDeathAnimation;
@@ -85,6 +87,10 @@ public class GameController {
 	private BufferedImage[] bigMarioPictures;
 	
 	private BufferedImage[] fireMarioPictures;
+	
+	private BufferedImage[] smallStarMarioPictures;
+	
+	private BufferedImage[] bigStarMarioPictures;
 
 	@FXML
 	private Label timeLabel;
@@ -145,6 +151,10 @@ public class GameController {
 			bigMarioPictures = sl.getSprites();
 			sl = new ImagesLoader(32, 64, 7, 4, Mario.FIREMARIO);
 			fireMarioPictures = sl.getSprites();
+			sl = new ImagesLoader(32, 32, 7, 4, Mario.SMALLSTARMARIO);
+			smallStarMarioPictures = sl.getSprites();
+			sl = new ImagesLoader(32, 64, 7, 4, Mario.BIGSTARMARIO);
+			bigStarMarioPictures = sl.getSprites();
 		} catch (IOException e) {
 			
 			e.printStackTrace();
@@ -286,6 +296,8 @@ public class GameController {
 					mb.setImage(StaticFigure.IRON);
 					PowerUp pu = ((Mario) mario).nextPowerUp();
 					mainGame.getLevelOne().getFigures().add(pu);
+					Clip bang = sound.loadSounds(13);
+					bang.start();
 					if(pu instanceof Mushroom) {
 						Rectangle r = new Rectangle(mb.getPosX(), mb.getPosY(), 32, 32);
 						pu.setPosX(mb.getPosX()); pu.setPosY(mb.getPosY());
@@ -319,8 +331,45 @@ public class GameController {
 					BufferedImage[] blocks = sl.getSprites();
 					Image cardd = SwingFXUtils.toFXImage(blocks[0], null);
 					r.setFill(new ImagePattern(cardd));
+					Clip bang = sound.loadSounds(3);
+					bang.start();
 					MisteryBlockHitThread pw = new MisteryBlockHitThread(this, r, null);
 					pw.start();
+				}else if(mb.getPower() != null && !mb.getImage().equals(StaticFigure.IRON)) {
+					mb.setImage(StaticFigure.IRON);
+					PowerUp pu = mb.getPower();
+					mainGame.getLevelOne().getFigures().add(pu);
+					Clip bang = sound.loadSounds(13);
+					bang.start();
+					if(pu instanceof OneUp) {
+						Rectangle r = new Rectangle(mb.getPosX(), mb.getPosY(), 32, 32);
+						pu.setPosX(mb.getPosX()); pu.setPosY(mb.getPosY());
+						try {
+							sl = new ImagesLoader(32, 32, 1, 2, OneUp.ONEUP);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						BufferedImage[] blocks = sl.getSprites();
+						Image cardd = SwingFXUtils.toFXImage(blocks[0], null);
+						r.setFill(new ImagePattern(cardd));
+						MisteryBlockHitThread pw = new MisteryBlockHitThread(this, r, pu);
+						pw.start();
+						threads.add(pw);
+					}else if(pu instanceof Star) {
+						Rectangle r = new Rectangle(mb.getPosX(), mb.getPosY(), 32, 32);
+						pu.setPosX(mb.getPosX()); pu.setPosY(mb.getPosY());
+						try {
+							sl = new ImagesLoader(32, 32, 1, 2, Star.STAR);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						BufferedImage[] blocks = sl.getSprites();
+						Image cardd = SwingFXUtils.toFXImage(blocks[0], null);
+						r.setFill(new ImagePattern(cardd));
+						MisteryBlockHitThread pw = new MisteryBlockHitThread(this, r, pu);
+						pw.start();
+						threads.add(pw);
+					}
 				}
 			}
 		}
@@ -339,6 +388,8 @@ public class GameController {
 				acumulatedCoins.setText("X 0" + coins);
 			else
 				acumulatedCoins.setText("X " + coins);
+			int counter = Integer.parseInt(scoreOfMario.getText())+200;
+			scoreOfMario.setText(counter + "");
     	}else {
     		ImagesLoader sl = null;
         	try {
@@ -436,8 +487,7 @@ public class GameController {
     	
     	return f;
     }
-    
-    
+       
     public String isFalling() {
     	String intersects = "";
     	Figure f = null;
@@ -469,6 +519,10 @@ public class GameController {
 					intersects = ((Enemy) figure).enemyIsGrounded(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
 				else if(figure instanceof Mushroom) {
 					intersects = ((Mushroom) figure).mushroomIsGrounded(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
+				}else if(figure instanceof OneUp) {
+					intersects = ((OneUp) figure).oneUpIsGrounded(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
+				}else if(figure instanceof Star) {
+					intersects = ((Star) figure).starIsGrounded(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
 				}
 			}
 		}
@@ -709,8 +763,11 @@ public class GameController {
 							mainGame.getLevelOne().getMario().setHeight(64);
 							mainGame.getLevelOne().getMario().setPosY(mainGame.getLevelOne().getMario().getPosY()-32);
 							mainMario.setY(mainGame.getLevelOne().getMario().getPosY());
-						}
-						if(figure instanceof Flower) {
+						}else if(figure instanceof OneUp) {
+							Clip clip = sound.loadSounds(1);
+							clip.start();
+							
+						}else if(figure instanceof Flower) {
 							Clip clip = sound.loadSounds(12);
 							clip.start();
 							mainGame.getLevelOne().getMario().setPowerState((PowerUp) figure);
@@ -721,6 +778,15 @@ public class GameController {
 							mainGame.getLevelOne().getMario().setHeight(64);
 							mainGame.getLevelOne().getMario().setPosY(mainGame.getLevelOne().getMario().getPosY()-32);
 							mainMario.setY(mainGame.getLevelOne().getMario().getPosY());
+						}else if(figure instanceof Star) {
+							Clip clip = sound.loadSounds(18);
+							clip.start();
+							if(mainGame.getLevelOne().getMario().getPowerState() == null) {
+								
+							}else {
+								
+							}
+							
 						}
 					}
 				}
@@ -1111,6 +1177,8 @@ public class GameController {
 	public void animateFlower(Rectangle powerUpRectangle, int counter) {
 		if(counter == -1) {
 			mainBackground.getChildren().remove(powerUpRectangle);
+			int w = Integer.parseInt(scoreOfMario.getText())+1000;
+			scoreOfMario.setText(w + "");
 		}else {
 			ImagesLoader sl = null;
 			try {
@@ -1121,6 +1189,56 @@ public class GameController {
 			BufferedImage[] blocks = sl.getSprites();
 			Image card = SwingFXUtils.toFXImage(blocks[counter], null);
 			powerUpRectangle.setFill(new ImagePattern(card));
+		}
+	}
+	
+	public void animateStar(PowerUp powerUp, Rectangle powerUpRectangle, int counter, int moment, int orientation) {
+		if(counter == -1) {
+			mainBackground.getChildren().remove(powerUpRectangle);
+		}else {
+			ImagesLoader sl = null;
+			try {
+				sl = new ImagesLoader(32, 32, 1, 4, Star.STAR);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			BufferedImage[] blocks = sl.getSprites();
+			Image card = SwingFXUtils.toFXImage(blocks[counter], null);
+			powerUpRectangle.setFill(new ImagePattern(card));
+			if(moment == 0) {
+				powerUpRectangle.setX(powerUpRectangle.getX()+12);
+				powerUp.setPosX(powerUp.getPosX()+12);
+			}else if(moment == 1){
+				Gravity g = new Gravity(this, powerUpRectangle, powerUp);
+				g.start();
+			}else if(moment >=2){
+				if(orientation == 0) {
+					if(moment % 2 == 0) {
+						powerUpRectangle.setX(powerUpRectangle.getX()+8);
+						powerUp.setPosX(powerUp.getPosX()+8);
+						powerUpRectangle.setY(powerUpRectangle.getY()-8);
+						powerUp.setPosY(powerUp.getPosY()-8);
+					}else {
+						powerUpRectangle.setX(powerUpRectangle.getX()+8);
+						powerUp.setPosX(powerUp.getPosX()+8);
+						powerUpRectangle.setY(powerUpRectangle.getY()+8);
+						powerUp.setPosY(powerUp.getPosY()+8);
+					}
+				}else {
+					if(moment % 2 == 0) {
+						powerUpRectangle.setX(powerUpRectangle.getX()-8);
+						powerUp.setPosX(powerUp.getPosX()-8);
+						powerUpRectangle.setY(powerUpRectangle.getY()-8);
+						powerUp.setPosY(powerUp.getPosY()-8);
+					}else {
+						powerUpRectangle.setX(powerUpRectangle.getX()-8);
+						powerUp.setPosX(powerUp.getPosX()-8);
+						powerUpRectangle.setY(powerUpRectangle.getY()+8);
+						powerUp.setPosY(powerUp.getPosY()+8);
+					}
+				}
+				
+			}
 		}
 	}
 	
@@ -1138,6 +1256,8 @@ public class GameController {
 			g.start();
 		}else {
 			mainBackground.getChildren().remove(powerUpRectangle);
+			int w = Integer.parseInt(scoreOfMario.getText())+1000;
+			scoreOfMario.setText(w + "");
 		}
 		
 	}

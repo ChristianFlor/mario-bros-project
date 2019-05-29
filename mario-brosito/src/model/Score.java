@@ -2,7 +2,6 @@ package model;
 
 public class Score {
 	
-	
 	public static final String MARIO ="/player-interface/src/uiGif/mario.gif";
 	public static final String LUIGI ="/player-interface/src/uiGif/luigi.gif";
 	public static final String KOOPAS ="/player-interface/src/uiGif/Koopas.gif";

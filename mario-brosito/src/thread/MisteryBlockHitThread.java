@@ -4,7 +4,9 @@ import javafx.application.Platform;
 import javafx.scene.shape.Rectangle;
 import model.Flower;
 import model.Mushroom;
+import model.OneUp;
 import model.PowerUp;
+import model.Star;
 import ui.GameController;
 
 public class MisteryBlockHitThread extends Thread{
@@ -14,6 +16,7 @@ public class MisteryBlockHitThread extends Thread{
 	private PowerUp powerUp;
 	private boolean active;
 	private int counter;
+	private int orientation;
 	
 	public MisteryBlockHitThread(GameController c, Rectangle pr, PowerUp pu) {
 		this.controller = c;
@@ -21,6 +24,7 @@ public class MisteryBlockHitThread extends Thread{
 		this.powerUp = pu;
 		active = true;
 		counter = 0;
+		orientation = 0;
 	}
 
 	@Override
@@ -65,7 +69,7 @@ public class MisteryBlockHitThread extends Thread{
 					}
 				});
 			}
-		}else if(powerUp instanceof Mushroom) {
+		}else if(powerUp instanceof Mushroom || powerUp instanceof OneUp) {
 			while(active) {
 				controller.moveMushroom(powerUp, powerUpRectangle, counter);
 				try {
@@ -84,6 +88,48 @@ public class MisteryBlockHitThread extends Thread{
 						}
 					}
 				});
+			}
+		}else if(powerUp instanceof Star){
+			System.out.println(21);
+			int moment = 0;
+			while(active) {
+				counter++;
+				int o = 0;
+				if(moment == 1) {
+					controller.animateStar(powerUp, powerUpRectangle, counter, moment, o);
+					counter = -1;
+					moment++;
+					try {
+						sleep(2700);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}else {
+					controller.animateStar(powerUp, powerUpRectangle, counter, moment, o);
+					
+					if(counter == 3) {
+						counter = -1;
+						moment++;
+					}
+					
+						try {
+							sleep(100);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							if(controller.figureIsTouching(powerUp)) {
+								if(orientation == 0)
+									orientation = 1;
+								else
+									orientation = 0;
+							}
+						}
+					});
+				}
+				
 			}
 		}
 		}else {
@@ -117,7 +163,7 @@ public class MisteryBlockHitThread extends Thread{
 					}
 					exit ++;
 					if(exit == 10) {
-Platform.runLater(new Runnable() {
+						Platform.runLater(new Runnable() {
 							
 							@Override
 							public void run() {
@@ -140,7 +186,7 @@ Platform.runLater(new Runnable() {
 	}
 	public void deactivate() {
 		active = false;
-		if(powerUp instanceof Mushroom) {
+		if(powerUp instanceof Mushroom || powerUp instanceof OneUp) {
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
