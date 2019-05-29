@@ -53,7 +53,7 @@ public class Level {
 					powerLife.setImage(OneUp.ONEUP);
 					Obstacle blockWithLife = new MisteryBlock(counterPosX, counterPosY, 32,32, null, powerLife );
 					blockWithLife.setImage(MisteryBlock.MISTERYBLOCK);
-					figures.add(powerLife);
+				//	figures.add(powerLife);
 					figures.add(blockWithLife);
 					
 				}else if(element == 'T') {
@@ -107,7 +107,7 @@ public class Level {
 					starPower.setImage(Star.STAR);
 					Obstacle starBlock = new MisteryBlock(counterPosX, counterPosY, 32,32, null, starPower);
 					starBlock.setImage(MisteryBlock.MISTERYBLOCK);
-					figures.add(starPower);
+					//figures.add(starPower);
 					figures.add(starBlock);
 					
 				}else if(element == '?') {

@@ -1,7 +1,3 @@
-/* 
-    Created on : 11 Nov, 2017, 4:42:53 AM
-    Author     : afsal villan
-*/
 
 * {
     -fx-primary : #2A2E37;
@@ -14,7 +10,6 @@
 }
 
 .root{
-	-fx-font-style:consolas;
     -fx-background-color: -fx-primary;
 }
 
@@ -92,106 +87,6 @@
 
 .settings-tab .tab-header-background{
     -fx-background-color: derive(-fx-primary, -50%);
-}
-/*Menu bar Styling*/
-.menu-bar{
-    -fx-font-size: 14;
-    -fx-base : -fx-primary;
-    -fx-background-color: -fx-primary;
-}
-
-.context-menu
-{
-    -fx-background-color:  derive(-fx-primary, 20%);
-}
-
-/*Hamburger Styling*/
-.jfx-hamburger-icon{
-    -fx-spacing: 7;
-}
-
-.jfx-hamburger-icon StackPane
-{
-    -fx-background-color: -fx-secondary;
-    -fx-background-radius: 5px;
-}
-
-/*Toolbar buttons*/
-.toolbar-button
-{
-    -fx-border-color: transparent;
-    -fx-background-color: derive(-fx-primary, 10%);
-    -fx-background-radius: 0px;
-    -fx-border-radius: 0px;
-}
-.toolbar-button:hover
-{
-    -fx-background-color: -fx-secondary;
-    -fx-text-fill: -fx-primary;
-}
-
-.toolbar-button:hover .glyph-icon, .toolbar-button:hover .glyph-icon
-{
-    -fx-fill: -fx-primary;
-}
-
-/*Text styling*/
-.main-text
-{
-    -fx-fill: -fx-secondary;
-    -fx-font-size: 14pt;
-    -fx-text-alignment: center;
-}
-
-.submission-container{
-    -fx-background-color: derive(-fx-primary, 10%);
-}
-
-/*Dialog styling*/
-.dialog-button{
-    -fx-border-color: -fx-color-1;
-    -fx-text-fill: -fx-secondary;
-    -fx-border-radius: 1px;
-    -fx-background-radius: 3px;
-}
-
-.dialog-button:hover{
-    -fx-background-color: -fx-color-1;
-    -fx-border-color: derive(-fx-color-1, -20%);
-    -fx-text-fill: white;
-}
-
-.jfx-layout-actions
-{
-    -fx-hgap:8;
-}
-
-/*Chart Styling*/
-.data0.chart-pie{
-    -fx-pie-color: -fx-secondary;
-    -fx-border-color: derive(-fx-secondary, -30%);
-}
-.data1.chart-pie{
-    -fx-pie-color: derive(-fx-primary, 30%);
-    -fx-border-color: derive(-fx-primary, 30%);
-}
-.chart-pie-label
-{
-    -fx-fill : derive(-fx-secondary, -5%);
-}
-
-/*About window*/
-.about-text{
-    -fx-fill: -fx-secondary;
-}
-
-.about-button{
-    -fx-border-color: transparent;
-}
-
-/*Custom window background*/
-.custom-pane{
-    -fx-background-color: derive(-fx-primary, 5%);
 }
 
 /*TableView Default*/
@@ -271,58 +166,6 @@
     -fx-base: -fx-primary;
 }
 
-
-/*JFXDialog styling*/
-.jfx-layout-heading
-{
-    -fx-background-color: -fx-color-1;
-}
-.jfx-layout-heading .label
-{
-    -fx-text-fill: white;
-    -fx-font-size: 12pt;
-}
-.jfx-layout-body, .jfx-layout-actions{
-    -fx-background-color: -fx-primary;   
-}
-.jfx-layout-body .label
-{
-    -fx-text-fill: white;
-    -fx-padding: 20px 0 0 0;
-}
-
-
-/*Dashboard label*/
-.not-available 
-{
-    -fx-background-radius: 5px;
-    -fx-fill: derive(blue, 80%);
-    -fx-cursor: hand;
-}
-
-/*Checkbox*/
-
-.checkbox-main{
-    -fx-text-fill: -fx-secondary; 
-    -jfx-checked-color: -fx-primary;
-    -fx-font-size: 10pt;
-}
-
-/*Progrss bar*/
-
-.progress-bar-main .track{
-    -fx-background-color: -fx-primary;
-}
-.progress-bar-main .bar{
-    -fx-background-color: -fx-secondary;
-    -fx-padding: 5px;
-}
-
-.common-label{
-    -fx-background-color: transparent;
-    -fx-text-fill: -fx-secondary;
-    -fx-font-size: 12pt;
-}
 
 /*Alert Dialog*/
 
