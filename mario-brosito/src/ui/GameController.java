@@ -415,8 +415,18 @@ public class GameController {
 					}
 
 				}
+			} else if(intersects.equals(Mario.ISMOVINGUP) && (f instanceof SimpleBlock)) {
+				SimpleBlock sb = (SimpleBlock) f;
+				Rectangle r = new Rectangle(sb.getPosX(), sb.getPosY()-32, 32, 32);
+				if(mainGame.getLevelOne().getMario().getPowerState() == null) {
+					SimpleBlockThread sbt = new SimpleBlockThread(this, sb, r);
+					sbt.start();
+				} else if (mainGame.getLevelOne().getMario().getPowerState() != null) {
+					mainBackground.getChildren().remove(r);
+					rectan.remove(figureRectangles.get(sb));
 			}
-		}
+		} 
+	} 
     	return intersects;
     }
     
