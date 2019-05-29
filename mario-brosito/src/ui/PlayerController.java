@@ -254,6 +254,7 @@ public class PlayerController {
     	return data;
     }
     @FXML
+
     void register(ActionEvent event){
     	data.clear();
        	//int n = Integer.parseInt(game.getScoreOfMario().getText());
@@ -272,7 +273,6 @@ public class PlayerController {
     		a.setContentText(e.getMessage());
     		a.show();
 		}
-
     	data.addAll(g.getPlayersToArray());
     }
    

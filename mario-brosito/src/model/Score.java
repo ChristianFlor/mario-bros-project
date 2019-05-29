@@ -1,9 +1,7 @@
 package model;
 
 public class Score {
-	
-	
-	
+
 	public static final String MARIO ="https://www.smashbros.com/wiiu-3ds/images/character/mario/main.png";
 	public static final String LUIGI ="https://freepngimg.com/thumb/luigi/21913-5-luigi.png";
 	public static final String KOOPAS ="https://www.mariowiki.com/images/5/5c/SuperMarioParty_KoopaTroopa.png";
