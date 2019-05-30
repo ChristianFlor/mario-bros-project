@@ -50,8 +50,6 @@ public abstract class Figure {
 
 	}
 	
-	
-	
 	/**
 	 * <b>Description:</b>
 	 * This function allows to obtain the position of the figure in the X axis
@@ -140,6 +138,11 @@ public abstract class Figure {
 		return image;
 	}
 	
+	/**
+	 * <b>Description:</b>
+	 * This function allows to modify the image of the figure
+	 * @param image The image that is going to be set to the figure.
+	 */
 	public void setImage(String image) {
 		this.image = image;
 	}

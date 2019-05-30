@@ -4,22 +4,89 @@ import javafx.geometry.Rectangle2D;
 
 public class Mario extends Figure {
 
+	/**
+	 * The default mario image sprite sheet.
+	 */
 	public final static String IMAGE = "src/uiImg/player.png";
+	
+	/**
+	 * The image of mario when he's in big form.
+	 */
 	public final static String BIGMARIO = "src/uiImg/BigPlayer.png";
+	
+	/**
+	 * The image of mario when he's in fire form.
+	 */
 	public final static String FIREMARIO = "src/uiImg/FirePlayer.png";
+	
+	/**
+	 * The image of mario when he's small and in star form.
+	 */
 	public final static String SMALLSTARMARIO = "src/uiImg/SmallBlackMario.png";
+	
+	/**
+	 * The image of mario when he's big and in star form.
+	 */
 	public final static String BIGSTARMARIO = "src/uiImg/BigBlackMario.png";
+	
+	/**
+	 * The image of mario when he dies.
+	 */
 	public final static String SMALLDEADMARIO = "uiImg/SmallDeadMario.png";
+	
+	/**
+	 * The state of mario when he's moving right.
+	 */
 	public final static String ISMOVINGRIGHT = "Right";
+	
+	/**
+	 * The state of mario when he's moving left.
+	 */
 	public final static String ISMOVINGLEFT = "Left";
+	
+	/**
+	 * The state of mario when he's moving up.
+	 */
 	public final static String ISMOVINGUP = "Up";
+	
+	/**
+	 * The state of mario when he's moving down.
+	 */
 	public final static String ISMOVINGDOWN = "Down";
+	
+	/**
+	 * The state of mario when he's standing still.
+	 */
 	public final static String ISSTANDINGSTILL = "Still";
+	
+	/**
+	 * The state of mario when he's moving diagonally right.
+	 */
 	public final static String ISDIAGONALRIGHT = "DiagonalRight";
+	
+	/**
+	 * The state of mario when he's moving diagonally left.
+	 */
 	public final static String ISDIAGONALLEFT = "DiagonalLeft";
+	
+	/**
+	 * The ground position of mario.
+	 */
 	public final static double GROUNDPOSITION = 384;
+	
+	/**
+	 * The max height of mario..
+	 */
 	public final static double MAXHEIGHT = 17;
 	
+	 /**
+	  * <b>Description:</b>
+		 * This function allows to initialize a new Mario.
+		 * @param posX the position in the X axis of the enemy in the level
+		 * @param posY the position in the Y axis of the enemy in the level
+		 * @param width the width of the enemy in pixels
+		 * @param height the height of the enemy in pixels
+		 */
 	public Mario(double posX, double posY, double width, double height) {
 		super(posX, posY, width, height);
 		powerState = null;
