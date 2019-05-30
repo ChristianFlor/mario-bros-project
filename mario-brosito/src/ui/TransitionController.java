@@ -2,9 +2,6 @@ package ui;
 
 	
 import java.io.IOException;
-
-import com.sun.prism.paint.Color;
-
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;

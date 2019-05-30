@@ -22,13 +22,20 @@ public class MovementAndGravityThread extends Thread {
 	@Override
 	public void run() {
 				while(active) {
-					
+					Mario m = null;
+					if(controller.getCurrentLevel() == 1) {
+			    		m = controller.getMainGame().getLevelOne().getMario();
+			    	}else if(controller.getCurrentLevel() == 2) {
+			    		m = controller.getMainGame().getLevelTwo().getMario();
+			    	}else {
+			    		m = controller.getMainGame().getLevelThree().getMario();
+			    	}
 					try {
 						boolean enter = false;
 						
 						int counter=0;
 						double z = Mario.GROUNDPOSITION;
-							double pos = controller.getMainGame().getLevelOne().getMario().getPosY();
+							double pos = m.getPosY();
 							
 								double rest = Mario.GROUNDPOSITION-pos;
 								double ecuation = (42 + Math.sqrt((42*42)-(4*1.2*rest)))/(2*1.2);
@@ -36,7 +43,7 @@ public class MovementAndGravityThread extends Thread {
 								counter = (int) ecuation;
 								
 								while(controller.isFalling().isEmpty() && !controller.getJumping().isAlive()) {
-									if(controller.getMainGame().getLevelOne().getMario().getPosY() +controller.getMainGame().getLevelOne().getMario().getHeight()*1.8 >= controller.getMainScene().getHeight()) {
+									if(m.getPosY() +m.getHeight()*1.8 >= controller.getMainScene().getHeight()) {
 										Platform.runLater(new Runnable() {
 
 											@Override
@@ -54,15 +61,15 @@ public class MovementAndGravityThread extends Thread {
 									jump = Math.round(jump);
 									double jumpFinal = z+1.2*(counter+1)*(counter+1)-42*(counter+1);
 									jumpFinal = Math.round(jumpFinal);
-									controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGDOWN);
+									m.setState(Mario.ISMOVINGDOWN);
 									double aux = 0;
-									while(!enter && controller.getMainGame().getLevelOne().getMario().getPosY() <= jumpFinal) {
+									while(!enter && m.getPosY() <= jumpFinal) {
 									
-										controller.getMainGame().getLevelOne().getMario().setPosY(controller.getMainGame().getLevelOne().getMario().getPosY()+1);
+										m.setPosY(m.getPosY()+1);
 										
 										if(controller.isTouching().equals(Mario.ISMOVINGDOWN)) {
 										
-											aux = controller.getMainGame().getLevelOne().getMario().getPosY();
+											aux = m.getPosY();
 											enter = true;
 										}
 									}
@@ -89,7 +96,7 @@ public class MovementAndGravityThread extends Thread {
 										}
 										
 									});
-									if(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGLEFT)) {
+									if(m.getState().equals(Mario.ISMOVINGLEFT)) {
 								 		Platform.runLater(new Runnable() {
 											@Override
 											public void run() {
@@ -99,7 +106,7 @@ public class MovementAndGravityThread extends Thread {
 								 		});
 								 		sleep(350);
 								 		
-									controller.getMainGame().getLevelOne().getMario().setState(Mario.ISDIAGONALRIGHT);
+									m.setState(Mario.ISDIAGONALRIGHT);
 									}else {
 										Platform.runLater(new Runnable() {
 											@Override
@@ -121,10 +128,10 @@ public class MovementAndGravityThread extends Thread {
 										 		controller.changeMarioImage(2);
 											}
 								 		});
-										controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGRIGHT);
+										m.setState(Mario.ISMOVINGRIGHT);
 									}
 								}else if(controller.getPressed().contains("A")) {
-									if(controller.getMainGame().getLevelOne().getMario().getState().equals(Mario.ISMOVINGRIGHT)) {
+									if(m.getState().equals(Mario.ISMOVINGRIGHT)) {
 										Platform.runLater(new Runnable() {
 											@Override
 											public void run() {
@@ -132,7 +139,7 @@ public class MovementAndGravityThread extends Thread {
 											}
 								 		});
 								 		sleep(350);
-								 		controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGLEFT);
+								 		m.setState(Mario.ISMOVINGLEFT);
 								 	}else {
 										Platform.runLater(new Runnable() {
 											@Override
@@ -154,7 +161,7 @@ public class MovementAndGravityThread extends Thread {
 										 		controller.changeMarioImage(7);
 											}
 								 		});
-											controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGLEFT);
+											m.setState(Mario.ISMOVINGLEFT);
 								 	}
 								}
 								else if(controller.getPressed().contains("W")) {

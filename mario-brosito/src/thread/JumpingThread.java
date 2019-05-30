@@ -17,7 +17,15 @@ public class JumpingThread extends Thread {
 	@Override
 	public void run() {
 		
-				double z = controller.getMainGame().getLevelOne().getMario().getPosY();
+		Mario m = null;
+		if(controller.getCurrentLevel() == 1) {
+    		m = controller.getMainGame().getLevelOne().getMario();
+    	}else if(controller.getCurrentLevel() == 2) {
+    		m = controller.getMainGame().getLevelTwo().getMario();
+    	}else {
+    		m = controller.getMainGame().getLevelThree().getMario();
+    	}
+				double z = m.getPosY();
 				int counter = 0;
 				
 				double jump = 0;
@@ -30,32 +38,32 @@ public class JumpingThread extends Thread {
 					boolean enter = false;
 					
 					if(counter<7) {
-						controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGUP);
+						m.setState(Mario.ISMOVINGUP);
 						
-						while(!enter && controller.getMainGame().getLevelOne().getMario().getPosY() >= jumpFinal) {
+						while(!enter && m.getPosY() >= jumpFinal) {
 		
-							controller.getMainGame().getLevelOne().getMario().setPosY(controller.getMainGame().getLevelOne().getMario().getPosY()-1);
+							m.setPosY(m.getPosY()-1);
 							if(controller.isTouching().equals(Mario.ISMOVINGUP)) {
-								jump = controller.getMainGame().getLevelOne().getMario().getPosY();
+								jump = m.getPosY();
 								counter = (7-counter)+7;
 								enter = true;
 							}
 						}
 					}else if(counter<=13 && counter >=7){
-						controller.getMainGame().getLevelOne().getMario().setState(Mario.ISMOVINGDOWN);
-						while(!enter && controller.getMainGame().getLevelOne().getMario().getPosY() <= jumpFinal) {
-							controller.getMainGame().getLevelOne().getMario().setPosY(controller.getMainGame().getLevelOne().getMario().getPosY()+1);
+						m.setState(Mario.ISMOVINGDOWN);
+						while(!enter && m.getPosY() <= jumpFinal) {
+							m.setPosY(m.getPosY()+1);
 							
 							if(controller.isTouching().equals(Mario.ISMOVINGDOWN)) {
 							
-								jump = controller.getMainGame().getLevelOne().getMario().getPosY();
+								jump = m.getPosY();
 							
 								enter = true;
 							}
 						}
 						
 						if(enter) {
-							double jump2 = controller.getMainGame().getLevelOne().getMario().getPosY();
+							double jump2 = m.getPosY();
 							Platform.runLater(new Runnable() {
 
 								@Override
@@ -67,7 +75,7 @@ public class JumpingThread extends Thread {
 						}
 						
 					}
-					double jump2 = controller.getMainGame().getLevelOne().getMario().getPosY();
+					double jump2 = m.getPosY();
 						Platform.runLater(new Runnable() {
 
 							@Override
@@ -86,7 +94,7 @@ public class JumpingThread extends Thread {
 								controller.moveImage(1,0);
 							}
 						});
-						controller.getMainGame().getLevelOne().getMario().setState(Mario.ISDIAGONALRIGHT);
+						m.setState(Mario.ISDIAGONALRIGHT);
 						
 					}else if(controller.getPressed().contains("A")) {
 						Platform.runLater(new Runnable() {
@@ -95,7 +103,7 @@ public class JumpingThread extends Thread {
 								controller.moveImage(-1,0);
 							}
 						});
-						controller.getMainGame().getLevelOne().getMario().setState(Mario.ISDIAGONALLEFT);
+						m.setState(Mario.ISDIAGONALLEFT);
 					}
 				
 					
@@ -109,7 +117,7 @@ public class JumpingThread extends Thread {
 					
 				}
 			
-				controller.getMainGame().getLevelOne().getMario().setState(Mario.ISSTANDINGSTILL);
+				m.setState(Mario.ISSTANDINGSTILL);
 		
 	}
 	
