@@ -8,20 +8,50 @@ import java.util.List;
 
 public class Level {
 	
+	/**
+	 * The first enemy of the linked list of enemies.
+	 */
 	private Enemy firstEnemy;
 	
+	/**
+	 * All the figures of the levels
+	 */
 	private List<Figure> figures;
 	
+	/**
+	 * The position of mario in the list of figures.
+	 */
 	private int positionOfMario;
 	
+	/**
+	 * The file path of the first level.
+	 */
 	public static final String LEVEL_ONE_PATH = "data/Level1.txt";
+	
+	/**
+	 * The file path of the second level.
+	 */
 	public static final String LEVEL_TWO_PATH = "data/Level2.txt";
+	
+	/**
+	 * The file path of the third level.
+	 */
 	public static final String LEVEL_THREE_PATH = "data/Level3.txt";
 	
+	/**
+	 * <b>Description:</b>
+	 * This function initializes a new Level with it's list of figures.
+	 */
 	public Level() {
 		figures = new ArrayList<Figure>();
 	}
 	
+	/**
+	 * <b>Description:</b>
+	 * This function loads a level with the specified file path.
+	 * @param path The level to be loaded.
+	 * @throws IOException The exception it throws if the file isn't found.
+	 */
 	public void loadLevel(String path) throws IOException {
 		
 		BufferedReader bf = new BufferedReader(new FileReader(path));
@@ -234,6 +264,11 @@ public class Level {
 		bf.close();
 	}
 
+	/**
+	 * <b>Description:</b>
+	 * This function adds an enemy to the linked list of enemies.
+	 * @param enemy The enemy to be added.
+	 */
 	public void addEnemy(Enemy enemy) {
         if(firstEnemy == null) {
             firstEnemy = enemy;
@@ -246,14 +281,29 @@ public class Level {
         }
     }
 	
+    /**
+     * <b>Description:</b>
+     * This function obtains the mario of the level.
+     * @return The mario of this level.
+     */
     public Mario getMario() {
         return (Mario)figures.get(positionOfMario);
     }
 
+    /**
+     * <b>Description:</b>
+     * This function obtains the list of figures of the level.
+     * @return The list of figures of this level.
+     */
     public List<Figure> getFigures(){
         return figures;
     }
     
+    /**
+     * <b>Description:</b>
+     * This function obtains the list of enemies of the level.
+     * @return The list of enemies of the level.
+     */
     public List<Enemy> getEnemies(){
         List<Enemy> enemies = new ArrayList<Enemy>();
         Enemy current = firstEnemy;
@@ -264,6 +314,11 @@ public class Level {
         return enemies;
     }
     
+    /**
+     * <b>Description:</b>
+     * This function modifies the position of mario in the list of figures.
+     * @param pos The position to be set.
+     */
     public void setMarioPosition(int pos) {
     	this.positionOfMario = pos;
     }

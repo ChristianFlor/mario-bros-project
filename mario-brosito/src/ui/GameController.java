@@ -143,11 +143,11 @@ public class GameController {
     	try {
     		mainGame = new Game();
     		loadUI();
-			loadWorld2();
+			loadWorld3();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    	currentLevel = 2;
+    	currentLevel = 3;
     }
     
     public void loadUI() {
@@ -1504,7 +1504,7 @@ public class GameController {
 				rec.setFill(new ImagePattern(card));
 				rectan.add(rec);
 				mainBackground.getChildren().add(rec);
-				figureRectangles.put((Enemy) f, rec);
+				figureRectangles.put((MisteryBlock) f, rec);
 			}else if(f instanceof SimpleBlock) {
 				sl = new ImagesLoader(16, 16, 1, 4, f.getImage());
 				BufferedImage[] fires = sl.getSprites();
