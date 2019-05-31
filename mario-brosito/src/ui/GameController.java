@@ -781,15 +781,10 @@ public class GameController {
 				}
 			} else if(intersects.equals(Mario.ISMOVINGUP) && (f instanceof SimpleBlock)) {
 				SimpleBlock sb = (SimpleBlock) f;
-				Rectangle r = new Rectangle(sb.getPosX(), sb.getPosY()-32, 32, 32);
-				if(m.getPowerState() == null) {
-					SimpleBlockThread sbt = new SimpleBlockThread(this, sb, r);
-					sbt.start();
-				} else if (m.getPowerState() != null) {
-					mainBackground.getChildren().remove(r);
-					rectan.remove(figureRectangles.get(sb));
+				SimpleBlockThread sbt = new SimpleBlockThread(this, sb, figureRectangles.get(f));
+				sbt.start();
 			}
-		} 
+		 
 	} 
     	return intersects;
     }
@@ -1679,6 +1674,7 @@ public class GameController {
 			}else if(f instanceof SimpleBlock) {
 				rec.setFill(new ImagePattern(new Image(f.getImage())));
 				mainBackground.getChildren().add(rec);
+				figureRectangles.put(f, rec);
 			}else if(f instanceof Slide) {
 				if(f.getImage().equals(Slide.BIGTUBE)) {
 					rec.setWidth(64); 
@@ -1745,6 +1741,7 @@ public class GameController {
 			}else if(f instanceof SimpleBlock) {
 				rec.setFill(new ImagePattern(new Image(f.getImage())));
 				mainBackground.getChildren().add(rec);
+				figureRectangles.put(f, rec);
 			}else if(f instanceof Slide) {
 				rec.setFill(new ImagePattern(new Image(f.getImage())));
 				mainBackground.getChildren().add(rec);
@@ -1900,16 +1897,14 @@ public class GameController {
 		return this;
 	}
 	
-	 /**
-	  * <b>Description:</b>
-	  * This function obtains the current jumping thread.
-		 * @return the jumping thread of the user interface.
-		 */
-		public JumpingThread getJumping() {
-			return jumping;
-		}
-
-	
+	/**
+	 * <b>Description:</b>
+	 * This function obtains the current jumping thread.
+	 * @return the jumping thread of the user interface.
+	 */
+	public JumpingThread getJumping() {
+		return jumping;
+	}
 
 	/**
 	 * <b>Description:</b>
@@ -2028,5 +2023,22 @@ public class GameController {
 	 */
 	public int getCurrentLevel() {
 		return currentLevel;
+	}
+
+	/**
+	 * @param rectangle
+	 * @param simpleBlock
+	 * @param counter 
+	 */
+	public void marioTouchSimpleBlock(Rectangle rectangle, SimpleBlock simpleBlock, int counter) {
+		if(counter == 0) {
+			simpleBlock.setPosY(simpleBlock.getPosY()-1);
+			rectangle.setY(simpleBlock.getPosY());
+		}else if(counter == 1) {
+			simpleBlock.setPosY(simpleBlock.getPosY()+1);
+			rectangle.setY(simpleBlock.getPosY());
+		}else {
+			mainBackground.getChildren().remove(rectangle);
+		}
 	}
 }
