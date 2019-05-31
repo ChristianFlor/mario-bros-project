@@ -5,10 +5,17 @@ import java.io.IOException;
 
 import customExceptions.IllegalInputException;
 import customExceptions.IntegerValuesException;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -16,26 +23,28 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import model.Game;
 import model.Player;
 import model.Score;
 
 
 public class PlayerController {
-	
 	/**
 	 * The player controller's game.
 	 */
-	private Game g;
+	private Game game;
 	
-	private GameController game;
     @FXML
     private ComboBox<String> optionsSearch;
     @FXML
@@ -73,12 +82,30 @@ public class PlayerController {
     @FXML
     private Canvas canvas;
     
+    @FXML
+    private Button backToMenu;
+    
+    @FXML
+    private StackPane stackPane;
+
+    @FXML
+    private BorderPane borderPane;
+
+    
     private TableView<Player> table;
     private ObservableList<Player> data;
     
     public void initialize() throws IOException, IllegalInputException, IntegerValuesException {
-    	g=new Game();
+    	game=new Game();
 			//g= game.getGame();
+    	
+    
+    	try {
+			game.loadScore(Game.PATH_FILE_SCORE);
+			game.loadPlayers(Game.PATH_FILE_PLAYER);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 			table =createTable();
 	    	vBoxList.getChildren().add(table);
 	    	optionsSearch.getItems().addAll("Id","Name","Nick","Score");
@@ -101,8 +128,8 @@ public class PlayerController {
     	TableColumn<Player, Integer> score= new TableColumn<Player, Integer>("SCORE");
     	score.setCellValueFactory(new PropertyValueFactory<Player, Integer>("score"));
     	
-    
-    	table.setItems(data);
+    	if(data!=null)
+    		table.setItems(data);
     	table.getColumns().addAll(id,name, nickName, score);
     	table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     	
@@ -117,7 +144,7 @@ public class PlayerController {
 	    		search.setPromptText("Enter your id");
 	        	String id = search.getText();
 	        	long start = System.currentTimeMillis();
-	        	Player espNick = g.searchByCode(id);
+	        	Player espNick = game.searchByCode(id);
 	        	if(id != "" && id != null) {
 	        		if(espNick != null) {
 	        			
@@ -143,7 +170,7 @@ public class PlayerController {
 	    		search.setPromptText("Enter your name");
 	        	String id = search.getText();
 	        	long start = System.currentTimeMillis();
-	        	Player espNick = g.searchPlayerByName(g.getPlayersToArray(),id);
+	        	Player espNick = game.searchPlayerByName(game.getPlayersToArray(),id);
 	        	if(id != "" && id != null) {
 	        		if(espNick != null) {
 	        			
@@ -168,7 +195,7 @@ public class PlayerController {
 	    		search.setPromptText("Enter your nick");
 	        	String id = search.getText();
 	        	long start = System.currentTimeMillis();
-	        	Player espNick = g.searchByNick(id);
+	        	Player espNick = game.searchByNick(id);
 	        	if(id != "" && id != null) {
 	        		if(espNick != null) {
 	        			
@@ -193,7 +220,7 @@ public class PlayerController {
 	    		search.setPromptText("Enter your id");
 	        	String id = search.getText();
 	        	long start = System.currentTimeMillis();
-	        	Player espNick = g.searchByScore(id);
+	        	Player espNick = game.searchByScore(id);
 	        	if(id != "" && id != null) {
 	        		if(espNick != null) {
 	        			
@@ -227,35 +254,37 @@ public class PlayerController {
     @FXML
     void sortId(ActionEvent event) {
     	data.clear();
-    	g.sortByCode();
-    	data.addAll(g.getPlayersToArray());
+    	game.sortByCode();
+    	data.addAll(game.getPlayersToArray());
     }
 
     @FXML
     void sortName(ActionEvent event) {
     	data.clear();
-    	g.sortByName();
-    	data.addAll(g.getPlayersToArray());
+    	game.sortByName();
+    	data.addAll(game.getPlayersToArray());
     }
 
     @FXML
     void sortNick(ActionEvent event) {
     	data.clear();
-    	g.sortByNick();
-    	data.addAll(g.getPlayersToArray());
+    	game.sortByNick();
+    	data.addAll(game.getPlayersToArray());
     }
 
     @FXML
     void sortScore(ActionEvent event) {
     	data.clear();
-    	g.sortByScore();
-    	data.addAll(g.getPlayersToArray());
+    	game.sortByScore();
+    	data.addAll(game.getPlayersToArray());
     }
 
     private ObservableList<Player> createData(){
     	data = FXCollections.observableArrayList();
     	
-    	data.addAll(g.getPlayersToArray());
+    	Player[] players = game.getPlayersToArray();
+    	if(players!=null)
+    		data.addAll(players);
     	return data;
     }
     @FXML
@@ -264,8 +293,8 @@ public class PlayerController {
     	data.clear();
        	//int n = Integer.parseInt(game.getScoreOfMario().getText());
     	try {
-			g.addPlayer(tfName.getText(),tfNick.getText(),10000);
-			g.addScore(g.searchPlayer(tfName.getText()));
+			game.addPlayer(tfName.getText(),tfNick.getText(),10000);
+			game.addScore(game.searchPlayer(tfName.getText()));
 			Alert a = new Alert(AlertType.CONFIRMATION);
     		a.setContentText("The player is register");
     		a.show();
@@ -278,26 +307,26 @@ public class PlayerController {
     		a.setContentText(e.getMessage());
     		a.show();
 		}
-    	data.addAll(g.getPlayersToArray());
+    	data.addAll(game.getPlayersToArray());
     }
    
     @FXML
     void generateTree(ActionEvent event) {
-    	if(g!= null) {
+    	if(game!= null) {
     		canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        	this.g.setWidth(canvas.getWidth());
-        	this.g.setHeight(canvas.getHeight());
-        	this.g.assignePositions();
+        	this.game.setWidth(canvas.getWidth());
+        	this.game.setHeight(canvas.getHeight());
+        	this.game.assignePositions();
         	this.canvas.getGraphicsContext2D().setLineWidth(3);
-        	double ny = g.getTreeHeight()*90+50;
+        	double ny = game.getTreeHeight()*90+50;
         	if(ny > canvas.getHeight()) {
         		canvas.setHeight(ny);
         	}
-        	g.increaseBounds();
+        	game.increaseBounds();
         	
-        	this.canvas.setWidth(g.getWidth());
-        	drawLinesForTree(g.getRoot(), g.getRoot());
-        	drawImagesForTree(g.getRoot(), g.getRoot());
+        	this.canvas.setWidth(game.getWidth());
+        	drawLinesForTree(game.getRoot(), game.getRoot());
+        	drawImagesForTree(game.getRoot(), game.getRoot());
         	canvas.autosize();
     	} else {
     		Alert a = new Alert(AlertType.INFORMATION);
@@ -306,6 +335,7 @@ public class PlayerController {
     	}
     }
     public void drawImagesForTree(Score node, Score parent) {
+    	
     	if(node != null) {
     		
     		canvas.getGraphicsContext2D().setFill(Color.YELLOW);
@@ -330,20 +360,20 @@ public class PlayerController {
     }
     @FXML
     void generateList(ActionEvent event) {
-    	if(g!= null) {
+    	if(game!= null) {
     		canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        	this.g.setWidth(canvas.getWidth());
-        	this.g.setHeight(canvas.getHeight());
-        	this.g.assignePositionsList();
+        	this.game.setWidth(canvas.getWidth());
+        	this.game.setHeight(canvas.getHeight());
+        	this.game.assignePositionsList();
         	this.canvas.getGraphicsContext2D().setLineWidth(3);
-        	double ny = g.getTreeHeight()*90+50;
+        	double ny = game.getTreeHeight()*90+50;
         	if(ny > canvas.getHeight()) {
         		canvas.setHeight(ny);
         	}
-        	g.increaseBounds();
-        	this.canvas.setWidth(g.getWidth());
-        	drawLinesForList(g.getFirst());
-        	drawImagesForList(g.getFirst());
+        	game.increaseBounds();
+        	this.canvas.setWidth(game.getWidth());
+        	drawLinesForList(game.getFirst());
+        	drawImagesForList(game.getFirst());
     	} else {
     		Alert a = new Alert(AlertType.INFORMATION);
     		a.setContentText("Please load a file with the assistants info first");
@@ -371,4 +401,40 @@ public class PlayerController {
     		drawLinesForList(node.getNext());
     	}
     }
+    
+    @FXML
+    public void back(ActionEvent event) throws IOException {
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("menu.fxml"));
+    	Parent root = loader.load();
+    	
+    	Scene scene = backToMenu.getScene();
+    	
+    	root.translateXProperty().set(scene.getHeight());
+    	stackPane.getChildren().add(root);
+    	
+    	Timeline timeline = new Timeline();
+    	KeyValue kv = new KeyValue(root.translateXProperty(),0, Interpolator.EASE_OUT);
+    	KeyFrame kf = new KeyFrame(Duration.seconds(1),kv);
+    	timeline.getKeyFrames().add(kf);
+    	timeline.setOnFinished(event1-> {
+    		stackPane.getChildren().remove(borderPane);
+    	});                               
+    	timeline.play();
+    
+    	
+    }
+    
+    
+    
+    public void onCloseRequest() throws InterruptedException {
+		try {
+			game.saveScore(Game.PATH_FILE_SCORE);
+			game.savePlayers(Game.PATH_FILE_PLAYER);
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		
+    	System.out.println("the information was saved correctly");
+	}
 }

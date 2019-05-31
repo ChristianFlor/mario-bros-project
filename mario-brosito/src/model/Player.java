@@ -1,7 +1,8 @@
 package model;
+import java.io.Serializable;
 import java.security.SecureRandom;
 
-public class Player {
+public class Player implements Serializable{
 
 	/**
 	 * This function initializes a new Player.

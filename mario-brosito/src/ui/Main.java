@@ -28,18 +28,33 @@ public class Main extends Application{
 		Parent root = loader.load();
 	
 		Scene scene = new Scene(root);
-		loader = new FXMLLoader(getClass().getResource("brosito.fxml"));
+		
+		MenuController menu = loader.getController();
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+			@Override
+			public void handle(WindowEvent event) {
+				menu.closeWindow();
+			
+			}
+			
+		});
+		
+		/*loader = new FXMLLoader(getClass().getResource("brosito.fxml"));
 		loader.load();
 		GameController gc = loader.getController();
+		
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
 			@Override
 			public void handle(WindowEvent event) {
 				gc.closeWindow();
+			
 			}
 			
-		});
-
+		});*/
+		
+		
 		
 		stage.setScene(scene);
 		stage.setTitle("Mariosito");

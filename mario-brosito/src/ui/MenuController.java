@@ -27,9 +27,17 @@ import model.SoundsLoader;
 
 public class MenuController {
 	
+
+	private TransitionController transition;
+	
+	private PlayerController playerController;
+	
+	
+
     /**
      * The stack pane of the menu controller.
      */
+
     @FXML
     private StackPane stackPane;
     
@@ -78,9 +86,11 @@ public class MenuController {
      */
     @FXML
     public void beginGame(MouseEvent event) throws IOException {
-    	Parent root = FXMLLoader.load(getClass().getResource("transition.fxml"));
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("transition.fxml"));
+    	 Parent root = loader.load();
     	Scene scene = playerLabel.getScene();
     	
+    	transition = loader.getController();
     	root.translateXProperty().set(scene.getHeight());
     	stackPane.getChildren().add(root);
     	
@@ -101,8 +111,13 @@ public class MenuController {
      */
     @FXML
     public void seeScoresMenu(MouseEvent event) throws IOException {
-    	Parent root = FXMLLoader.load(getClass().getResource("gui.fxml"));
-    	Scene scene = playerLabel.getScene();
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("gui.fxml"));
+    	 Parent root = loader.load();
+    	 
+    	 playerController = loader.getController();
+    	 Scene scene = playerLabel.getScene();
+    	
+    	
     	
     	root.translateXProperty().set(scene.getHeight());
     	stackPane.getChildren().add(root);
@@ -116,6 +131,18 @@ public class MenuController {
     	});                               
     	timeline.play();
 
+    }
+    
+    
+    public void closeWindow() {
+    	try {
+			if(playerController!=null)
+				playerController.onCloseRequest();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	if(transition!=null)
+    		transition.closeWindow();
     }
 
 }
