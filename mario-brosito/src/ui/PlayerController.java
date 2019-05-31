@@ -40,17 +40,11 @@ import model.Score;
 
 
 public class PlayerController {
-
-	private Game game;
-	
-
-	
 	/**
 	 * The player controller's game.
 	 */
-	private Game g;
+	private Game game;
 	
-	private GameController game;
     @FXML
     private ComboBox<String> optionsSearch;
     @FXML
