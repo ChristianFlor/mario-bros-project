@@ -3,6 +3,8 @@ package model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.io.IOException;
 import java.security.SecureRandom;
 
@@ -128,7 +130,6 @@ public class GameTest {
 				Player p5 = new Player(name5, nickname5, score5);
 				
 				game.addScore(p1);
-				
 				game.addScore(p2);
 				game.addScore(p3);
 				game.addScore(p4);
@@ -136,9 +137,7 @@ public class GameTest {
 				
 				Score root = game.getRoot();
 				assertNotNull("The root must not be null since the first element has just been added to the tree", root);
-			/*	assertTrue("The score added must have the id of the player recently created", name1.equals(root.getName()));
-				assertTrue("The score added must have the id of the player recently added", score1 == root.getScore());
-			*/	System.out.println(root.getName());
+		
 			} catch (IllegalInputException | IntegerValuesException e) {
 				
 				e.printStackTrace();
@@ -382,6 +381,64 @@ public class GameTest {
 			e.printStackTrace();
 		}
 	}
+	
+	@Test
+	public void testIllegalInputException() {
+		try {
+			setupScenary2();
+			String name1 = "";
+			String nickname1 = "mazn";
+			int score1 = 100;
+			
+			
+			assertThrows(IllegalInputException.class,()->{
+				game.addPlayer(name1, nickname1, score1);;
+			});
+		} catch (IOException | IllegalInputException | IntegerValuesException e) {
+			
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Test
+	public void testIllegalInputException2() {
+		try {
+			setupScenary2();
+			String name1 = "Ana";
+			String nickname1 = "";
+			int score1 = 100;
+			
+			
+			assertThrows(IllegalInputException.class,()->{
+				game.addPlayer(name1, nickname1, score1);;
+			});
+		} catch (IOException | IllegalInputException | IntegerValuesException e) {
+			
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Test
+	public void testIntegerValuesException() {
+		try {
+			setupScenary2();
+			String name1 = "Ana";
+			String nickname1 = 12+"";
+			int score1 = 100;
+			
+			
+			assertThrows(IntegerValuesException.class,()->{
+				game.addPlayer(name1, nickname1, score1);;
+			});
+		} catch (IOException | IllegalInputException | IntegerValuesException e) {
+			
+			e.printStackTrace();
+		}
+		
+	}
+	
 	
 
 

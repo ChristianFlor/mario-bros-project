@@ -274,11 +274,11 @@ public class GameController {
     	try {
     		mainGame = new Game();
     		loadUI();
-			loadWorld3();
+			loadWorld1();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    	currentLevel = 3;
+    	currentLevel = 1;
     }
     
     /**
