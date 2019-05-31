@@ -64,80 +64,211 @@ import thread.SpinningFireThread;
 
 public class GameController {
 
+	/**
+	 * The main background of the game, represented by a pane. 
+	 */
 	@FXML
     private Pane mainBackground;
 	
+	/**
+	 * The main mario rectangle used to display Mario in the graphical interface.
+	 */
 	private Rectangle mainMario;
 	
+	/**
+	 * The max displacement that Mario can have to the right direction.
+	 */
 	private int maxRight;
 	
+	/**
+	 * The minimum displacement that Mario can have to the left direction.
+	 */
 	private int minLeft;
 	
+	/**
+	 * The association with the model game class.
+	 */
 	private Game mainGame;
+	
+	/**
+	 * <b>Description:</b>
+	 * This function obtains the game that is being played.
+	 * @return The game of the graphical interface.
+	 */
 	public Game getGame() {
 		return mainGame;
 	}
+	
+	/**
+	 * The main scene that is being shown on screen.
+	 */
 	private Scene mainScene;
+	
+	/**
+	 * The list of rectangles that represent the mystery blocks in the level.
+	 */
 	private List<Rectangle> rectan;
+	
+	/**
+	 * The list of rectangles that represent the coins in the level.
+	 */
 	private List<Rectangle> rectanCoin;
+	
+	/**
+	 * The list of threads currently running in the level.
+	 */
 	private List<Thread> threads;
+	
+	/**
+	 * The images loader of the mystery block image.
+	 */
 	private ImagesLoader imloMark;
+	
+	/**
+	 * The images loader of the coin block image.
+	 */
 	private ImagesLoader imloCoin;
+	
+	/**
+	 * The set of keys that have been pressed.
+	 */
 	private Set<String> pressed;
+	
+	/**
+	 * The map of the figures with their respective rectangles.
+	 */
 	private Map<Figure, Rectangle> figureRectangles;
+	
+	/**
+	 * The current pause state of the game.
+	 */
 	private boolean pause;
+	
+	/**
+	 * <b>Description:</b>
+	 * This function obtains the pause state of the game.
+	 * @return The pause state of the game.
+	 */
 	public boolean getPause() {
 		return pause;
 	}
+	
+	/**
+	 * 
+	 */
 	private Clip ground;
 	public Clip getClip() {
 		return ground;
 	}
+	
+	/**
+	 * The pictures of the default Mario sprite sheet.
+	 */
 	private BufferedImage[] marioPictures;
 	
+	/**
+	 * The pictures of the big Mario sprite sheet.
+	 */
 	private BufferedImage[] bigMarioPictures;
 	
+	/**
+	 * The pictures of the fire Mario sprite sheet.
+	 */
 	private BufferedImage[] fireMarioPictures;
 	
+	/**
+	 * The pictures of the small star Mario sprite sheet.
+	 */
 	private BufferedImage[] smallStarMarioPictures;
 	
+	/**
+	 * The pictures of the big star Mario sprite sheet.
+	 */
 	private BufferedImage[] bigStarMarioPictures;
 
+	/**
+	 * The label that displays the time display message.
+	 */
 	@FXML
 	private Label timeLabel;
 
+    /**
+     * The label that displays the information of the current world.
+     */
     @FXML
     private Label worldLabel;
 
+    /**
+     * The label that displays the Mario name.
+     */
     @FXML
     private Label marioLabel;
 
+    /**
+     * The label that displays the number of world Mario is in.
+     */
     @FXML
     private Label numberOfWorld;
 
+    /**
+     * The label that displays the current score of Mario.
+     */
     @FXML
     private Label scoreOfMario;
+    
+    /**
+     * <b>Description:</b>
+     * This function obtains Mario's current score.
+     * @return The label of Mario's current score.
+     */
     public Label getScoreOfMario() {
 		return scoreOfMario;
 	}
 
+    /**
+     * The label that shows how many coin Mario has.
+     */
     @FXML
     private Label acumulatedCoins;
     
+    /**
+     * The image view that displays the image of the coin in the graphical interface.
+     */
     @FXML
     private ImageView coinImage;
 
+    /**
+     * The label that displays the current time in the level.
+     */
     @FXML
     private Label timeOfLevel;
 	
+	/**
+	 * The jumping thread of the User interface.
+	 */
 	private JumpingThread jumping;
 	
+	/**
+	 * The sound loader of the User interface.
+	 */
 	private SoundsLoader sound;
 	
+	/**
+	 * The movement and gravity thread of the main game.
+	 */
 	private Thread mv;
 	
+	/**
+	 * The attribute that holds the current level being played.
+	 */
 	private int currentLevel;
 	
+    /**
+     * <b>Description:</b>
+     * The initialize function of the fxml file, called as soon as the graphical interface is loaded.
+     * @throws IllegalInputException Thrown when the input is illegal.
+     * @throws IntegerValuesException Thrown when the values entered are not integers.
+     */
     @FXML
     public void initialize() throws IllegalInputException, IntegerValuesException {
     	try {
@@ -150,10 +281,14 @@ public class GameController {
     	currentLevel = 3;
     }
     
+    /**
+     * <b>Description:</b>
+     * This function loads the User interface with all it's elements.
+     */
     public void loadUI() {
     	sound = new SoundsLoader();
     	pause=false;
-    	jumping = new JumpingThread(this,0);
+    	jumping = new JumpingThread(this);
     	pressed = new HashSet<String>();
     	try {
     	
@@ -200,6 +335,12 @@ public class GameController {
     	mv.start();
     }
     
+    /**
+     * <b>Description:</b>
+     * This function is utilized to end the level one once Mario reaches the end.
+     * @param stage The stage of the animation in order to know which animation of the ending cinematic to play.
+     * @param condition The condition to know which action to take in each stage.
+     */
     public void endLevelOne(int stage, int condition) {
     	Mario m = null;
     	if(currentLevel == 1) {
@@ -315,6 +456,10 @@ public class GameController {
     	}
     }
     
+    /**
+     * <b>Description:</b>
+     * This function deactivates all the threads that are currently running in the game.
+     */
     public void closeWindow() {
     	pause=true;
     	ground.stop();
@@ -339,6 +484,11 @@ public class GameController {
 			}
 		}
 	}
+    
+    /**
+     * <b>Description:</b>
+     * This function pauses the game once that pause key(Escape) has been pressed.
+     */
     @SuppressWarnings("deprecation")
 	public void pause() {
     	pause=true;
@@ -366,6 +516,10 @@ public class GameController {
 		}
 	}
     
+    /**
+     * <b>Description:</b>
+     * This function resumes the game if the game is paused and the resume key(Q) has been pressed.
+     */
     @SuppressWarnings("deprecation")
 	public void continues() {
     	pause=false;
@@ -391,6 +545,11 @@ public class GameController {
 			}
 		}
 	}
+    
+    /**
+     * <b>Description:</b>
+     * This function is responsible for the configuration of the key handling in the user interface.
+     */
     public void configureScene() {
 		mainScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
@@ -435,6 +594,10 @@ public class GameController {
     }
    
 		
+    /**
+     * <b>Description:</b>
+     * This function initializes a new time thread.
+     */
     public void timeThread() {
     	LevelTimeThread lv = new LevelTimeThread(this);
     	threads.add(lv);
@@ -442,6 +605,10 @@ public class GameController {
     	threads.add(lv);
     }
     
+    /**
+     * <b>Description:</b>
+     * This function is responsible of animating Mario and restarting the level he's in once he dies.
+     */
     public void deadMario() {
     	Image changed = new Image(Mario.SMALLDEADMARIO);
 		mainMario.setFill(new ImagePattern(changed));
@@ -461,6 +628,14 @@ public class GameController {
 			e.printStackTrace();
 		}
     }
+    
+    /**
+     * <b>Description:</b>
+     * This function is responsible of telling if Mario is touching any other figure in the game.
+     * For every function he touches, there is a specific action that has to take place or a part of the game to be handled.
+     * In other words, it's the function responsible of handling every interaction of Mario with other figures.
+     * @return A string representing the side in which Mario collided with the other figure.
+     */
     @SuppressWarnings("deprecation")
 	public String isTouching() {
     	Mario m = null;
@@ -622,19 +797,13 @@ public class GameController {
     	return intersects;
     }
     
-    public void marioTouchSimpleBlock(Rectangle r, SimpleBlock sb) {
-    	int counter = 0;
-    	while(counter < 4) {
-    	
-    	r.setY(sb.getPosY()-1);
-    	sb.setPosY(sb.getPosY()-1);
-    	counter++;
-    	}
-    	r.setY(sb.getPosY());
-    	sb.setPosY(sb.getPosY());
-    	
-    }
-    
+    /**
+     * <b>Description:</b>
+     * This function is responsible of animating the mystery block when it has a coin.
+     * @param r The rectangle of the coin animation.
+     * @param iteration The iteration to know which animation to play.
+     * @param move The movement that has to take place, if any at all.
+     */
     public void animateMisteryBlockCoin(Rectangle r, int iteration, int move) {
     	
     	if(iteration == -1) {
@@ -665,6 +834,14 @@ public class GameController {
     		r.setFill(new ImagePattern(cardd));
     	}
     }
+    
+    /**
+     * <b>Description:</b>
+     * This function does the animation of the power up when it comes out.
+     * @param r The rectangle that represents the power up.
+     * @param p The power up of this rectangle figure.
+     * @param iteration The iteration to know which animation to play.
+     */
     public void exitPowerUp(Rectangle r, PowerUp p, int iteration) {
     	if(iteration == 0) {
     		mainBackground.getChildren().add(r);
@@ -674,6 +851,13 @@ public class GameController {
     	r.setY(p.getPosY());
     }
     
+    /**
+     * <b>Description:</b>
+     * This function changes the image of the enemy depending on which direction it's moving.
+     * @param a It represents the animation that has to play.
+     * @param e It's the enemy that has to have it's image changed.
+     * @param gRec The rectangle that represents the enemy in the graphical interface.
+     */
     @SuppressWarnings("deprecation")
 	public void changeEnemyImage(int a, Enemy e, Rectangle gRec) {
     	
@@ -730,8 +914,14 @@ public class GameController {
 			}
 		}
 	}
-    
-    
+       
+    /**
+     * <b>Description:</b>
+     * This function determines whether or not Mario is between any block.
+     * @param yFinal The final y position in the jump.
+     * @param yActual The actual y position in the jump.
+     * @return The figure that Mario is colliding with or null if there isn't any.
+     */
     public Figure isBetween(double yFinal, double yActual) {
     	boolean intersects = false;
     	Figure f = null;
@@ -768,6 +958,11 @@ public class GameController {
     	return f;
     }
        
+    /**
+     * <b>Description:</b>
+     * This function tells if Mario is on top of any figure or if he's falling.
+     * @return The state of Mario.
+     */
     public String isFalling() {
     	String intersects = "";
     	Figure f = null;
@@ -807,6 +1002,13 @@ public class GameController {
     	return intersects;
     }
     
+    /**
+     * <b>Description:</b>
+     * This function tests if a figure is on something or it's falling.
+     * @param figure The figure that is going to be tested.
+     * @param figureRec The rectangle that represents the figure in the graphical interface.
+     * @return False if the figure is falling and true if it isn't.
+     */
     public boolean isFigureFalling(Figure figure, Rectangle figureRec) {
     	
     	boolean intersects = false;
@@ -838,22 +1040,40 @@ public class GameController {
     	return intersects;
     }
     
+    /**
+     * <b>Description:</b>
+     * This function initializes a new jumping thread.
+     */
     public void runThread(){
-    	jumping = new JumpingThread(this,0);
+    	jumping = new JumpingThread(this);
     	jumping.start();
     	
     }
 
+	/**
+	 * <b>Description:</b>
+	 * This function initializes a new mystery block thread.
+	 */
 	public void misteryBlockThread() {
     	Thread mba = new MisteryBlockAnimation(this);
     	threads.add(mba);
 		mba.start();
     }
+	
+    /**
+     * <b>Description:</b>
+     * This function initializes a new coin animation thread.
+     */
     public void coinThread() {
     	Thread ca = new CoinAnimation(this);
     	threads.add(ca);
     	ca.start();
     }
+    
+    /**
+     * <b>Description:</b>
+     * This function changes the image of the mystery blocks.
+     */
     public void setFill0() {
     	BufferedImage[] blocks = imloMark.getSprites();
     	
@@ -864,6 +1084,11 @@ public class GameController {
 			
 		}	
     }
+    
+    /**
+     * <b>Description:</b>
+     * This function changes the image of the coin.
+     */
     public void setFillCoin0() {
     	
     	BufferedImage[] blocks1 = imloCoin.getSprites();
@@ -874,6 +1099,11 @@ public class GameController {
 			rectanCoin.get(i).setFill(new ImagePattern(card1));
 		}	
     }
+    
+    /**
+     * <b>Description:</b>
+     * This function changes the image of the mystery blocks.
+     */
     public void setFill1() {
     	BufferedImage[] blocks = imloMark.getSprites();
     	
@@ -883,6 +1113,11 @@ public class GameController {
 			rectan.get(i).setFill(new ImagePattern(card));
 		}	
     }
+    
+    /**
+     * <b>Description:</b>
+     * This function changes the image of the coin.
+     */
     public void setFillCoin1() {
     	
     	BufferedImage[] blocks1 = imloCoin.getSprites();
@@ -893,6 +1128,11 @@ public class GameController {
 			rectanCoin.get(i).setFill(new ImagePattern(card1));
 		}	
     }
+    
+    /**
+     * <b>Description:</b>
+     * This function changes the image of the mystery blocks.
+     */
     public void setFill2() {
     	BufferedImage[] blocks = imloMark.getSprites();
     	
@@ -903,6 +1143,11 @@ public class GameController {
 		
 		}
     }
+    
+    /**
+     * <b>Description:</b>
+     * This function changes the image of the coin.
+     */
     public void setFillCoin2() {
 
     	BufferedImage[] blocks1 = imloCoin.getSprites();
@@ -913,10 +1158,19 @@ public class GameController {
 		}
     }
     
+    /**
+     * <b>Description:</b>
+     * This function modifies the time of level label.
+     * @param time The time that is to going to be set.
+     */
     public void setTime(int time) {
     	timeOfLevel.setText(time+"");
     }
     
+    /**
+     * <b>Description:</b>
+     * This function tests if Mario is near enough to an enemy for it to start moving.
+     */
     public void distanceToEnemies() {
     	Mario m = null;
     	if(currentLevel == 1) {
@@ -953,6 +1207,16 @@ public class GameController {
 		}
     }
     
+    /**
+     * <b>Description:</b>
+     * This function makes the fire wheels in the third level spin.
+     * @param fireRec The rectangle that represents the fire in the fire wheel.
+     * @param fire The figure that represents the fire.
+     * @param f The number of degrees that the fire has.
+     * @param radius The radius of the wheel.
+     * @param centerX The x center coordinate of the fire wheel.
+     * @param centerY The y center coordinate of the fire wheel.
+     */
     public void spinFire(Rectangle fireRec, Figure fire, int f, int radius, int centerX, int centerY) {
     	double x = Math.sin(Math.toRadians((double)f)) * (radius);
         double y = Math.cos(Math.toRadians((double)f)) * (radius);
@@ -962,6 +1226,12 @@ public class GameController {
         fireRec.setY(fire.getPosY());
     }
     
+ 	/**
+ 	 * <b>Description:</b>
+ 	 * This function moves the platform in the second level.
+ 	 * @param platformRectangle The rectangle that represents each of the little rectangles in the platform.
+ 	 * @param platform The figure of the platform.
+ 	 */
  	public void movePlatform(Rectangle platformRectangle, MovingPlatform platform) {
  		platform.setPosY(platform.getPosY()+8);
 			platformRectangle.setY(platform.getPosY());
@@ -971,11 +1241,25 @@ public class GameController {
  		}
  	}
  	
+ 	/**
+ 	 * <b>Description:</b>
+ 	 * This function makes a figure fall if it is affected by gravity.
+ 	 * @param figureRec The rectangle that represents the figure in the graphical interface.
+ 	 * @param figure The figure in the model.
+ 	 */
  	public void makeFigureFall(Rectangle figureRec, Figure figure) {
  		figure.setPosY(figure.getPosY()+8);
  		figureRec.setY(figure.getPosY());
  	}
  	
+ 	/**
+ 	 * <b>Description:</b>
+ 	 * This function moves an enemy, it's utilized by the enemy thread. 
+ 	 * @param enemyRec The rectangle that represents the figure in the graphical interface.
+ 	 * @param enemy The enemy figure in the model.
+ 	 * @param changer The image that it has to be changed to.
+ 	 * @throws IOException If the image file is not found.
+ 	 */
  	public void moveEnemy(Rectangle enemyRec, Enemy enemy, int changer) throws IOException {
  	ImagesLoader sl;
 	ImagesLoader sLoader;
@@ -1054,6 +1338,12 @@ public class GameController {
 	}
  	}
  	
+ 	/**
+ 	 * <b>Description:</b>
+ 	 * This function determines if the figure in the parameter is touching any other figure.
+ 	 * @param figure The figure that is to be tested.
+ 	 * @return True if the figure is touching, false otherwise.
+ 	 */
  	public boolean figureIsTouching(Figure figure) {
  		boolean intersects = false;
  		List<Figure> sprites = null;
@@ -1153,6 +1443,12 @@ public class GameController {
  		return intersects;
  	}
  
+    /**
+     * <b>Description:</b>
+     * This function moves the Mario image depending on the parameters.
+     * @param a The direction in which Mario has to move.
+     * @param jump The jump that Mario has to make if he's jumping.
+     */
     public void moveImage(int a, double jump){
 		Mario m = null;
 		if(currentLevel == 1) {
@@ -1209,11 +1505,19 @@ public class GameController {
     	}
     
     /**
-	 * @return the mv
+     * <b>Description:</b>
+     * This function obtains the movement and gravity thread of Mario.
+	 * @return the movement and gravity thread.
 	 */
 	public Thread getMv() {
 		return mv;
 	}
+	
+	/**
+	 * <b>Description:</b>
+	 * This function changes the Mario image depending on which way he's moving.
+	 * @param key The key that determines the Mario image.
+	 */
 	public void changeMarioImage(int key) {
 		Mario m = null;
 		if(currentLevel == 1) {
@@ -1342,6 +1646,11 @@ public class GameController {
     	
     }
     
+    /**
+     * <b>Description:</b>
+     * This function loads the world 1 objects into the graphical interface.
+     * @throws IOException Throws if the image file is not found.
+     */
     public void loadWorld1() throws IOException {
     	
     	ground = sound.loadSounds(0);
@@ -1404,6 +1713,11 @@ public class GameController {
 		}
     }
     
+    /**
+     * <b>Description:</b>
+     * This function loads the world 2 objects into the graphical interface.
+     * @throws IOException Throws if the image file is not found.
+     */
     public void loadWorld2() throws IOException {
     	ground = sound.loadSounds(23);
     	ground.stop();
@@ -1468,6 +1782,11 @@ public class GameController {
     	}
     }
 
+    /**
+     * <b>Description:</b>
+     * This function loads the world 3 objects into the graphical interface.
+     * @throws IOException Throws if the image file is not found.
+     */
     public void loadWorld3() throws IOException {
     	ground = sound.loadSounds(24);
     	ground.stop();
@@ -1530,41 +1849,64 @@ public class GameController {
 		}
     }
     
+	/**
+	 * <b>Description:</b>
+	 * This function obtains the user interface's main scene.
+	 * @return The main scene shown on screen.
+	 */
 	public Scene getMainScene() {
 		return mainScene;
 	}
 
+	/**
+	 * <b>Description:</b>
+	 * This function modifies the user interface's main scene.
+	 * @param mainScene The new main scene of the game.
+	 */
 	public void setMainScene(Scene mainScene) {
 		this.mainScene = mainScene;
 	}
 
 	/**
-	 * @return the mainMario
+	 * <b>Description:</b>
+	 * This function obtains the user interface's Mario rectangle.
+	 * @return the mainMario rectangle.
 	 */
 	public Rectangle getMainMario() {
 		return mainMario;
 	}
 
 	/**
-	 * @return the mainGame
+	 * <b>Description:</b>
+	 * This function obtains the user interface's main game.
+	 * @return the mainGame of the graphical interface.
 	 */
 	public Game getMainGame() {
 		return mainGame;
 	}
 
 	/**
-	 * @return the pressed
+	 * <b>Description:</b>
+	 * This function obtains the set of the pressed keys. 
+	 * @return the pressed keys in the game.
 	 */
 	public Set<String> getPressed() {
 		return pressed;
 	}
 	
+	/**
+	 * <b>Description:</b>
+	 * This function obtains this controller.
+	 * @return this controller.
+	 */
 	public GameController getController() {
 		return this;
 	}
 	
 	 /**
-		 * @return the jumping
+	  * <b>Description:</b>
+	  * This function obtains the current jumping thread.
+		 * @return the jumping thread of the user interface.
 		 */
 		public JumpingThread getJumping() {
 			return jumping;
@@ -1572,6 +1914,12 @@ public class GameController {
 
 	
 
+	/**
+	 * <b>Description:</b>
+	 * This function animates the flower sprite.
+	 * @param powerUpRectangle The rectangle of the flower power up.
+	 * @param counter The counter that represents the image that is to be shown.
+	 */
 	public void animateFlower(Rectangle powerUpRectangle, int counter) {
 		if(counter == -1) {
 			mainBackground.getChildren().remove(powerUpRectangle);
@@ -1590,6 +1938,15 @@ public class GameController {
 		}
 	}
 	
+	/**
+	 * <b>Description:</b>
+	 * This function is responsible of animating the star.
+	 * @param powerUp The star power up to change the image.
+	 * @param powerUpRectangle The rectangle that represents the star power up.
+	 * @param counter The counter that represents the image that has to be changed.
+	 * @param moment The moment of the animation that is taking place.
+	 * @param orientation The orientation of the star power, that is, the direction in which it's moving.
+	 */
 	public void animateStar(PowerUp powerUp, Rectangle powerUpRectangle, int counter, int moment, int orientation) {
 		if(counter == -1) {
 			mainBackground.getChildren().remove(powerUpRectangle);
@@ -1640,6 +1997,13 @@ public class GameController {
 		}
 	}
 	
+	/**
+	 * <b>Description:</b>
+	 * This function is responsible of moving the mushroom power up. 
+	 * @param powerUp The power up that is to be moved.
+	 * @param powerUpRectangle The rectangle that represents the power up in the graphical interface.
+	 * @param counter The counter that indicates which images to change.
+	 */
 	public void moveMushroom(PowerUp powerUp, Rectangle powerUpRectangle, int counter) {
 		
 		if(counter == 0) {
@@ -1660,8 +2024,12 @@ public class GameController {
 		
 	}
 
+	/**
+	 * <b>Description:</b>
+	 * This function obtains the current level being played.
+	 * @return The current level being played.
+	 */
 	public int getCurrentLevel() {
 		return currentLevel;
 	}
-
 }

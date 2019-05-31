@@ -25,28 +25,42 @@ import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import model.SoundsLoader;
 
-
-
-
 public class MenuController {
 	
+    /**
+     * The stack pane of the menu controller.
+     */
     @FXML
     private StackPane stackPane;
     
+    /**
+     * The pane that contains the controls of the menu controller.
+     */
     @FXML
     private Pane marioPane;
 
-    @FXML
-    private Label brandLabel;
-
+    /**
+     * The play game label.
+     */
     @FXML
     private Label playerLabel;
     
+    /**
+     * The options label.
+     */
     @FXML
     private Label optionsButton;
 
+    /**
+     * The scores label.
+     */
     @FXML
     private Label scoresLabel;
+    
+    /**
+     * <b>Description:</b>
+     * The initialize function called when this interface is prompted.
+     */
     @FXML
     public void initialize() {
     	BackgroundImage myBI= new BackgroundImage(new Image("menuimg/back.png",685,480,false,true),
@@ -57,7 +71,11 @@ public class MenuController {
 
     }
     
-
+    /**
+     * This function begins the game when the play game label is clicked.
+     * @param event The click event.
+     * @throws IOException If the file was not found.
+     */
     @FXML
     public void beginGame(MouseEvent event) throws IOException {
     	Parent root = FXMLLoader.load(getClass().getResource("transition.fxml"));
@@ -75,13 +93,12 @@ public class MenuController {
     	});                               
     	timeline.play();
     }
-    
 
-    @FXML
-    void beginOptions(MouseEvent event) {
-
-    }
-
+    /**
+     * This function shows the scores of the players.
+     * @param event The mouse click event.
+     * @throws IOException Throws if the file was not found.
+     */
     @FXML
     public void seeScoresMenu(MouseEvent event) throws IOException {
     	Parent root = FXMLLoader.load(getClass().getResource("gui.fxml"));
