@@ -112,7 +112,8 @@ public class PlayerController {
 
     	
     }
-    private TableView<Player> createTable(){
+    @SuppressWarnings("unchecked")
+	private TableView<Player> createTable(){
     	table = new TableView<Player>();
     	data = createData();
     	table.setEditable(true);

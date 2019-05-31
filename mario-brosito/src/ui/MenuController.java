@@ -1,9 +1,6 @@
 package ui;
 
 import java.io.IOException;
-
-import javax.sound.sampled.Clip;
-
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -23,7 +20,6 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
-import model.SoundsLoader;
 
 public class MenuController {
 	

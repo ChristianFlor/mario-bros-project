@@ -605,7 +605,8 @@ public class GameController {
      * <b>Description:</b>
      * This function is responsible of animating Mario and restarting the level he's in once he dies.
      */
-    public void deadMario() {
+    @SuppressWarnings("deprecation")
+	public void deadMario() {
     	Image changed = new Image(Mario.SMALLDEADMARIO);
 		mainMario.setFill(new ImagePattern(changed));
 		

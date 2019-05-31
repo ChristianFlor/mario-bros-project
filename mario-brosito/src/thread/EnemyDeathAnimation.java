@@ -1,7 +1,5 @@
 package thread;
 
-import java.io.IOException;
-
 import javafx.application.Platform;
 import javafx.scene.shape.Rectangle;
 import model.Enemy;

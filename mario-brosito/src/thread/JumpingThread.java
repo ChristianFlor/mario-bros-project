@@ -1,7 +1,6 @@
 package thread;
 
 import javafx.application.Platform;
-import model.Figure;
 import model.Mario;
 import ui.GameController;
 
@@ -121,7 +120,7 @@ public class JumpingThread extends Thread {
 					try {
 						sleep(60);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
 					}
 				
