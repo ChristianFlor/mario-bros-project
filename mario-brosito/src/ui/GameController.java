@@ -9,13 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.sound.sampled.Clip;
-
-
 import customExceptions.IllegalInputException;
 import customExceptions.IntegerValuesException;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -318,6 +313,7 @@ public class GameController {
     public void closeWindow() {
     	pause=true;
     	ground.stop();
+    	
 		for (int i = 0; i < threads.size(); i++) {
 			Thread t = threads.get(i);
 			if(t.isAlive()) {

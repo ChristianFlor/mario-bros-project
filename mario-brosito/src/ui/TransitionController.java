@@ -20,7 +20,7 @@ import javafx.util.Duration;
 
 public class TransitionController {
 
-
+		private GameController game;
 	    @FXML
 	    private Pane transitionPane;
 
@@ -39,12 +39,12 @@ public class TransitionController {
 	    	transitionPane.getChildren().add(root);
 
 
-			GameController bC = loader.getController();
+			 game = loader.getController();
 
-	    	bC.setMainScene(scene);
-	    	bC.configureScene();
-	    	if(!(bC.getPause())) {
-	    		bC.getClip().start();
+	    	game.setMainScene(scene);
+	    	game.configureScene();
+	    	if(!(game.getPause())) {
+	    		game.getClip().start();
 	    	}
 
 	    	root.translateXProperty().set(scene.getHeight());
@@ -67,6 +67,10 @@ public class TransitionController {
 
 
 
+	    }
+	    
+	    public void closeWindow() {
+	    	game.closeWindow();
 	    }
 
 	}
