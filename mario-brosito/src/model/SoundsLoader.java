@@ -10,7 +10,13 @@ import javax.sound.sampled.DataLine;
 
 public class SoundsLoader {
 	
-	public Clip cargarSonido( String ruta) {
+	/**
+	 * <b>Description:</b>
+	 * This function loads each individual sound in the specified route.
+	 * @param ruta The path of the file.
+	 * @return The clip that was loaded.
+	 */
+	public Clip cargarSonido(String ruta) {
 		Clip clip = null;
 		try {
 			InputStream is = ClassLoader.class.getResourceAsStream(ruta);
@@ -24,7 +30,14 @@ public class SoundsLoader {
 		}
 		return clip;
 	}
-	 public Clip loadSounds(int n) {
+	
+	 /**
+	  * <b>Description:</b>
+	  * This function loads all the game sounds depending on the parameter.
+	 * @param n The sound to be loaded.
+	 * @return The clip that was created with the sound.
+	 */
+	public Clip loadSounds(int n) {
 	    	Clip bang= null;
 	    	if(n==0) {
 	    		bang = cargarSonido("/uilmusic/Ground_Theme.wav");

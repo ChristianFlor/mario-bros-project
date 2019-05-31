@@ -11,13 +11,43 @@ import ui.GameController;
 
 public class MisteryBlockHitThread extends Thread{
 
+	/**
+	 * The thread's game controller.
+	 */
 	private GameController controller;
+	
+	/**
+	 * The thread's rectangle from the user interface.
+	 */
 	private Rectangle powerUpRectangle;
+	
+	/**
+	 * The thread's power up that is to be animated.
+	 */
 	private PowerUp powerUp;
+	
+	/**
+	 * The attribute that tells whether or not this thread is active.
+	 */
 	private boolean active;
+		
+	/**
+	 * The counter that determines which stage of the animation is to be displayed.
+	 */
 	private int counter;
+	
+	/**
+	 * The orientation of the power up.
+	 */
 	private int orientation;
 	
+	 /**
+     * <b>Description:</b>
+     * This function initializes a new mystery block hit thread.
+     * @param c The thread's game controller.
+     * @param pr The thread's rectangle from the user interface.
+     * @param pu The thread's power up that is to be animated.
+     */
 	public MisteryBlockHitThread(GameController c, Rectangle pr, PowerUp pu) {
 		this.controller = c;
 		this.powerUpRectangle = pr;
@@ -27,6 +57,10 @@ public class MisteryBlockHitThread extends Thread{
 		orientation = 0;
 	}
 
+	 /**
+	 *<b>Description:</b>
+	 *The run method which starts this thread until it dies.
+	 */
 	@Override
 	public void run() {
 		if(powerUp != null) {
@@ -181,9 +215,19 @@ public class MisteryBlockHitThread extends Thread{
 		}
 	}
 	
+	/**
+	 * <b>Description:</b>
+	 * This function obtains the power up of this thread.
+	 * @return The thread's power up.
+	 */
 	public PowerUp getPowerUp() {
 		return powerUp;
 	}
+	
+	/**
+	 * <b>Description:</b>
+	 * This function deactivates this thread.
+	 */
 	public void deactivate() {
 		active = false;
 		if(powerUp instanceof Mushroom || powerUp instanceof OneUp) {

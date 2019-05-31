@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MenuController">
+<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MenuController">
 
    <children>
       <Pane fx:id="marioPane" prefHeight="480.0" prefWidth="685.0">
@@ -17,7 +17,7 @@
                   <Image url="@../menuimg/572720.jpg" />
                </image>
             </ImageView>
-           <Label fx:id="brandLabel" layoutX="378.0" layoutY="267.0" text="\@2019 ICESI" textFill="#f29b87">
+           <Label layoutX="378.0" layoutY="267.0" text="\@2019 ICESI" textFill="#f29b87">
                <font>
                   <Font name="Consolas Bold" size="24.0" />
                </font>
@@ -27,7 +27,7 @@
                   <Font name="Consolas Bold" size="23.0" />
                </font>
             </Label>
-            <Label fx:id="optionsButton" contentDisplay="CENTER" layoutX="298.0" layoutY="346.0" onMouseClicked="#beginOptions" text="OPTIONS">
+            <Label fx:id="optionsButton" contentDisplay="CENTER" layoutX="298.0" layoutY="346.0" text="OPTIONS">
                <font>
                   <Font name="Consolas Bold" size="23.0" />
                </font>

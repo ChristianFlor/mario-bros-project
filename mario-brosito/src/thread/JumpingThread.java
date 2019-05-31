@@ -7,13 +7,24 @@ import ui.GameController;
 
 public class JumpingThread extends Thread {
 	
+	 /**
+     * The thread's game controller.
+     */
 	private GameController controller;
-	private int key;
-	public JumpingThread(GameController controller,int key){
+	
+	/**
+	 * <b>Description:</b>
+	 * This function initializes a new jumping thread.
+	 * @param controller The thread's game controller.
+	 */
+	public JumpingThread(GameController controller){
 		this.controller = controller;
-		this.key = key;
 	}
 	
+	 /**
+		 *<b>Description:</b>
+		 *The run method which starts this thread until it dies.
+		 */
 	@Override
 	public void run() {
 		
