@@ -1,6 +1,8 @@
 package model;
 
-public class Score {
+import java.io.Serializable;
+
+public class Score implements Serializable{
 
 	/**
 	 * An image used to paint the binary search tree.

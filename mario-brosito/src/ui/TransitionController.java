@@ -1,6 +1,5 @@
 package ui;
 
-	
 import java.io.IOException;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -21,14 +20,28 @@ import javafx.util.Duration;
 public class TransitionController {
 
 
+		private GameController game;
+
+	    /**
+	     * The pane of the transition.
+	     */
 	    @FXML
 	    private Pane transitionPane;
 
+	    /**
+	     * The start image of Mario.
+	     */
 	    @FXML
 	    private ImageView startImg;
 
 	  //  private GameController bC;
 
+	    /**
+	     * <b>Description:</b>
+	     * This function starts the main Mario game.
+	     * @param event The click event on the image.
+	     * @throws IOException Throws if the file is not found.
+	     */
 	    @FXML
 	    public void start(MouseEvent event) throws IOException {
 
@@ -39,12 +52,12 @@ public class TransitionController {
 	    	transitionPane.getChildren().add(root);
 
 
-			GameController bC = loader.getController();
+			 game = loader.getController();
 
-	    	bC.setMainScene(scene);
-	    	bC.configureScene();
-	    	if(!(bC.getPause())) {
-	    		bC.getClip().start();
+	    	game.setMainScene(scene);
+	    	game.configureScene();
+	    	if(!(game.getPause())) {
+	    		game.getClip().start();
 	    	}
 
 	    	root.translateXProperty().set(scene.getHeight());
@@ -64,10 +77,11 @@ public class TransitionController {
 	    		transitionPane.setBackground(new Background(new BackgroundFill(c, null, null)));
 	    	});                               
 	    	timeline.play();
-
-
-
+	    }
+	    
+	    public void closeWindow() {
+	    	game.closeWindow();
 	    }
 
 	}
-
+	

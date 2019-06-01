@@ -1,6 +1,11 @@
 package model;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +55,16 @@ public class Game {
 	 * This attribute is used to show the ranking of players.
 	 */
 	private double height;
+	
+	/**
+	 * represents the place of the serialized file of the score
+	 */
+	public static final String PATH_FILE_SCORE = "data/Score.sco";
+	
+	/**
+	 * represents the place of the serialized file of the players
+	 */
+	public static final String PATH_FILE_PLAYER = "data/Player.pla";
 
 	/**
 	 * <b>Description:</b>
@@ -65,8 +80,61 @@ public class Game {
 		levelTwo.loadLevel(Level.LEVEL_TWO_PATH);
 		levelThree = new Level();
 		levelThree.loadLevel(Level.LEVEL_THREE_PATH);
-		initPlayers();
 	}
+	
+	
+	
+	
+	public void saveScore(String path) throws IOException {
+		File file = new File(path);
+		
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
+		oos.writeObject(root);
+		
+		oos.close();
+			
+	}
+	
+	public void loadScore(String path) throws IOException, ClassNotFoundException {
+		File file = new File(path);
+		
+		if(file.exists()) {
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+			root = (Score) ois.readObject();
+			
+			ois.close();
+ 		}
+		
+			
+	}
+	
+	public void savePlayers(String path) throws IOException {
+		File file = new File(path);
+		
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
+		oos.writeObject(first);
+		
+		oos.close();
+			
+	}
+	
+	public void loadPlayers(String path) throws IOException, ClassNotFoundException {
+		File file = new File(path);
+		
+		if(file.exists()) {
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+			first = (Player) ois.readObject();
+			
+			ois.close();
+ 		}
+		
+			
+	}
+	
+	
+	
+	
+	
 	
 	// -----------------------------------------------------------------
     // Methods for add List
@@ -111,12 +179,15 @@ public class Game {
 	 * @return The boolean that dictates whether or not the condition is met.
 	 */
 	public boolean isNumeric(String cadena){
+		boolean numeric = false;
 		try {
 			Integer.parseInt(cadena);
-			return true;
+			numeric = true;
 		} catch (NumberFormatException nfe){
-			return false;
+			numeric = false;
 		}
+		
+		return numeric;
 	}
 	// -----------------------------------------------------------------
     // Methods for add tree
@@ -155,7 +226,7 @@ public class Game {
 			} else {
 				addScore(current.getRight(), newOne);
 			} 
-		} else if(current.getScore()>newOne.getScore()){
+		} else if(current.getScore()>=newOne.getScore()){
 			if(current.getLeft()==null) {
 				current.setLeft(newOne);
 			} else {
@@ -175,7 +246,6 @@ public class Game {
 		if(current.getLeft() != null) {
 			printTree(current.getLeft());
 		}
-		System.out.println(current);
 		if(current.getRight() != null) {
 			printTree(current.getRight());
 		}
@@ -504,24 +574,6 @@ public class Game {
     // Methods of model solution
     // -----------------------------------------------------------------
 	
-	/**
-	 * <b>Description:</b>
-	 * This function initializes the players of the binary search tree.
-	 * @throws IllegalInputException The exception that is thrown when the input doesn't meet the standards. 
-	 * @throws IntegerValuesException The exception that is thrown when the value entered isn't an integer.
-	 */
-	public void initPlayers() throws IllegalInputException, IntegerValuesException {
-		addPlayer("Carlos","Carlosches",9800);
-		addScore(searchPlayer("Carlos"));
-		addPlayer("Cesar","Sleeptight",14000);
-		addScore(searchPlayer("Cesar"));
-		addPlayer("Ana","Anamvgd",1000);
-		addScore(searchPlayer("Ana"));
-		addPlayer("Christian","Rolfman",6000);
-		addScore(searchPlayer("Christian"));
-		addPlayer("Alejandra","Yepes",7000);
-		addScore(searchPlayer("Alejandra"));
-	}
 	
 	/**
 	 * <b>Description:</b>
@@ -678,8 +730,9 @@ public class Game {
 	 */
 	public Player[] getPlayersToArray() {
 
-		Player[] players;
-		players = new Player[first.size()];
+		Player[] players = null;;
+		if(first!=null)
+			players = new Player[first.size()];
 		int c = 0;
 		Player current = first;
 		 	while(current!=null) {

@@ -6,19 +6,30 @@ import ui.GameController;
 
 public class MovementAndGravityThread extends Thread {
 	
+	/**
+	 * The thread's game controller.
+	 */
 	private GameController controller;
+	
+	/**
+	 * The attribute that tells whether or not this thread is active.
+	 */
 	private boolean active;
 	
 	/**
-	 * @param controller
-	 * @param active
+	 * <b>Description:</b>
+	 * This function initializes a new movement and gravity thread.
+	 * @param controller The thread's game controller.
 	 */
 	public MovementAndGravityThread(GameController controller) {
 		this.controller = controller;
 		this.active = true;
 	}
 	
-	
+	/**
+	 *<b>Description:</b>
+	 *The run method which starts this thread until it dies.
+	 */
 	@Override
 	public void run() {
 				while(active) {
@@ -187,9 +198,19 @@ public class MovementAndGravityThread extends Thread {
 				
 			}
 	}
+	
+	/**
+	 * <b>Description:</b>
+	 * This function deactivates this thread.
+	 */
 	public void deactivate() {
 		active = false;
 	}
+	
+	/**
+	 * <b>Description:</b>
+	 * This function reactivates this thread.
+	 */
 	public void activate() {
 		active = true;
 		new Thread(this).start();

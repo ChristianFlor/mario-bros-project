@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
@@ -21,17 +28,24 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane prefHeight="480.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.PlayerController">
+<StackPane fx:id="stackPane" prefHeight="480.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.PlayerController">
    <children>
-      <BorderPane>
+      <BorderPane fx:id="borderPane">
          <top>
             <HBox alignment="CENTER" prefHeight="65.0" prefWidth="779.0" style="-fx-background-color: #2A2E37;" BorderPane.alignment="CENTER">
                <children>
+                  <Separator orientation="VERTICAL" prefHeight="70.0" prefWidth="66.0" visible="false" />
                   <ImageView fitHeight="78.0" fitWidth="409.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../uiImg/logo.png" />
                      </image>
                   </ImageView>
+                  <Separator orientation="VERTICAL" prefHeight="70.0" prefWidth="22.0" visible="false" />
+                  <Button fx:id="backToMenu" mnemonicParsing="false" onAction="#back" text="Back to menu">
+                     <font>
+                        <Font name="Consolas" size="12.0" />
+                     </font>
+                  </Button>
                </children>
             </HBox>
          </top>
