@@ -7,27 +7,27 @@ public class Score implements Serializable{
 	/**
 	 * An image used to paint the binary search tree.
 	 */
-	public static final String MARIO ="https://www.smashbros.com/wiiu-3ds/images/character/mario/main.png";
+	public static final String MARIO ="src/uiImg/mario_dubs.png";
 	
 	/**
 	 * An image used to paint the binary search tree.
 	 */
-	public static final String LUIGI ="https://freepngimg.com/thumb/luigi/21913-5-luigi.png";
+	public static final String LUIGI ="src/uiImg/luigi.png";
 	
 	/**
 	 * An image used to paint the binary search tree.
 	 */
-	public static final String KOOPAS ="https://www.mariowiki.com/images/5/5c/SuperMarioParty_KoopaTroopa.png";
+	public static final String KOOPAS ="src/uiImg/Koopa.png";
 	
 	/**
 	 * An image used to paint the binary search tree.
 	 */
-	public static final String BOWSER ="https://vignette.wikia.nocookie.net/mario/images/e/e1/Bowser-0.png/revision/latest?cb=20161119195258&path-prefix=es";
+	public static final String BOWSER ="src/uiImg/bowser.png";
 	
 	/**
 	 * An image used to paint the binary search tree.
 	 */
-	public static final String TOAD ="http://clipart-library.com/images/Bcgopdxc8.png";
+	public static final String TOAD ="src/uiImg/toad.png";
 	
 	/**
 	 * The name of the player.

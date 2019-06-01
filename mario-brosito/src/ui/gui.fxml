@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.canvas.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
@@ -28,7 +21,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="stackPane" prefHeight="480.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.PlayerController">
+<StackPane fx:id="stackPane" prefHeight="480.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.PlayerController">
    <children>
       <BorderPane fx:id="borderPane">
          <top>
@@ -41,7 +34,7 @@
                      </image>
                   </ImageView>
                   <Separator orientation="VERTICAL" prefHeight="70.0" prefWidth="22.0" visible="false" />
-                  <Button fx:id="backToMenu" mnemonicParsing="false" onAction="#back" text="Back to menu">
+                  <Button fx:id="backToMenu" mnemonicParsing="false" onAction="#back" stylesheets="@../CSS/dark-theme2.css" text="Back to menu">
                      <font>
                         <Font name="Consolas" size="12.0" />
                      </font>
