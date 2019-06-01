@@ -31,7 +31,6 @@ public class SoundsLoader {
 		return clip;
 	}
 	
-
 	 /**
 	  * <b>Description:</b>
 	  * This function loads all the game sounds depending on the parameter.
