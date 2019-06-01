@@ -28,6 +28,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -407,12 +409,12 @@ public class PlayerController {
     public void back(ActionEvent event) throws IOException {
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("menu.fxml"));
     	Parent root = loader.load();
-    	
+
     	Scene scene = backToMenu.getScene();
-    	
+
     	root.translateXProperty().set(scene.getHeight());
     	stackPane.getChildren().add(root);
-    	
+
     	Timeline timeline = new Timeline();
     	KeyValue kv = new KeyValue(root.translateXProperty(),0, Interpolator.EASE_OUT);
     	KeyFrame kf = new KeyFrame(Duration.seconds(1),kv);
@@ -421,9 +423,9 @@ public class PlayerController {
     		stackPane.getChildren().remove(borderPane);
     	});                               
     	timeline.play();
-    
+   	}
     	
-    }
+    
     
     
     

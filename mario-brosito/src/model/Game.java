@@ -82,9 +82,6 @@ public class Game {
 		levelThree.loadLevel(Level.LEVEL_THREE_PATH);
 	}
 	
-	
-	
-	
 	public void saveScore(String path) throws IOException {
 		File file = new File(path);
 		
