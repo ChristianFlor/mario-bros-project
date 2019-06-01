@@ -88,14 +88,14 @@ public class Player implements Serializable{
 	 * @param nick The nickname of the player.
 	 * @param s The score of the player.
 	 */
-	public Player(String n, String nick, int s) {
+	public Player(String name, String nick, int score) {
 		SecureRandom r = new SecureRandom();
-		this.name = n;
+		this.name = name;
 		this.nickName=nick;
-		this.score = s;
+		this.score = score;
 		String in= name.substring(0, 2);
 		this.id= in+(r.nextInt(10000));
-		selectImg(s);
+		selectImg(score);
 		this.setX(x);
 		this.setY(y);
 	}

@@ -71,10 +71,10 @@ public class Score implements Serializable{
 	 * @param n The name of the player.
 	 * @param s The score of the player.
 	 */
-	public Score(String n, int s) {
-		this.name = n;
-		this.score = s;
-		selectImg(s);
+	public Score(String name, int score) {
+		this.name = name;
+		this.score = score;
+		selectImg(score);
 		this.setX(x);
 		this.setY(y);
 	}
