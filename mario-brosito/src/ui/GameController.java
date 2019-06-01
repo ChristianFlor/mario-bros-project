@@ -11,9 +11,15 @@ import java.util.Set;
 import javax.sound.sampled.Clip;
 import customExceptions.IllegalInputException;
 import customExceptions.IntegerValuesException;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -23,6 +29,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import model.Bowser;
 import model.Coin;
 import model.Enemy;
@@ -32,6 +39,7 @@ import model.Game;
 import model.Goomba;
 import model.ImagesLoader;
 import model.Koopa;
+import model.Level;
 import model.Mario;
 import model.MisteryBlock;
 import model.MovingPlatform;
@@ -223,6 +231,8 @@ public class GameController {
 	 */
 	private Thread mv;
 	
+	private LevelOneEndThread lOET;
+	
 	/**
 	 * The attribute that holds the current level being played.
 	 */
@@ -236,14 +246,14 @@ public class GameController {
      */
     @FXML
     public void initialize() throws IllegalInputException, IntegerValuesException {
+    	lOET = null;
     	try {
     		mainGame = new Game();
+    		currentLevel = 1;
     		loadUI();
-			loadWorld1();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    	currentLevel = 1;
     }
     
     /**
@@ -252,12 +262,10 @@ public class GameController {
      */
     public void loadUI() {
     	sound = new SoundsLoader();
-    	pause=false;
+    	pause=true;
     	jumping = new JumpingThread(this);
     	pressed = new HashSet<String>();
     	try {
-    	
-			
 			imloMark= new ImagesLoader(32, 32, 1, 3,"src/uiImg/QuestionMark.png");
 			imloCoin =new ImagesLoader(32, 32, 1, 3,"src/uiImg/Coin.png");
 			rectan= new ArrayList<Rectangle>();
@@ -295,9 +303,22 @@ public class GameController {
 			
 			e.printStackTrace();
 		}
+    	try {
+	    	if(currentLevel == 1) {
+	    		loadWorld1();
+	    	}else if(currentLevel == 2) {
+	    		loadWorld2();
+	    	}else {
+	    		loadWorld3();
+	    	}
+    	}catch(IOException e) {
+    		e.printStackTrace();
+    	}
     	mv = new MovementAndGravityThread(this);
     	threads.add(mv);
     	mv.start();
+    	pause = false;
+    	mainMario.setVisible(true);
     }
     
     /**
@@ -397,10 +418,50 @@ public class GameController {
     		if(condition == 2) {
     			mainMario.setVisible(false);
     		}else {
+    			mainMario.setVisible(true);
     			m.setPosX(m.getPosX()+1);
     			mainMario.setX(m.getPosX());
     		}
     	}else {
+    		mainMario.setVisible(true);
+    		currentLevel = 2;
+    	  	FXMLLoader loader = new FXMLLoader(getClass().getResource("gui.fxml"));
+        	Parent root;
+			try {
+				root = loader.load();
+			 	Scene scene = worldLabel.getScene();
+	        	root.translateXProperty().set(scene.getHeight());
+	        	
+	        	
+	        	Timeline timeline = new Timeline();
+	        	KeyValue kv = new KeyValue(root.translateXProperty(),0, Interpolator.EASE_OUT);
+	        	KeyFrame kf = new KeyFrame(Duration.seconds(1),kv);
+	        	timeline.getKeyFrames().add(kf);
+	        	timeline.setOnFinished(event1-> {
+	        		mainBackground.getChildren().clear();
+	        		mainBackground.getChildren().add(root);
+	        	});                               
+	        	timeline.play();
+	        	
+			} catch (IOException e) {				
+				e.printStackTrace();
+			}
+        	
+       
+    		
+    		try {
+				mainGame = new Game();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalInputException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IntegerValuesException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		closeWindow();
     		mainBackground.getChildren().clear();
     		mainBackground.setTranslateX(0);
     		timeLabel.setTranslateX(0);
@@ -411,13 +472,15 @@ public class GameController {
     		acumulatedCoins.setTranslateX(0);
     		coinImage.setTranslateX(0);
     		timeOfLevel.setTranslateX(0);
-    		try {
-				loadWorld2();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+    		mainBackground.getChildren().add(timeLabel);
+    		mainBackground.getChildren().add(worldLabel);
+    		mainBackground.getChildren().add(marioLabel);
+    		mainBackground.getChildren().add(numberOfWorld);
+    		mainBackground.getChildren().add(scoreOfMario);
+    		mainBackground.getChildren().add(acumulatedCoins);
+    		mainBackground.getChildren().add(coinImage);
+    		mainBackground.getChildren().add(timeOfLevel);
     		loadUI();
-    		currentLevel = 2;
     	}
     }
     
@@ -426,7 +489,6 @@ public class GameController {
      * This function deactivates all the threads that are currently running in the game.
      */
     public void closeWindow() {
-    	pause=true;
     	ground.stop();
     	
 		for (int i = 0; i < threads.size(); i++) {
@@ -444,7 +506,7 @@ public class GameController {
 					((MovementAndGravityThread) t).deactivate();
 				}else if(t instanceof PlatformThread){
 					((PlatformThread) t).deactivate();
-				}else {
+				}else if(t instanceof MisteryBlockHitThread){
 					((MisteryBlockHitThread) t).deactivate();
 				}
 			}
@@ -475,8 +537,8 @@ public class GameController {
 					((MovementAndGravityThread) t).suspend();
 				}else if(t instanceof PlatformThread){
 					((PlatformThread) t).suspend();
-				}else {
-					((MisteryBlockHitThread) t).resume();
+				}else if(t instanceof MisteryBlockHitThread){
+					((MisteryBlockHitThread) t).suspend();
 				}
 			}
 		}
@@ -505,7 +567,7 @@ public class GameController {
 					((MovementAndGravityThread) t).resume();
 				}else if(t instanceof PlatformThread){
 					((PlatformThread) t).resume();
-				}else {
+				}else if(t instanceof MisteryBlockHitThread){
 					((MisteryBlockHitThread) t).resume();
 				}
 			}
@@ -586,14 +648,38 @@ public class GameController {
 		
     	jumping.suspend();
 		closeWindow();
-		mainBackground.getChildren().clear();
 		try {
 			mainGame = new Game();
-			initialize();
-			mainBackground.setTranslateX(0);
-		} catch (IOException | IllegalInputException | IntegerValuesException e) {
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalInputException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IntegerValuesException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		mainBackground.getChildren().clear();
+		mainBackground.setTranslateX(0);
+		mainBackground.setTranslateX(0);
+		timeLabel.setTranslateX(0);
+		worldLabel.setTranslateX(0);
+		marioLabel.setTranslateX(0);
+		numberOfWorld.setTranslateX(0);
+		scoreOfMario.setTranslateX(0);
+		acumulatedCoins.setTranslateX(0);
+		coinImage.setTranslateX(0);
+		timeOfLevel.setTranslateX(0);
+		mainBackground.getChildren().add(timeLabel);
+		mainBackground.getChildren().add(worldLabel);
+		mainBackground.getChildren().add(marioLabel);
+		mainBackground.getChildren().add(numberOfWorld);
+		mainBackground.getChildren().add(scoreOfMario);
+		mainBackground.getChildren().add(acumulatedCoins);
+		mainBackground.getChildren().add(coinImage);
+		mainBackground.getChildren().add(timeOfLevel);
+		loadUI();
     }
     
     /**
@@ -652,10 +738,9 @@ public class GameController {
 					thread.start();
 					
 				}
-			}else if(intersects.equals(Mario.ISMOVINGRIGHT) && (f.getImage().equals(StaticFigure.FLAGPOLE) || f.getImage().equals(StaticFigure.FLAGSPHERE) || f.getImage().equals(StaticFigure.FLAGTOP))) {
-				pause = true;
-				LevelOneEndThread thread = new LevelOneEndThread(this);
-				thread.start();
+			}else if(lOET == null && f != null && intersects.equals(Mario.ISMOVINGRIGHT) && (f.getImage().equals(StaticFigure.FLAGPOLE) || f.getImage().equals(StaticFigure.FLAGSPHERE) || f.getImage().equals(StaticFigure.FLAGTOP))) {
+				lOET = new LevelOneEndThread(this);
+				lOET.start();
 			}else if(intersects.equals(Mario.ISMOVINGUP) && (f instanceof MisteryBlock)) {
 				MisteryBlock mb =  (MisteryBlock) f;
 				ImagesLoader sl = null;
@@ -665,7 +750,7 @@ public class GameController {
 					e1.printStackTrace();
 				}
 				BufferedImage[] b = sl.getSprites();
-				Image card = SwingFXUtils.toFXImage(b[0], null);
+				Image card = SwingFXUtils.toFXImage(b[1], null);
 				figureRectangles.get(mb).setFill(new ImagePattern(card));
 				rectan.remove(figureRectangles.get(mb));
 				
@@ -1684,10 +1769,9 @@ public class GameController {
      */
     public void loadWorld2() throws IOException {
     	ground = sound.loadSounds(23);
-    	ground.stop();
+    	ground.start();
     	List<Figure> sprites = mainGame.getLevelTwo().getFigures();
     	ImagesLoader sl = null;
-    	
     	for (int i = 0; i < sprites.size(); i++) {
 			Figure f = sprites.get(i);
 			Rectangle rec = new Rectangle(f.getPosX(), f.getPosY(), f.getWidth(), f.getHeight());
@@ -2011,6 +2095,11 @@ public class GameController {
 		}else {
 			mainBackground.getChildren().remove(rectangle);
 		}
+	}
+
+	public void setCurrentLevel(int i) {
+		this.currentLevel = i;
+		
 	}
 	/**
 	 * <b>Description:</b>

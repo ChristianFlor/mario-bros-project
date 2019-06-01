@@ -34,8 +34,6 @@ public class TransitionController {
 	    @FXML
 	    private ImageView startImg;
 
-	  //  private GameController bC;
-
 	    /**
 	     * <b>Description:</b>
 	     * This function starts the main Mario game.
@@ -45,24 +43,17 @@ public class TransitionController {
 	    @FXML
 	    public void start(MouseEvent event) throws IOException {
 
-	     	FXMLLoader loader = new FXMLLoader(getClass().getResource("brosito.fxml"));
+	    	FXMLLoader loader = new FXMLLoader(getClass().getResource("brosito.fxml"));
 	    	Parent root =  loader.load();
 	    	Scene scene = startImg.getScene();
-
 	    	transitionPane.getChildren().add(root);
-
-
-			 game = loader.getController();
-
+	    	game = loader.getController();
 	    	game.setMainScene(scene);
 	    	game.configureScene();
 	    	if(!(game.getPause())) {
 	    		game.getClip().start();
 	    	}
-
 	    	root.translateXProperty().set(scene.getHeight());
-
-
 	    	Timeline timeline = new Timeline();
 	    	KeyValue kv = new KeyValue(root.translateXProperty(),0, Interpolator.EASE_IN);
 	    	KeyFrame kf = new KeyFrame(Duration.seconds(1),kv);
@@ -73,15 +64,15 @@ public class TransitionController {
 	    		//javafx.scene.paint.Color c = javafx.scene.paint.Color.rgb(0, 0, 0);
 	    		scene.setFill(c);
 	    		transitionPane.getChildren().add(root);
-
+	    		
 	    		transitionPane.setBackground(new Background(new BackgroundFill(c, null, null)));
 	    	});                               
 	    	timeline.play();
 	    }
-	    
+
 	    public void closeWindow() {
 	    	game.closeWindow();
 	    }
 
-	}
+}
 	
