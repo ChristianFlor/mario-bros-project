@@ -57,7 +57,7 @@ public class Main extends Application{
 		
 		
 		stage.setScene(scene);
-		stage.setTitle("Mariosito");
+		stage.setTitle("MARIO BROSS");
 		stage.show();
 	}
 
