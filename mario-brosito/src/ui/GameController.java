@@ -640,6 +640,7 @@ public class GameController {
 			if(!intersects.equals(Mario.ISMOVINGDOWN) && !intersects.isEmpty() && f instanceof Enemy){
 				
 				deadMario();
+				ground.start();
 				break;
 			}
 			
