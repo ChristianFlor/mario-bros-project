@@ -19,6 +19,5 @@ public class Bowser extends Enemy{
 		super(posX, posY, width, height);
 	}
 	
-	
 
 }

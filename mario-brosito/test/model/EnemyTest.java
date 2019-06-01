@@ -10,11 +10,11 @@ public class EnemyTest {
 	
 	private Enemy enemy;
 	
-	public void setupScenary1() {
+	private void setupScenary1() {
 		enemy = new Goomba(32, 0, 32, 32);
 	}
 	
-	public void setupScenary2() {
+	private void setupScenary2() {
 		
 	}
 	

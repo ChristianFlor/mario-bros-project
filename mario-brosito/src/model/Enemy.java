@@ -2,7 +2,7 @@ package model;
 
 import javafx.scene.shape.Rectangle;
 
-public abstract class Enemy extends Figure {
+public abstract class Enemy extends Figure implements CollidingFigure, GroundedFigure{
 
     /**
      * The moving state of this enemy.

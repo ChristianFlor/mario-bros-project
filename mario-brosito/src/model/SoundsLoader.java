@@ -37,6 +37,7 @@ public class SoundsLoader {
 	 * @param n The sound to be loaded.
 	 * @return The clip that was created with the sound.
 	 */
+
 	public Clip loadSounds(int n) {
 	    	Clip bang= null;
 	    	if(n==0) {
