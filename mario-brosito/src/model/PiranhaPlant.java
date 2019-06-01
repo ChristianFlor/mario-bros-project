@@ -6,7 +6,7 @@ public class PiranhaPlant extends Enemy{
 	/**
 	 * The default image of the piranha plant in the level.
 	 */
-	public final static String IMAGE = "/src/uiImg/.png";
+	public final static String IMAGE = "/src/uiImg/plant.png";
 	
 	/**
 	  * <b>Description:</b>

@@ -148,18 +148,18 @@ public class Game {
 	 * @throws IllegalInputException The exception thrown when the input doesn't match the standards.
 	 * @throws IntegerValuesException The exception thrown when the values entered are not integers.
 	 */
-	public void addPlayer(String n, String nick, int s)throws  IllegalInputException,IntegerValuesException{
-		if(n.isEmpty()|| n==null) {
-			throw new IllegalInputException(n);
-		}else if(isNumeric(n)) {
-			throw new IntegerValuesException(n);
+	public void addPlayer(String name, String nick, int score)throws  IllegalInputException,IntegerValuesException{
+		if(name.isEmpty()|| name==null) {
+			throw new IllegalInputException(name);
+		}else if(isNumeric(name)) {
+			throw new IntegerValuesException(name);
 		}
 		if(nick.isEmpty() || nick==null ) {
 			throw new IllegalInputException(nick);
 		}else if(isNumeric(nick)) {
 			throw new IntegerValuesException(nick);
 		}
-		Player p= new Player(n,nick,s);
+		Player p= new Player(name,nick,score);
 		if(first == null){
 			first =p;
 		}else{
@@ -642,82 +642,7 @@ public class Game {
 		}
 	}
 
-	/**
-	 * <b>Description:</b>
-	 * This function does an inorder traversal of the binary search tree.
-	 * @return The list of scores in inorder.
-	 */
-	public List<Score> inorderListOfScore() {
-		return inorderListOfScore(root);
-	}
-	
-	/**
-	 * <b>Description:</b>
-	 * This function does an inorder traversal of the binary search tree.
-	 * @param current The current node in the tree.
-	 * @return The list of scores in inorder.
-	 */
-	private List<Score> inorderListOfScore(Score current){
-		List<Score> l = new ArrayList<Score>();
-		if(current != null) {
-			l.addAll(inorderListOfScore(current.getLeft()));
-			l.add(current);
-			l.addAll(inorderListOfScore(current.getRight()));
-		}
-		return l;
-	}
-	
-	/**
-	 * <b>Description:</b>
-	 * This function does an preorder traversal of the binary search tree.
-	 * @return The list of scores in preorder.
-	 */
-	public List<Score> preorderListOfScore(){
-		List<Score> lis= new ArrayList<>();
-		preorderListOfScore(root,lis);
-		return lis;
-	}
-	
-	/**
-	 * <b>Description:</b>
-	 * This function does an preorder traversal of the binary search tree.
-	 * @param current The current node in the tree.
-	 * @return The list of scores in preorder.
-	 */
-	private void preorderListOfScore(Score current,List<Score> lis){
-		if(current != null) {
-			lis.add(current);
-			preorderListOfScore(current.getLeft(),lis);
-			preorderListOfScore(current.getRight(),lis);
-			
-		}
-	}
-	
-	/**
-	 * <b>Description:</b>
-	 * This function does an postorder traversal of the binary search tree.
-	 * @return The list of scores in postorder.
-	 */
-	public List<Score> postorderListOfScore() {
-		return postorderListOfScore(root);
-	}
-	
-	/**
-	 * <b>Description:</b>
-	 * This function does an postorder traversal of the binary search tree.
-	 * @param current The current node in the tree.
-	 * @return The list of scores in postorder.
-	 */
-	private List<Score> postorderListOfScore(Score current){
-		List<Score> l = new ArrayList<Score>();
-		if(current != null) {
-			l.addAll(postorderListOfScore(current.getLeft()));
-			l.addAll(postorderListOfScore(current.getRight()));
-			l.add(current);
-		}
-		return l;
-	}
-	
+
 
 	// -----------------------------------------------------------------
     // Methods Atributes
@@ -757,7 +682,7 @@ public class Game {
 	 * @param current The current node of the tree.
 	 * @return The height of the binary search tree.
 	 */
-	public int getTreeHeight(Score current) {
+	private int getTreeHeight(Score current) {
 		if(current != null) {
 			return Math.max(getTreeHeight(current.getLeft()), getTreeHeight(current.getRight())) + 1;
 		}
