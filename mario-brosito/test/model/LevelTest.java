@@ -15,10 +15,10 @@ public class LevelTest {
 	
 	private Level level;
 	
-	public void setupScenary1() {
+	private void setupScenary1() {
 		
 	}
-	public void setupScenary2() {
+	private void setupScenary2() {
 		
 		level = new Level();
 		

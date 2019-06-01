@@ -1,7 +1,7 @@
 package model;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +9,7 @@ public class MarioTest {
 	
 	private Mario mario;
 	
-	public void setupScenary1() {
+	private void setupScenary1() {
 		double posX = 32; 
 		double posY = 0;
 		double width = 32;
@@ -17,8 +17,21 @@ public class MarioTest {
 		mario = new Mario(posX, posY, width, height);
 	}
 	
-	public void setupScenary2() {
+	private void setupScenary2() {
 
+	}
+	
+	@Test
+	public void testMario() {
+		setupScenary2();
+		double posX = 30; 
+		double posY = 410;
+		double width = 32;
+		double height = 32;
+		
+		mario = new Mario(posX, posY, width, height);
+		assertNotNull("Mario is null", mario);
+		
 	}
 	
 	@Test 

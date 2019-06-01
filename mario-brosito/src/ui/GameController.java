@@ -92,16 +92,7 @@ public class GameController {
 	 * The association with the model game class.
 	 */
 	private Game mainGame;
-	
-	/**
-	 * <b>Description:</b>
-	 * This function obtains the game that is being played.
-	 * @return The game of the graphical interface.
-	 */
-	public Game getGame() {
-		return mainGame;
-	}
-	
+		
 	/**
 	 * The main scene that is being shown on screen.
 	 */
@@ -148,21 +139,9 @@ public class GameController {
 	private boolean pause;
 	
 	/**
-	 * <b>Description:</b>
-	 * This function obtains the pause state of the game.
-	 * @return The pause state of the game.
-	 */
-	public boolean getPause() {
-		return pause;
-	}
-	
-	/**
-	 * 
+	 * The sound of the game
 	 */
 	private Clip ground;
-	public Clip getClip() {
-		return ground;
-	}
 	
 	/**
 	 * The pictures of the default Mario sprite sheet.
@@ -218,15 +197,6 @@ public class GameController {
      */
     @FXML
     private Label scoreOfMario;
-    
-    /**
-     * <b>Description:</b>
-     * This function obtains Mario's current score.
-     * @return The label of Mario's current score.
-     */
-    public Label getScoreOfMario() {
-		return scoreOfMario;
-	}
 
     /**
      * The label that shows how many coin Mario has.
@@ -756,6 +726,7 @@ public class GameController {
 			if(!intersects.equals(Mario.ISMOVINGDOWN) && !intersects.isEmpty() && f instanceof Enemy){
 				
 				deadMario();
+				ground.start();
 				break;
 			}
 			
@@ -2130,4 +2101,34 @@ public class GameController {
 		this.currentLevel = i;
 		
 	}
+	/**
+	 * <b>Description:</b>
+	 * This function obtains the game that is being played.
+	 * @return The game of the graphical interface.
+	 */
+	public Game getGame() {
+		return mainGame;
+	}
+	
+	/**
+	 * <b>Description:</b>
+	 * This function obtains the pause state of the game.
+	 * @return The pause state of the game.
+	 */
+	public boolean getPause() {
+		return pause;
+	}
+	public Clip getClip() {
+		return ground;
+	}
+    
+    /**
+     * <b>Description:</b>
+     * This function obtains Mario's current score.
+     * @return The label of Mario's current score.
+     */
+    public Label getScoreOfMario() {
+		return scoreOfMario;
+	}
+
 }

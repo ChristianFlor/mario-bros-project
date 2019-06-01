@@ -16,7 +16,7 @@ public class SoundsLoader {
 	 * @param ruta The path of the file.
 	 * @return The clip that was loaded.
 	 */
-	public Clip cargarSonido(String ruta) {
+	public Clip load(String ruta) {
 		Clip clip = null;
 		try {
 			InputStream is = ClassLoader.class.getResourceAsStream(ruta);
@@ -37,60 +37,61 @@ public class SoundsLoader {
 	 * @param n The sound to be loaded.
 	 * @return The clip that was created with the sound.
 	 */
+
 	public Clip loadSounds(int n) {
 	    	Clip bang= null;
 	    	if(n==0) {
-	    		bang = cargarSonido("/uilmusic/Ground_Theme.wav");
+	    		bang = load("/uilmusic/Ground_Theme.wav");
 	    	}else if(n==1) {
-	    		bang = cargarSonido("/uilmusic/smb_1-up.wav");
+	    		bang = load("/uilmusic/smb_1-up.wav");
 	    	}else if(n==2) {
-	    		bang = cargarSonido("/uilmusic/smb_breakblock.wav");
+	    		bang = load("/uilmusic/smb_breakblock.wav");
 	    	}else if(n==3) {
-	    		bang = cargarSonido("/uilmusic/smb_coin.wav");
+	    		bang = load("/uilmusic/smb_coin.wav");
 	    	}else if(n==4) {
-	    		bang = cargarSonido("/uilmusic/smb_fireball.wav");
+	    		bang = load("/uilmusic/smb_fireball.wav");
 	    	}else if(n==5) {
-	    		bang = cargarSonido("/uilmusic/smb_flagpole.wav");
+	    		bang = load("/uilmusic/smb_flagpole.wav");
 	    	}else if(n==6) {
-	    		bang = cargarSonido("/uilmusic/smb_jump-small.wav");
+	    		bang = load("/uilmusic/smb_jump-small.wav");
 	    	}else if(n==7) {
-	    		bang = cargarSonido("/uilmusic/smb_jump-super.wav");
+	    		bang = load("/uilmusic/smb_jump-super.wav");
 	    	}else if(n==8) {
-	    		bang = cargarSonido("/uilmusic/smb_kick.wav");
+	    		bang = load("/uilmusic/smb_kick.wav");
 	    	}else if(n==9) {
-	    		bang = cargarSonido("/uilmusic/smb_mariodie.wav");
+	    		bang = load("/uilmusic/smb_mariodie.wav");
 	    	}else if(n==10) {
-	    		bang = cargarSonido("/uilmusic/smb_pause.wav");
+	    		bang = load("/uilmusic/smb_pause.wav");
 	    	}else if(n==11) {
-	    		bang = cargarSonido("/uilmusic/smb_kick.wav");
+	    		bang = load("/uilmusic/smb_kick.wav");
 	    	}else if(n==12) {
-	    		bang = cargarSonido("/uilmusic/smb_powerup.wav");
+	    		bang = load("/uilmusic/smb_powerup.wav");
 	    	}else if(n==13) {
-	    		bang = cargarSonido("/uilmusic/smb_powerup_appears.wav");
+	    		bang = load("/uilmusic/smb_powerup_appears.wav");
 	    	}else if(n==14) {
-	    		bang = cargarSonido("/uilmusic/smb_stage_clear.wav");
+	    		bang = load("/uilmusic/smb_stage_clear.wav");
 	    	}else if(n==15) {
-	    		bang = cargarSonido("/uilmusic/smb_vine.wav");
+	    		bang = load("/uilmusic/smb_vine.wav");
 	    	}else if(n==16) {
-	    		bang = cargarSonido("/uilmusic/smb_warning.wav");
+	    		bang = load("/uilmusic/smb_warning.wav");
 	    	}else if(n==17) {
-	    		bang = cargarSonido("/uilmusic/smb_world_clear.wav");
+	    		bang = load("/uilmusic/smb_world_clear.wav");
 	    	}else if(n==18) {
-	    		bang = cargarSonido("/uilmusic/Star.wav");
+	    		bang = load("/uilmusic/Star.wav");
 	    	}else if(n==19) {
-	    		bang = cargarSonido("/uilmusic/smb_bowserfalls.wav");
+	    		bang = load("/uilmusic/smb_bowserfalls.wav");
 	    	}else if(n==20) {
-	    		bang = cargarSonido("/uilmusic/smb_bowserfire.wav");
+	    		bang = load("/uilmusic/smb_bowserfire.wav");
 	    	}else if(n==21) {
-	    		bang = cargarSonido("/uilmusic/smb_bump.wav");
+	    		bang = load("/uilmusic/smb_bump.wav");
 	    	}else if(n==22) {
-	    		bang = cargarSonido("/uilmusic/smb_gameover.wav");
+	    		bang = load("/uilmusic/smb_gameover.wav");
 	    	}else if(n==23) {
-	    		bang = cargarSonido("/uilmusic/UnderGround.wav");
+	    		bang = load("/uilmusic/UnderGround.wav");
 	    	}else if(n==24) {
-	    		bang = cargarSonido("/uilmusic/Castle.wav");
+	    		bang = load("/uilmusic/Castle.wav");
 	    	}else if(n==25) {
-	    		bang = cargarSonido("/uilmusic/Pause.wav");
+	    		bang = load("/uilmusic/Pause.wav");
 	    	}
 	    	return bang;
 	    }
