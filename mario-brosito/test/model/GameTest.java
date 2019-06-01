@@ -1,6 +1,5 @@
 package model;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -17,15 +16,15 @@ public class GameTest {
 	
 	private Game game;
 	
-	public void setupScenary1() {
+	private void setupScenary1() {
 		
 	}
 	
-	public void setupScenary2() throws IOException, IllegalInputException, IntegerValuesException {
+	private void setupScenary2() throws IOException, IllegalInputException, IntegerValuesException {
 		game = new Game();
 	}
 	
-	public void setupScenary3() throws IOException, IllegalInputException, IntegerValuesException {
+	private void setupScenary3() throws IOException, IllegalInputException, IntegerValuesException {
 		
 		game = new Game();
 		

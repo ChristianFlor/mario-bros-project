@@ -1,6 +1,6 @@
 package model;
 
-import javafx.geometry.Rectangle2D;
+
 
 public class Mario extends Figure {
 

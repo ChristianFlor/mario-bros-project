@@ -86,7 +86,7 @@ public class Game {
 		}else if(isNumeric(n)) {
 			throw new IntegerValuesException(n);
 		}
-		if(nick.isEmpty() || nick==null || isNumeric(nick)) {
+		if(nick.isEmpty() || nick==null ) {
 			throw new IllegalInputException(nick);
 		}else if(isNumeric(nick)) {
 			throw new IntegerValuesException(nick);

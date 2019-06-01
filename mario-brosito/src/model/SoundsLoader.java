@@ -24,7 +24,8 @@ public class SoundsLoader {
 		}
 		return clip;
 	}
-	 public Clip loadSounds(int n) {
+	
+	public Clip loadSounds(int n) {
 	    	Clip bang= null;
 	    	if(n==0) {
 	    		bang = cargarSonido("/uilmusic/Ground_Theme.wav");
